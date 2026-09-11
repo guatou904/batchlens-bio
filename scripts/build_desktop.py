@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import platform
+import plistlib
 import shutil
 import subprocess
 import sys
@@ -99,6 +100,10 @@ def main():
     if sys.platform == "darwin":
         app = out / "frozen/BatchLens Bio.app"
         executable = app / "Contents/MacOS/BatchLens Bio"
+        plist = app / "Contents/Info.plist"
+        info = plistlib.loads(plist.read_bytes())
+        info.update(CFBundleShortVersionString=__version__, CFBundleVersion=__version__)
+        plist.write_bytes(plistlib.dumps(info))
         subprocess.run(["codesign", "--force", "--deep", "--sign", "-", str(app)], check=True)
         subprocess.run(["codesign", "--verify", "--deep", "--strict", str(app)], check=True)
     else:

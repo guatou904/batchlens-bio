@@ -1,12 +1,13 @@
 # Validation record — 2026-09-12
 
-## 0.2.0 browser and desktop candidate
+## 0.2.0 browser and desktop validation
 
 - 97 tests pass locally on Python 3.12.14 and Python 3.13.9, including 30 new HTTP/upload/download checks; original scientific and CLI fixtures remain green. Ruff, formatting, mypy, JavaScript syntax and actionlint checks pass. Non-editable installs avoid this Mac's previously documented hidden `.pth` behavior.
 - Wheel and sdist install into new environments outside the checkout. Both installed artifacts pass CLI checks, seven demos, packaged web-resource checks and live HTTP report/ZIP retrieval. Exact downloadable release artifacts are verified again by the release workflow.
 - Local macOS arm64 build: frozen Python, all seven HTTP demos, report/JSON/ZIP downloads, a native window with a JavaScript-triggered audit, ad-hoc signature verification and DMG verification pass. A manually opened app displays the full report and saves a valid ZIP through the native save dialog; quitting stops the server.
 - Browser QA: initial/disabled state, multiple-file chooser, balanced uploaded audit, confounded example, inline report and a 760-pixel minimum-window layout (no horizontal overflow) verified. Screenshot: [local UI](web-ui.png).
-- Remote core/desktop CI and public release validation are pending for this candidate; no Windows installer success is claimed from a Mac build. The release workflow gates publication on native Mac arm64/Intel and Windows builds, GUI smoke checks and Windows installation validation.
+- The [first remote core matrix](https://github.com/guatou904/batchlens-bio/actions/runs/34654708950) passed on Linux/macOS/Windows, Python 3.12/3.13, plus the R oracle. The [desktop matrix with the UTF-8 report fix](https://github.com/guatou904/batchlens-bio/actions/runs/34655257596) passed native Mac arm64/Intel builds, GUI smoke checks, and actual Windows installation/audit validation.
+- Publication is separately gated by the release workflow, which reruns core and native desktop checks on the exact tag. The [release page](https://github.com/guatou904/batchlens-bio/releases) carries the actual publishing run URL, installer/package hashes and validation JSON. Source checks alone are not publication evidence.
 - Public signing credentials are not provisioned. Mac ad-hoc verification does not establish Developer ID/notarization or Gatekeeper acceptance; Windows Authenticode signing and clean end-user OS trials remain open.
 
 ## 0.1.0 published baseline

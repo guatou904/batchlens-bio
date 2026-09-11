@@ -21,7 +21,7 @@ BatchQC and ExploreModelMatrix already provide valuable confounding/design diagn
 **Local browser:** with Python 3.12 or 3.13, install version 0.2.0 or this checkout, then run:
 
 ```sh
-python -m pip install .
+python -m pip install batchlens-bio==0.2.0
 batchlens serve
 ```
 
@@ -38,7 +38,9 @@ batchlens demo --case confounded-time --out demo-confounded --fail-on none
 
 Seven offline demos ship with every installation: `balanced`, `confounded-time`, `partial-overlap`, `redundant-nuisance`, `paired`, `spatial-replicates`, `mixed-assays`. The intentional confounding example shows `NON_ESTIMABLE`; `--fail-on none` changes the CLI exit policy without hiding findings. Each CLI output path must be new and have an existing parent.
 
-![BatchLens local audit interface](docs/web-ui.png)
+For source installation, clone this repository and run `python -m pip install .`.
+
+![BatchLens local audit interface](https://raw.githubusercontent.com/guatou904/batchlens-bio/v0.2.0/docs/web-ui.png)
 
 [Offline report preview](docs/demo.html) · [Public spatial example](docs/public-data.md)
 

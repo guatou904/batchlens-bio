@@ -46,7 +46,7 @@ BatchQC、ExploreModelMatrix 已经提供有价值的混杂与设计诊断。Bat
 已有 Python 3.12 或 3.13 的用户，可安装 0.2.0 或从此仓库源码安装，然后运行：
 
 ```sh
-python -m pip install .
+python -m pip install batchlens-bio==0.2.0
 batchlens serve
 ```
 
@@ -63,7 +63,9 @@ batchlens demo --case confounded-time --out demo-confounded --fail-on none
 
 第二个示例故意演示完全混杂，报告显示 `NON_ESTIMABLE`；`--fail-on none` 只改变退出策略，不隐藏发现。其他示例包括 `partial-overlap`、`redundant-nuisance`、`paired`、`spatial-replicates` 和 `mixed-assays`。每次 CLI 输出路径必须是尚不存在的新目录，且父目录已存在。
 
-![BatchLens 本地审计界面](docs/web-ui.png)
+源码安装：克隆仓库后运行 `python -m pip install .`。
+
+![BatchLens 本地审计界面](https://raw.githubusercontent.com/guatou904/batchlens-bio/v0.2.0/docs/web-ui.png)
 
 [离线报告示例](docs/demo.html) · [公开空间组学元数据示例](docs/public-data.md)
 

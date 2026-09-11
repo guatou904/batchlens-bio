@@ -29,7 +29,7 @@ def server(tmp_path):
 
 
 def request(server, route="", payload=None, method=None, headers=None, prefix=True):
-    connection = http.client.HTTPConnection("localhost", server.server_port, timeout=20)
+    connection = http.client.HTTPConnection("127.0.0.1", server.server_port, timeout=20)
     body = json.dumps(payload).encode() if payload is not None else None
     actual_headers = {"Content-Type": "application/json"} if body else {}
     actual_headers.update(headers or {})

@@ -17,9 +17,11 @@ from batchlens.web import AuditServer
 def smoke_test(server: AuditServer, destination: Path) -> None:
     """Exercise HTTP, bundled resources, every scientific demo and downloads after freezing."""
     checks = []
+    # Use the bound address directly; avoid slow IPv6 fallback on Windows test hosts.
+    base_url = server.url.replace("localhost", "127.0.0.1", 1)
     for case in CASES:
         request = urllib.request.Request(
-            server.url + f"api/demo/{case}",
+            base_url + f"api/demo/{case}",
             data=b"{}",
             headers={"Content-Type": "application/json"},
         )
@@ -27,12 +29,12 @@ def smoke_test(server: AuditServer, destination: Path) -> None:
             result = json.load(response)
         for name in ["report.html", "result.json", "bundle.zip"]:
             with urllib.request.urlopen(
-                server.url + f"reports/{result['id']}/{name}", timeout=30
+                base_url + f"reports/{result['id']}/{name}", timeout=30
             ) as response:
                 assert response.status == 200 and response.read()
         checks.append({"case": case, "status": result["contrasts"][0]["status"]})
     for name in ["", "app.js", "app.css", "api/info"]:
-        with urllib.request.urlopen(server.url + name, timeout=10) as response:
+        with urllib.request.urlopen(base_url + name, timeout=10) as response:
             assert response.status == 200 and response.read()
     expected = [
         "ESTIMABLE",
