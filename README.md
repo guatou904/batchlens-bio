@@ -1,10 +1,12 @@
 # BatchLens Bio
 
+[English](https://github.com/guatou904/batchlens-bio/blob/main/README.md) | [简体中文](https://github.com/guatou904/batchlens-bio/blob/main/README.zh-CN.md)
+
 **Experimental-design and batch-confounding audits for single-cell and spatial metadata.**
 
 BatchLens checks declared experimental units, target-by-batch coverage and whether a specific contrast is estimable under an additive fixed-effects model. It produces an offline HTML report, JSON findings and auditable tables. It never fits or corrects expression data.
 
-**Status:** [v0.1.0 released on GitHub](https://github.com/guatou904/batchlens-bio/releases/tag/v0.1.0), exploratory alpha. External user validation and independent scientific review are not yet completed. See the [release page](https://github.com/guatou904/batchlens-bio/releases) and [validation record](https://github.com/guatou904/batchlens-bio/blob/main/docs/validation-record.md) for publication and test evidence. [PyPI 0.1.0](https://pypi.org/project/batchlens-bio/0.1.0/) is published and verified.
+[GitHub Release v0.1.0](https://github.com/guatou904/batchlens-bio/releases/tag/v0.1.0) · [PyPI](https://pypi.org/project/batchlens-bio/0.1.0/)
 
 ## Why another tool?
 
@@ -91,4 +93,8 @@ The [validation record](https://github.com/guatou904/batchlens-bio/blob/main/doc
 
 See [CONTRIBUTING.md](https://github.com/guatou904/batchlens-bio/blob/main/CONTRIBUTING.md), [CITATION.cff](https://github.com/guatou904/batchlens-bio/blob/main/CITATION.cff), [release checklist](https://github.com/guatou904/batchlens-bio/blob/main/RELEASE_CHECKLIST.md) and [CHANGELOG.md](https://github.com/guatou904/batchlens-bio/blob/main/CHANGELOG.md). MIT-licensed code and synthetic examples; public datasets have their own provenance and terms.
 
-Maintainer: [guatou904](https://github.com/guatou904). Report reproducible installation/scientific issues via [GitHub Issues](https://github.com/guatou904/batchlens-bio/issues); use synthetic inputs and include the software version. The next iteration prioritizes fixes and actual user feedback.
+## Project status and feedback
+
+BatchLens v0.1.0 is an exploratory alpha release with completed automated tests and clean-install verification. It still needs evaluation in more real research settings; external user validation and independent scientific review are not yet completed. The [validation record](https://github.com/guatou904/batchlens-bio/blob/main/docs/validation-record.md) documents completed checks and outstanding evidence.
+
+Maintainer: [guatou904](https://github.com/guatou904). Usage feedback, minimal reproducible examples and statistical-method suggestions are welcome via [GitHub Issues](https://github.com/guatou904/batchlens-bio/issues). Use synthetic inputs and include the software version when reporting installation or scientific issues. The next iteration prioritizes fixes and actual user feedback.
