@@ -72,7 +72,7 @@ def write_bundle(
                 for name in ["batchlens-bio", "numpy", "pandas", "pydantic", "PyYAML", "Jinja2"]
             },
             "outputs": {
-                str(p.relative_to(stage)): hashlib.sha256(p.read_bytes()).hexdigest()
+                p.relative_to(stage).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
                 for p in sorted(stage.rglob("*"))
                 if p.is_file()
             },

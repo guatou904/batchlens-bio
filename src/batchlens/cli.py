@@ -1,27 +1,14 @@
 """Command-line interface. Exit 3 means findings, not execution failure."""
 
 import argparse
-import hashlib
-import json
 import sys
-from importlib import resources
 from pathlib import Path
 
 from batchlens import __version__
-from batchlens.audit import audit, policy_exit
+from batchlens.audit import policy_exit
 from batchlens.config import InputError, read_spec
 from batchlens.metadata import load_inputs
-from batchlens.reporting import write_bundle
-
-CASES = [
-    "balanced",
-    "confounded-time",
-    "partial-overlap",
-    "redundant-nuisance",
-    "paired",
-    "spatial-replicates",
-    "mixed-assays",
-]
+from batchlens.service import CASES, demo_sources, run_audit
 
 
 def parser() -> argparse.ArgumentParser:
@@ -34,6 +21,11 @@ def parser() -> argparse.ArgumentParser:
     )
     result.add_argument("--version", action="version", version=f"batchlens {__version__}")
     sub = result.add_subparsers(dest="command", required=True)
+    serve = sub.add_parser("serve", help="Open the local browser interface")
+    serve.add_argument("--port", type=int, default=0, help="Local port; 0 picks a free port")
+    serve.add_argument("--no-browser", action="store_true", help="Print URL without opening it")
+    serve.add_argument("--out", type=Path, help="Report parent folder; default: ~/BatchLens Audits")
+    sub.add_parser("desktop", help="Open the native window (requires the desktop extra)")
     for name in ["validate", "audit", "demo"]:
         command = sub.add_parser(name)
         if name == "demo":
@@ -60,28 +52,28 @@ def parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     try:
+        if args.command == "serve":
+            from batchlens.web import serve
+
+            return serve(port=args.port, out=args.out, open_browser=not args.no_browser)
+        if args.command == "desktop":
+            from batchlens.desktop import main as desktop_main
+
+            return desktop_main([])
         dataset = None
         if args.command == "demo":
-            folder = Path(str(resources.files("batchlens").joinpath("resources/demo", args.case)))
-            args.samples, args.design = folder / "samples.tsv", folder / "design.yaml"
-            args.observations = (
-                folder / "observations.tsv" if (folder / "observations.tsv").is_file() else None
-            )
-            args.assays = folder / "assays.tsv" if (folder / "assays.tsv").is_file() else None
+            sources = demo_sources(args.case)
+            args.samples, args.design = sources["samples"], sources["design"]
+            args.observations, args.assays = sources.get("observations"), sources.get("assays")
             dataset = {"kind": "SYNTHETIC", "title": args.case}
-        spec = read_spec(args.design)
-        inputs = load_inputs(args.samples, spec, args.observations, args.assays)
         if args.command == "validate":
+            spec = read_spec(args.design)
+            load_inputs(args.samples, spec, args.observations, args.assays)
             print("Metadata valid. Model support and contrast estimability have not been assessed.")
             return 0
-        result = audit(inputs, spec)
-        inputs.provenance["design"] = {
-            "sha256": hashlib.sha256(args.design.read_bytes()).hexdigest(),
-            "canonical_sha256": hashlib.sha256(
-                json.dumps(spec.model_dump(), sort_keys=True, ensure_ascii=False).encode()
-            ).hexdigest(),
-        }
-        write_bundle(result, inputs.provenance, args.out, dataset)
+        result = run_audit(
+            args.samples, args.design, args.out, args.observations, args.assays, dataset
+        )
         print(
             f"BatchLens audit completed: {result['counts']['experimental_units']} "
             "experimental units; "

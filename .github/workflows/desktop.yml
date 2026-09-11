@@ -1,0 +1,69 @@
+name: Desktop installers
+on:
+  pull_request:
+  push:
+    branches: [main, 'codex/**']
+  workflow_dispatch:
+  workflow_call:
+permissions:
+  contents: read
+jobs:
+  build:
+    name: Desktop / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-14, macos-15-intel, windows-latest]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+        with:
+          version: '0.12.5'
+      - run: uv sync --locked --no-editable --python 3.12 --extra desktop --group desktop-build
+      - name: Build and exercise the frozen runtime and native window
+        run: uv run --no-editable --extra desktop --group desktop-build python scripts/build_desktop.py --out artifacts/desktop --gui-smoke
+      - name: Download Microsoft WebView2 bootstrapper and verify its publisher
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $target = Join-Path $PWD 'artifacts/desktop/MicrosoftEdgeWebview2Setup.exe'
+          Invoke-WebRequest 'https://go.microsoft.com/fwlink/p/?LinkId=2124703' -OutFile $target
+          $signature = Get-AuthenticodeSignature $target
+          if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Subject -notmatch 'O=Microsoft Corporation') {
+            throw 'WebView2 bootstrapper has no valid Microsoft publisher signature'
+          }
+          $hash = (Get-FileHash $target -Algorithm SHA256).Hash
+          @{sha256=$hash; publisher=$signature.SignerCertificate.Subject} | ConvertTo-Json | Set-Content artifacts/desktop/webview2-bootstrapper.json
+      - name: Create the Windows installer
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $version = uv run --no-editable python -c 'import batchlens; print(batchlens.__version__)'
+          & 'C:/Program Files (x86)/Inno Setup 6/ISCC.exe' "/DBuildRoot=$PWD/artifacts/desktop" "/DRepoRoot=$PWD" "/DAppVersion=$version" packaging/windows.iss
+          if ($LASTEXITCODE -ne 0) { throw 'Installer compilation failed' }
+      - name: Install Windows build and verify the installed executable
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $setup = (Get-Item artifacts/desktop/*-Setup.exe).FullName
+          $destination = Join-Path $env:RUNNER_TEMP 'BatchLens Installed'
+          $install = Start-Process $setup -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', "/DIR=`"$destination`"" -Wait -PassThru
+          if ($install.ExitCode -ne 0) { throw "Installer failed: $($install.ExitCode)" }
+          $evidence = Join-Path $PWD 'artifacts/desktop/installed-smoke.json'
+          $audits = Join-Path $env:RUNNER_TEMP 'installed-audits'
+          $process = Start-Process (Join-Path $destination 'BatchLens Bio.exe') -ArgumentList '--smoke-test', "`"$evidence`"", '--out', "`"$audits`"" -Wait -PassThru
+          if ($process.ExitCode -ne 0 -or !(Test-Path $evidence)) { throw 'Installed app validation failed' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: desktop-${{ matrix.os }}
+          if-no-files-found: error
+          path: |
+            artifacts/desktop/*.dmg
+            artifacts/desktop/*-Setup.exe
+            artifacts/desktop/*smoke.json
+            artifacts/desktop/webview2-bootstrapper.json

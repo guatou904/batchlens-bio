@@ -1,5 +1,18 @@
 # BatchLens v0.1.0 — definition of done
 
+## v0.2.0 interface release gates
+
+- [x] Shared CLI/browser/desktop pipeline, input validation and report semantics regression-tested.
+- [x] Local browser file selection, inline report, examples and native Mac download verified.
+- [x] macOS arm64 frozen executable runs all seven demos; native JavaScript audit, ad-hoc signature and DMG checks pass locally.
+- [ ] Remote core CI: Linux, macOS and Windows × Python 3.12/3.13 plus independent R oracle.
+- [ ] Remote desktop builds: macOS arm64, Intel and Windows x64, with native-window smoke tests.
+- [ ] Windows installer executed; installed executable passes audit/download validation.
+- [ ] Release assets and checksums published, verified, and recorded; exact Python artifacts published to PyPI.
+- [ ] Apple Developer ID/notarization and Windows Authenticode signing (not claimed for alpha).
+
+The checklist below is the completed v0.1.0 record. Current v0.2.0 evidence is tracked in [the validation record](docs/validation-record.md).
+
 更新 2026-09-12。本地与最终远程 CI、GitHub Release 已通过；PyPI 发布/回验也已完成；外部评审仍待完成。证据见 [validation record](docs/validation-record.md)。用户后续授权受限探索性实现，见 [decisions](docs/decisions.md)；未把外部验证冒充完成。 每项必须记录 commit/tag、环境、日志/产物位置或 URL，不能只打勾。
 
 ## 产品与科学正确性

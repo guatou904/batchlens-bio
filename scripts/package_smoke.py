@@ -9,6 +9,8 @@ import sys
 import venv
 from pathlib import Path
 
+from batchlens import __version__
+
 
 def run(command, cwd, expected=0):
     environment = os.environ.copy()
@@ -46,10 +48,24 @@ def main():
             work,
         )
         version = run([str(cli), "--version"], work).strip()
-        assert version == "batchlens 0.1.0"
+        assert version == f"batchlens {__version__}"
         location = run([str(python), "-c", "import batchlens;print(batchlens.__file__)"], work)
         assert str(env) in location
         run([str(cli), "--help"], work)
+        run([str(cli), "serve", "--help"], work)
+        run(
+            [
+                str(python),
+                "-m",
+                "batchlens.desktop",
+                "--smoke-test",
+                "web-smoke.json",
+                "--out",
+                "web-audits",
+            ],
+            work,
+        )
+        assert json.loads((work / "web-smoke.json").read_text())["http_and_downloads"] == "passed"
         resource_root = run(
             [
                 str(python),
@@ -91,6 +107,7 @@ def main():
                 "version": version,
                 "demo_cases": len(cases),
                 "explicit_validate_audit": "passed",
+                "installed_web_ui": "passed",
                 "status": "passed",
             }
         )

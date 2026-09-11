@@ -1,5 +1,16 @@
 # Validation record — 2026-09-12
 
+## 0.2.0 browser and desktop candidate
+
+- 97 tests pass locally on Python 3.12.14, including 30 new HTTP/upload/download checks; original scientific and CLI fixtures remain green. Ruff, formatting, mypy, JavaScript syntax and actionlint checks pass.
+- Wheel and sdist install into new environments outside the checkout. Both installed artifacts pass CLI checks, seven demos, packaged web-resource checks and live HTTP report/ZIP retrieval. Exact downloadable release artifacts are verified again by the release workflow.
+- Local macOS arm64 build: frozen Python, all seven HTTP demos, report/JSON/ZIP downloads, a native window with a JavaScript-triggered audit, ad-hoc signature verification and DMG verification pass. A manually opened app displays the full report and saves a valid ZIP through the native save dialog; quitting stops the server.
+- Browser QA: initial/disabled state, multiple-file chooser, balanced uploaded audit, confounded example, inline report and a 760-pixel minimum-window layout (no horizontal overflow) verified. Screenshot: [local UI](web-ui.png).
+- Remote core/desktop CI and public release validation are pending for this candidate; no Windows installer success is claimed from a Mac build. The release workflow gates publication on native Mac arm64/Intel and Windows builds, GUI smoke checks and Windows installation validation.
+- Public signing credentials are not provisioned. Mac ad-hoc verification does not establish Developer ID/notarization or Gatekeeper acceptance; Windows Authenticode signing and clean end-user OS trials remain open.
+
+## 0.1.0 published baseline
+
 Status: [GitHub Release v0.1.0](https://github.com/guatou904/batchlens-bio/releases/tag/v0.1.0) published at 2026-09-11 19:49:59 UTC (2026-09-12 Asia/Shanghai); [PyPI 0.1.0](https://pypi.org/project/batchlens-bio/0.1.0/) published at 2026-09-11 20:39 UTC. The [initial CI run](https://github.com/guatou904/batchlens-bio/actions/runs/34640147143) passed all five jobs on commit `af84864b8ec361f5a51e43ef7405ee7b1df4ef2c`: Linux/macOS × Python 3.12/3.13 plus the independent R oracle. This is engineering evidence, not proof of external adoption or an independent scientific review.
 
 | Check | Executed result | Evidence |
