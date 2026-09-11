@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "batchlens-bio"
-version = "0.1.0"
+version = "0.2.0"
 description = "Experimental-design and batch-confounding audits for single-cell and spatial metadata"
 readme = "README.md"
 requires-python = ">=3.12,<3.14"
@@ -31,12 +31,19 @@ Changelog = "https://github.com/guatou904/batchlens-bio/blob/main/CHANGELOG.md"
 [project.scripts]
 batchlens = "batchlens.cli:main"
 
+[project.gui-scripts]
+batchlens-bio = "batchlens.desktop:main"
+
+[project.optional-dependencies]
+desktop = ["pywebview>=6.0,<7"]
+
 [dependency-groups]
 dev = [
   "pytest>=8,<10", "pytest-cov>=6,<8", "ruff>=0.11,<1",
   "mypy>=1.15,<2", "pandas-stubs", "types-PyYAML",
   "build>=1.2,<2", "twine>=6,<7",
 ]
+desktop-build = ["pyinstaller>=6.16,<7", "pillow>=11,<13"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/batchlens"]
@@ -44,7 +51,7 @@ core-metadata-version = "2.4"
 
 [tool.hatch.build.targets.sdist]
 core-metadata-version = "2.4"
-include = ["src", "tests", "docs", "examples", "scripts", "*.md", "LICENSE", "CITATION.cff", "pyproject.toml", "uv.lock"]
+include = ["src", "tests", "docs", "examples", "scripts", "packaging", "*.md", "LICENSE", "CITATION.cff", "pyproject.toml", "uv.lock"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -65,3 +72,7 @@ files = ["src/batchlens"]
 check_untyped_defs = true
 disallow_untyped_defs = true
 warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = ["webview", "webview.*"]
+ignore_missing_imports = true

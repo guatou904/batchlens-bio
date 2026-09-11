@@ -7,8 +7,10 @@ permissions:
 jobs:
   validate:
     uses: ./.github/workflows/ci.yml
+  desktop:
+    uses: ./.github/workflows/desktop.yml
   release:
-    needs: validate
+    needs: [validate, desktop]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -31,12 +33,15 @@ jobs:
       - run: uv run --no-editable twine check dist/*.whl dist/*.tar.gz
       - run: uv run --no-editable python scripts/package_smoke.py --dist dist --out "$RUNNER_TEMP/release-smoke"
       - run: uv run --no-editable batchlens demo --case confounded-time --out release-demo --fail-on none
+      - name: Download desktop installers from this validated run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run download "$GITHUB_RUN_ID" --pattern 'desktop-*' --dir desktop-assets
       - name: Attach demo and checksums
         run: |
           cp release-demo/report.html dist/batchlens-demo.html
           cp "$RUNNER_TEMP/release-smoke/smoke-results.json" dist/INSTALL_VALIDATION.json
-          cd dist
-          sha256sum *.whl *.tar.gz *.html *.json > SHA256SUMS
+          uv run --no-editable python scripts/collect_release.py --desktop desktop-assets --dist dist
       - name: Create the GitHub release
         env:
           GH_TOKEN: ${{ github.token }}

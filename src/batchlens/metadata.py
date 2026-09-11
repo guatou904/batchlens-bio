@@ -5,13 +5,13 @@ import hashlib
 import io
 import json
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Any
 
 import numpy as np
 import pandas as pd
 
 from batchlens.config import InputError, StudySpec
+from batchlens.sources import Source
 
 
 @dataclass
@@ -22,7 +22,7 @@ class Inputs:
     provenance: dict[str, Any]
 
 
-def read_table(path: Path) -> tuple[pd.DataFrame, str]:
+def read_table(path: Source) -> tuple[pd.DataFrame, str]:
     if path.suffix.lower() not in {".csv", ".tsv"}:
         raise InputError("Tables must use .csv or .tsv extensions")
     try:
@@ -68,10 +68,10 @@ def canonical_hash(table: pd.DataFrame) -> str:
 
 
 def load_inputs(
-    samples_path: Path,
+    samples_path: Source,
     spec: StudySpec,
-    observations_path: Path | None = None,
-    assays_path: Path | None = None,
+    observations_path: Source | None = None,
+    assays_path: Source | None = None,
 ) -> Inputs:
     samples, raw_hash = read_table(samples_path)
     required(samples, [spec.sample_id, spec.unit_id, *spec.variables], "samples")

@@ -1,10 +1,11 @@
 """A bounded, declarative model contract; no formula evaluation."""
 
-from pathlib import Path
 from typing import Any, Literal, Self
 
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
+
+from batchlens.sources import Source
 
 
 class InputError(ValueError):
@@ -113,7 +114,7 @@ def _mapping(loader: UniqueSafeLoader, node: yaml.MappingNode) -> dict[Any, Any]
 UniqueSafeLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _mapping)
 
 
-def read_spec(path: Path) -> StudySpec:
+def read_spec(path: Source) -> StudySpec:
     try:
         raw = path.read_text(encoding="utf-8-sig")
         if len(raw) > 1_000_000:

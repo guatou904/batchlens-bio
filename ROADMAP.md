@@ -1,6 +1,6 @@
 # BatchLens — roadmap
 
-更新：2026-09-12。ACTIVE 主项目；GitHub 与 PyPI v0.1.0 均已发行并回验；当前聚焦外部使用验证与维护。仅按实际发布证据释放主项目席位。
+更新：2026-09-12。ACTIVE 主项目；v0.1.0 已发行。按用户要求，v0.2.0 增加本地 Web UI 和 Mac/Windows 桌面安装包；科学模型范围不变。发布与平台验证状态以验证记录为准。
 
 | 阶段 | 当前状态 | 剩余出口 |
 |---|---|---|
@@ -11,6 +11,7 @@
 | P4 外部可用性验证 | 待做，不声称完成 | 真实 metadata、与最近替代品同任务比较、修正误解 |
 | P5 发布工程 | Linux/macOS × Python 3.12/3.13 及独立 R 任务通过 | tag 发布流程和发布文件哈希已通过，见验证记录 |
 | P6 v0.1.0 | GitHub + PyPI 发布、哈希和干净安装回验完成 | 继续外部用户/专家验证，不自动启动下一大型项目 |
+| P7 v0.2.0 易用性 | Web UI、桌面窗口与三平台构建/安装验证流程已实现 | 完成发行验证；Developer ID/notarization、Windows 代码签名与真实用户试用仍需补充 |
 
 证据见 [validation record](docs/validation-record.md)；逐项门见 [RELEASE_CHECKLIST](RELEASE_CHECKLIST.md)。本地构建与版本字符串都不算 release created。
 

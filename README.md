@@ -6,36 +6,43 @@
 
 BatchLens checks declared experimental units, target-by-batch coverage and whether a specific contrast is estimable under an additive fixed-effects model. It produces an offline HTML report, JSON findings and auditable tables. It never fits or corrects expression data.
 
-[GitHub Release v0.1.0](https://github.com/guatou904/batchlens-bio/releases/tag/v0.1.0) · [PyPI](https://pypi.org/project/batchlens-bio/0.1.0/)
+[GitHub Releases](https://github.com/guatou904/batchlens-bio/releases) · [PyPI](https://pypi.org/project/batchlens-bio/) · [Browser / desktop guide](docs/desktop.md)
 
 ## Why another tool?
 
 Keep using scIB/kBET/LISI for integration evaluation. Good embedding mixing cannot recover information absent from an experimental design. If D0 samples were processed only in run A and D7 only in run B, `time + run` cannot distinguish the time effect from run.
 
-BatchQC and ExploreModelMatrix already provide valuable confounding/design diagnostics. BatchLens offers a narrowly scoped Python CLI that connects experimental-unit checks, explicit contrasts, machine-readable findings and offline delivery. It is a workflow tool using established linear algebra, not a new statistical method. See [competitor research](https://github.com/guatou904/batchlens-bio/blob/main/COMPETITOR_ANALYSIS.md).
+BatchQC and ExploreModelMatrix already provide valuable confounding/design diagnostics. BatchLens offers a narrowly scoped CLI, local browser UI and desktop app that connects experimental-unit checks, explicit contrasts, machine-readable findings and offline delivery. It is a workflow tool using established linear algebra, not a new statistical method. See [competitor research](https://github.com/guatou904/batchlens-bio/blob/main/COMPETITOR_ANALYSIS.md).
 
-## Install and try
+## Open the app or local browser
 
-Python 3.12 or 3.13; CI passes on Linux and macOS. Windows is not yet tested or supported. Install from PyPI in a new environment:
+**Desktop:** download the Mac `.dmg` or Windows `Setup.exe` from [GitHub Releases](https://github.com/guatou904/batchlens-bio/releases). Open **BatchLens Bio**, add your sample table and design file, then click **Run Audit**. Python, pip and a virtual environment are included in the app; users do not install them. See [desktop installation and signing status](docs/desktop.md). The 0.2.0 alpha installers are not Apple-notarized or Windows Authenticode signed.
+
+**Local browser:** with Python 3.12 or 3.13, install version 0.2.0 or this checkout, then run:
 
 ```sh
-python -m venv .venv
-# macOS / Linux
-source .venv/bin/activate
-python -m pip install batchlens-bio==0.1.0
+python -m pip install batchlens-bio==0.2.0
+batchlens serve
+```
+
+Your browser opens `http://localhost:<free-port>/<session-key>/`. Drag in `samples.csv` / `samples.tsv` and `design.yaml`, click **Run Audit**, and read the report directly in the page. Optional observations and assays are supported. **Save HTML** exports the offline report; **Download report bundle** includes JSON, tables and provenance. Completed bundles are also saved under `~/BatchLens Audits`.
+
+The UI runs on your computer with no cloud upload. Raw inputs are held in memory; reports remain on disk after closing. Files may total up to 32 MiB. `--no-browser`, `--port` and `--out` customize the local server. [Full interface guide](docs/desktop.md).
+
+**Try a synthetic study:** click **Run example** in either interface, or use the original CLI:
+
+```sh
 batchlens demo --case balanced --out demo-balanced
 batchlens demo --case confounded-time --out demo-confounded --fail-on none
 ```
 
-Source installation is also supported: clone this repository, then run `python -m pip install .`. The [GitHub Release](https://github.com/guatou904/batchlens-bio/releases/tag/v0.1.0) also provides the same wheel and source archive, plus a demo and SHA256 checksums.
+Seven offline demos ship with every installation: `balanced`, `confounded-time`, `partial-overlap`, `redundant-nuisance`, `paired`, `spatial-replicates`, `mixed-assays`. The intentional confounding example shows `NON_ESTIMABLE`; `--fail-on none` changes the CLI exit policy without hiding findings. Each CLI output path must be new and have an existing parent.
 
-Open `demo-confounded/report.html` in your browser. Every demo is synthetic, runs offline and is included in the wheel. The report shows `NON_ESTIMABLE`; `--fail-on none` allows this intentional demonstration to exit successfully without hiding the finding.
+For source installation, clone this repository and run `python -m pip install .`.
 
-![Actual synthetic confounding report](https://raw.githubusercontent.com/guatou904/batchlens-bio/v0.1.0/docs/demo-preview.png)
+![BatchLens local audit interface](https://raw.githubusercontent.com/guatou904/batchlens-bio/v0.2.0/docs/web-ui.png)
 
-[Downloadable offline report preview](https://github.com/guatou904/batchlens-bio/blob/main/docs/demo.html) · [Reproduce the public spatial example](https://github.com/guatou904/batchlens-bio/blob/main/docs/public-data.md)
-
-Other cases: `partial-overlap`, `redundant-nuisance`, `paired`, `spatial-replicates`, `mixed-assays`. Each output path must be **new** and have an existing parent. Existing files are never overwritten or deleted.
+[Offline report preview](docs/demo.html) · [Public spatial example](docs/public-data.md)
 
 ## Your metadata
 
@@ -95,6 +102,6 @@ See [CONTRIBUTING.md](https://github.com/guatou904/batchlens-bio/blob/main/CONTR
 
 ## Project status and feedback
 
-BatchLens v0.1.0 is an exploratory alpha release with completed automated tests and clean-install verification. It still needs evaluation in more real research settings; external user validation and independent scientific review are not yet completed. The [validation record](https://github.com/guatou904/batchlens-bio/blob/main/docs/validation-record.md) documents completed checks and outstanding evidence.
+BatchLens is an exploratory alpha project with completed automated tests and clean-install verification. It still needs evaluation in more real research settings; external user validation and independent scientific review are not yet completed. The [validation record](https://github.com/guatou904/batchlens-bio/blob/main/docs/validation-record.md) documents completed checks and outstanding evidence.
 
 Maintainer: [guatou904](https://github.com/guatou904). Usage feedback, minimal reproducible examples and statistical-method suggestions are welcome via [GitHub Issues](https://github.com/guatou904/batchlens-bio/issues). Use synthetic inputs and include the software version when reporting installation or scientific issues. The next iteration prioritizes fixes and actual user feedback.

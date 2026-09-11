@@ -34,7 +34,11 @@ def write_bundle(
     stage = Path(tempfile.mkdtemp(prefix=f".{out.name}-", dir=out.parent))
     try:
         (stage / "result.json").write_text(json_text(result), encoding="utf-8")
-        template = resources.files("batchlens").joinpath("resources/report.html.j2").read_text()
+        template = (
+            resources.files("batchlens")
+            .joinpath("resources/report.html.j2")
+            .read_text(encoding="utf-8")
+        )
         environment = Environment(autoescape=select_autoescape(default=True))
         html = environment.from_string(template).render(result=result, dataset=dataset)
         (stage / "report.html").write_text(html, encoding="utf-8")
@@ -72,7 +76,7 @@ def write_bundle(
                 for name in ["batchlens-bio", "numpy", "pandas", "pydantic", "PyYAML", "Jinja2"]
             },
             "outputs": {
-                str(p.relative_to(stage)): hashlib.sha256(p.read_bytes()).hexdigest()
+                p.relative_to(stage).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
                 for p in sorted(stage.rglob("*"))
                 if p.is_file()
             },

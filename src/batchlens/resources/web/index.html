@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BatchLens Bio · Design audit</title>
+    <link rel="stylesheet" href="app.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="BatchLens Bio home"
+        ><span class="logo" aria-hidden="true">b<span>l</span></span
+        ><span>BatchLens <b>Bio</b></span></a
+      >
+      <div class="header-right">
+        <span class="local"><i></i> Running on your computer</span
+        ><button id="quit" class="quiet" type="button">Quit BatchLens</button>
+      </div>
+    </header>
+    <main>
+      <section class="intro">
+        <div>
+          <p class="eyebrow">EXPERIMENTAL DESIGN / PRE-ANALYSIS</p>
+          <h1>A clearer view of<br />your study design.</h1>
+          <p class="lead">
+            Check experimental units, batch coverage and whether your<br
+              class="wide"
+            />
+            design supports the comparison you want to make.
+          </p>
+        </div>
+        <aside class="scope">
+          <span class="scope-icon" aria-hidden="true">◎</span
+          ><strong>Metadata in. Clarity out.</strong>
+          <p>No expression matrices.<br />No account. No cloud upload.</p>
+          <span class="version" id="version">BatchLens Bio</span>
+        </aside>
+      </section>
+      <div class="workspace">
+        <section class="card input-card" aria-labelledby="input-title">
+          <div class="section-heading">
+            <span class="step">01</span>
+            <div>
+              <h2 id="input-title">Add your metadata</h2>
+              <p>Two files to get started. CSV or TSV + YAML.</p>
+            </div>
+          </div>
+          <div
+            id="drop-all"
+            class="drop-all"
+            tabindex="0"
+            role="button"
+            aria-label="Choose samples and design files"
+          >
+            <span class="upload-icon" aria-hidden="true">↥</span
+            ><strong>Drop your files here</strong
+            ><span>or <u>browse files</u> on your computer</span
+            ><small>32 MiB combined · UTF-8 encoded</small>
+          </div>
+          <input
+            id="all-files"
+            type="file"
+            accept=".csv,.tsv,.yaml,.yml"
+            multiple
+            hidden
+          />
+          <div class="file-grid">
+            <div class="file-slot" data-role="samples">
+              <label for="samples"
+                ><span class="file-label">Samples <b>Required</b></span
+                ><span class="filename" id="samples-name"
+                  >Choose samples.csv / .tsv</span
+                ><input id="samples" type="file" accept=".csv,.tsv" /></label
+              ><button
+                type="button"
+                class="remove"
+                data-clear="samples"
+                aria-label="Remove samples file"
+                hidden
+              >
+                ×
+              </button>
+            </div>
+            <div class="file-slot" data-role="design">
+              <label for="design"
+                ><span class="file-label">Design <b>Required</b></span
+                ><span class="filename" id="design-name"
+                  >Choose design.yaml</span
+                ><input id="design" type="file" accept=".yaml,.yml" /></label
+              ><button
+                type="button"
+                class="remove"
+                data-clear="design"
+                aria-label="Remove design file"
+                hidden
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          <details>
+            <summary>
+              Optional metadata <span>observations / assays</span>
+            </summary>
+            <p class="optional-help">
+              Cell or spot annotations and sample-to-assay links.
+            </p>
+            <div class="file-grid">
+              <div class="file-slot" data-role="observations">
+                <label for="observations"
+                  ><span class="file-label">Observations</span
+                  ><span class="filename" id="observations-name"
+                    >Choose .csv / .tsv</span
+                  ><input
+                    id="observations"
+                    type="file"
+                    accept=".csv,.tsv" /></label
+                ><button
+                  type="button"
+                  class="remove"
+                  data-clear="observations"
+                  aria-label="Remove observations file"
+                  hidden
+                >
+                  ×
+                </button>
+              </div>
+              <div class="file-slot" data-role="assays">
+                <label for="assays"
+                  ><span class="file-label">Assays</span
+                  ><span class="filename" id="assays-name"
+                    >Choose .csv / .tsv</span
+                  ><input id="assays" type="file" accept=".csv,.tsv" /></label
+                ><button
+                  type="button"
+                  class="remove"
+                  data-clear="assays"
+                  aria-label="Remove assays file"
+                  hidden
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+          </details>
+          <div class="run-row">
+            <button type="button" id="run" class="primary" disabled>
+              Run Audit <span aria-hidden="true">↗</span></button
+            ><span id="ready">Add samples and design to continue.</span>
+          </div>
+          <p class="privacy">
+            Your original files stay on your computer. Only the report bundle is
+            saved.
+          </p>
+        </section>
+        <aside class="side-column">
+          <section class="card demo-card">
+            <p class="eyebrow">TAKE A FIRST LOOK</p>
+            <h2>Start with a study<br />you can explore.</h2>
+            <p>
+              Try a synthetic example, then use its files as a starting point
+              for your design.
+            </p>
+            <label for="demo-case" class="sr-only">Synthetic example</label
+            ><select id="demo-case">
+              <option value="confounded-time">Completely confounded</option>
+              <option value="balanced">Balanced design</option>
+              <option value="partial-overlap">Partial batch overlap</option>
+              <option value="redundant-nuisance">Redundant adjustment</option>
+              <option value="paired">Paired samples</option>
+              <option value="spatial-replicates">Spatial replicates</option>
+              <option value="mixed-assays">Mixed assays</option></select
+            ><button type="button" id="demo" class="secondary">
+              Run example <span aria-hidden="true">→</span>
+            </button>
+            <div class="template-links" id="templates"></div>
+          </section>
+          <section class="reading-note">
+            <span aria-hidden="true">ⓘ</span>
+            <p>
+              <strong>What does “estimable” mean?</strong>The design can
+              distinguish the requested contrast under your declared model. It
+              does not establish power, causality or biological validity.
+            </p>
+          </section>
+        </aside>
+      </div>
+      <div id="status" role="status" aria-live="polite" hidden></div>
+      <section
+        id="results"
+        class="results"
+        aria-labelledby="results-title"
+        hidden
+      >
+        <div class="report-heading">
+          <div class="section-heading">
+            <span class="step">02</span>
+            <div>
+              <h2 id="results-title">Your design audit</h2>
+              <p id="result-summary"></p>
+            </div>
+          </div>
+          <div class="downloads">
+            <a id="download-html" class="secondary" download>Save HTML</a
+            ><a id="download-zip" class="primary" download
+              >Download report bundle ↓</a
+            >
+          </div>
+        </div>
+        <div id="contrast-summary" class="contrast-summary"></div>
+        <p class="saved" id="saved"></p>
+        <iframe
+          id="report"
+          title="BatchLens experimental design audit report"
+          sandbox="allow-same-origin"
+          referrerpolicy="no-referrer"
+        ></iframe>
+        <p class="share-note">
+          Before sharing, review labels and design values: they may contain
+          identifying information.
+        </p>
+      </section>
+      <footer>
+        <span
+          >BatchLens Bio <span class="footer-dot">/</span> Better questions
+          before analysis.</span
+        ><span>Local analysis · Offline reports</span>
+      </footer>
+    </main>
+  </body>
+</html>

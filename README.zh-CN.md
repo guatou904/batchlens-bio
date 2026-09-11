@@ -8,7 +8,7 @@ BatchLens 帮助科研人员在分析数据、解释结果之前，检查一个�
 
 它根据样本元数据和明确的设计声明，检查实验单位、目标条件与批次的覆盖关系，以及指定比较在加性固定效应模型下是否可估计，生成离线 HTML 报告、JSON 结果和可追溯表格。无需读取表达矩阵或空间图像。
 
-[GitHub Release v0.1.0](https://github.com/guatou904/batchlens-bio/releases/tag/v0.1.0) · [PyPI](https://pypi.org/project/batchlens-bio/0.1.0/)
+[GitHub Releases](https://github.com/guatou904/batchlens-bio/releases) · [PyPI](https://pypi.org/project/batchlens-bio/) · [网页和桌面版指南](docs/desktop.md)
 
 ## 为什么需要 BatchLens？
 
@@ -16,7 +16,7 @@ BatchLens 帮助科研人员在分析数据、解释结果之前，检查一个�
 
 scIB、kBET、LISI 用于整合效果评估，仍然有其用途。BatchLens 检查的是样本设计能否支持指定比较，可作为整合评估之前的设计体检环节。
 
-BatchQC、ExploreModelMatrix 已经提供有价值的混杂与设计诊断。BatchLens 的定位是一个范围明确的 Python 命令行工具，将实验单位核对、显式比较、机器可读结果和离线报告串联起来，便于纳入可复现分析流程。它使用已有的线性代数方法，不声称提出新的统计方法。详见[竞品分析](https://github.com/guatou904/batchlens-bio/blob/main/COMPETITOR_ANALYSIS.md)。
+BatchQC、ExploreModelMatrix 已经提供有价值的混杂与设计诊断。BatchLens 的定位是一个提供命令行、本地网页和桌面界面的工具，将实验单位核对、显式比较、机器可读结果和离线报告串联起来，便于纳入可复现分析流程。它使用已有的线性代数方法，不声称提出新的统计方法。详见[竞品分析](https://github.com/guatou904/batchlens-bio/blob/main/COMPETITOR_ANALYSIS.md)。
 
 ## 它能帮你检查什么？
 
@@ -27,28 +27,47 @@ BatchQC、ExploreModelMatrix 已经提供有价值的混杂与设计诊断。Bat
 
 实验单位由分析者声明；软件无法仅凭元数据确认其真实独立性。
 
-## 安装并体验
+## 桌面版：下载后直接使用
 
-支持 Python 3.12 或 3.13。Linux 和 macOS 已通过 CI 验证；Windows 尚未测试或支持。建议在新的虚拟环境中从 PyPI 安装：
+从 [GitHub Releases](https://github.com/guatou904/batchlens-bio/releases) 下载对应的安装包：
+
+| 系统 | 下载与使用 |
+|---|---|
+| Mac（Apple Silicon） | 下载 `macOS-arm64.dmg`，把 **BatchLens Bio.app** 拖入 Applications 后打开 |
+| Mac（Intel） | 下载 `macOS-x86_64.dmg`，按相同步骤安装 |
+| Windows x64 | 下载 `Windows-x64-Setup.exe`，运行安装程序，从开始菜单打开 |
+
+**无需安装 Python、pip 或虚拟环境。** 打开应用后，拖入 `samples.csv`（或 TSV）和 `design.yaml`，点击 **Run Audit**，直接查看报告。可选的 observations、assays 文件也能添加。
+
+0.2.0 为桌面 alpha 版本：Mac 应用经过 ad-hoc 签名，但尚未取得 Apple Developer ID 签名和公证；Windows 安装包尚未取得 Authenticode 签名，系统可能提示未知发布者。Windows 如缺少 WebView2，安装程序会自动安装，此时首次安装需要联网；后续审计可离线运行。具体平台证据和安装说明见[桌面版指南](docs/desktop.md)。
+
+## 轻量方案：本地网页
+
+已有 Python 3.12 或 3.13 的用户，可安装 0.2.0 或从此仓库源码安装，然后运行：
 
 ```sh
-python -m venv .venv
-# macOS / Linux
-source .venv/bin/activate
-python -m pip install batchlens-bio==0.1.0
+python -m pip install batchlens-bio==0.2.0
+batchlens serve
+```
+
+浏览器自动打开 `http://localhost:<可用端口>/<本次会话密钥>/`。拖入样本表和设计文件，点击 **Run Audit**，完整报告即显示在网页内。也可以先点击 **Run example** 体验七种内置合成数据，下载模板后按研究实际修改。
+
+网页和桌面版都在本机完成分析，不上传到云端。原始输入只在内存中处理；完整报告自动保存到用户主目录下的 **BatchLens Audits**。可点击 **Save HTML** 保存单页报告，或 **Download report bundle** 下载包含 JSON、表格和哈希的 ZIP。关闭界面后，已保存报告仍然保留。
+
+上传文件合计上限为 32 MiB，设计文件上限 1 MB。更多设置见[界面使用指南](docs/desktop.md)。原有命令行仍可使用：
+
+```sh
 batchlens demo --case balanced --out demo-balanced
 batchlens demo --case confounded-time --out demo-confounded --fail-on none
 ```
 
-用浏览器打开 `demo-confounded/report.html` 即可查看报告。所有内置示例均为合成数据，随安装包提供，可以离线运行。此处故意演示完全混杂，因此报告会显示 `NON_ESTIMABLE`；`--fail-on none` 只允许命令正常退出，不会隐藏检查结果。
+第二个示例故意演示完全混杂，报告显示 `NON_ESTIMABLE`；`--fail-on none` 只改变退出策略，不隐藏发现。其他示例包括 `partial-overlap`、`redundant-nuisance`、`paired`、`spatial-replicates` 和 `mixed-assays`。每次 CLI 输出路径必须是尚不存在的新目录，且父目录已存在。
 
-![完全混杂合成示例的实际报告](https://raw.githubusercontent.com/guatou904/batchlens-bio/v0.1.0/docs/demo-preview.png)
+源码安装：克隆仓库后运行 `python -m pip install .`。
 
-[可下载的离线报告示例](https://github.com/guatou904/batchlens-bio/blob/main/docs/demo.html) · [复现公开空间组学元数据示例](https://github.com/guatou904/batchlens-bio/blob/main/docs/public-data.md)
+![BatchLens 本地审计界面](https://raw.githubusercontent.com/guatou904/batchlens-bio/v0.2.0/docs/web-ui.png)
 
-另有五个内置场景：`partial-overlap`、`redundant-nuisance`、`paired`、`spatial-replicates`、`mixed-assays`。每次运行的输出目录必须是**尚不存在的新路径**，且父目录已存在；程序不会覆盖或删除已有文件。
-
-也可以克隆仓库后运行 `python -m pip install .` 从源码安装。[GitHub Release](https://github.com/guatou904/batchlens-bio/releases/tag/v0.1.0) 提供与 PyPI 相同的 wheel 和源码压缩包，以及演示报告和 SHA256 校验值。
+[离线报告示例](docs/demo.html) · [公开空间组学元数据示例](docs/public-data.md)
 
 ## 检查自己的数据
 
@@ -63,7 +82,7 @@ batchlens audit --samples samples.tsv --design design.yaml \
 
 [输入格式指南](https://github.com/guatou904/batchlens-bio/blob/main/docs/input-schema.md) 提供字段说明和完整配置示例。`--observations` 可补充细胞或空间点位的元数据，用于描述性汇总；`--assays` 可补充样本与实验测定的关联。程序不读取 h5ad、表达矩阵或空间图像。
 
-当前 CLI、报告和详细技术文档使用英文；本页提供中文使用说明。
+当前应用界面、CLI 和报告使用英文；本页提供中文使用说明。
 
 ## 如何理解结果？
 
@@ -112,7 +131,7 @@ uv run --no-editable twine check dist/*.whl dist/*.tar.gz
 
 ## 项目状态与反馈
 
-BatchLens 当前为 v0.1.0，是探索阶段的早期版本，已完成自动化测试和全新环境安装验证，仍需更多真实研究场景的检验。外部用户验证与独立科学评审尚未完成；具体证据与待办事项见[验证记录](https://github.com/guatou904/batchlens-bio/blob/main/docs/validation-record.md)。
+BatchLens 当前源码为 v0.2.0，是探索阶段的早期版本，已完成自动化测试和全新环境安装验证，仍需更多真实研究场景的检验。外部用户验证与独立科学评审尚未完成；具体证据与待办事项见[验证记录](https://github.com/guatou904/batchlens-bio/blob/main/docs/validation-record.md)。
 
 欢迎通过 [GitHub Issues](https://github.com/guatou904/batchlens-bio/issues) 提交使用反馈、最小复现案例和统计方法建议。报告安装或科学计算问题时，请注明软件版本，并使用合成数据构造复现案例。后续迭代优先处理问题修复和真实用户反馈。
 

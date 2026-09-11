@@ -1,5 +1,11 @@
 # Implementation decisions
 
+## 2026-09-12: browser and native desktop interfaces
+
+The owner requested both `batchlens serve` and downloadable Mac/Windows applications. Version 0.2.0 adds these interfaces without extending the scientific model. A shared service handles CLI and uploaded metadata. An in-memory source adapter avoids writing raw browser uploads to temporary directories. Completed reports remain in unique directories, following the existing completion-marker contract.
+
+Use a standard-library loopback HTTP server and static packaged HTML/CSS/JavaScript so the browser UI adds no runtime dependency. Native pywebview is an optional extra; PyInstaller includes Python and libraries in desktop builds. macOS uses the system WebKit; Windows setup provisions WebView2 when missing. Desktop builds are alpha distributions without provisioned public signing identities. Record actual installation/GUI evidence and signing limits separately.
+
 ## 2026-09-11/12: proceed with a bounded first release
 
 After reviewing the portfolio/specification, the owner explicitly instructed development to continue and authorized creating/uploading the first repository after completion. This supersedes the initial planning-only hold. It does **not** mean the proposed external-user interviews, comparative usability trials or independent expert review have happened.
