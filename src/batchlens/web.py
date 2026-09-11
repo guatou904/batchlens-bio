@@ -24,6 +24,12 @@ MAX_REQUEST_BYTES = 45 * 1024 * 1024
 FIELDS = {"samples", "design", "observations", "assays"}
 
 
+class RequestError(InputError):
+    def __init__(self, status: int, message: str) -> None:
+        super().__init__(message)
+        self.status = status
+
+
 def decode_uploads(payload: Any) -> dict[str, Upload]:
     if not isinstance(payload, dict) or set(payload) != {"files"}:
         raise InputError("Supply samples and design files")
@@ -226,6 +232,20 @@ class AuditHandler(BaseHTTPRequestHandler):
         except OSError:
             self.json(500, {"error": "Cannot read saved report; check the output folder"})
 
+    def read_payload(self) -> Any:
+        if self.headers.get_content_type() != "application/json":
+            raise RequestError(415, "Expected application/json")
+        lengths = self.headers.get_all("Content-Length", [])
+        if len(lengths) != 1 or not lengths[0].isascii() or not lengths[0].isdigit():
+            raise RequestError(400, "A valid Content-Length is required")
+        length = int(lengths[0])
+        if self.headers.get("Transfer-Encoding") or not 0 < length <= MAX_REQUEST_BYTES:
+            raise RequestError(413, "Request is too large; files may total at most 32 MiB")
+        body = self.rfile.read(length)
+        if len(body) != length:
+            raise InputError("Incomplete upload. Please try again.")
+        return json.loads(body)
+
     def do_POST(self) -> None:
         route = self.route()
         if route is None:
@@ -236,52 +256,46 @@ class AuditHandler(BaseHTTPRequestHandler):
         if not self.server.busy.acquire(blocking=False):
             self.json(409, {"error": "An audit is already running. Please wait for it to finish."})
             return
+        status = 200
+        stop = False
         try:
-            if self.headers.get_content_type() != "application/json":
-                self.json(415, {"error": "Expected application/json"})
-                return
-            lengths = self.headers.get_all("Content-Length", [])
-            if len(lengths) != 1 or not lengths[0].isascii() or not lengths[0].isdigit():
-                self.json(400, {"error": "A valid Content-Length is required"})
-                return
-            length = int(lengths[0])
-            if self.headers.get("Transfer-Encoding") or not 0 < length <= MAX_REQUEST_BYTES:
-                self.json(413, {"error": "Request is too large; files may total at most 32 MiB"})
-                return
-            body = self.rfile.read(length)
-            if len(body) != length:
-                raise InputError("Incomplete upload. Please try again.")
-            payload = json.loads(body)
+            payload = self.read_payload()
             if route == "api/quit":
-                self.json(200, {"stopped": True})
-                threading.Thread(target=self.server.shutdown, daemon=True).start()
-                return
-            if route.startswith("api/demo/"):
-                case = route.removeprefix("api/demo/")
-                files = demo_sources(case)
+                result: dict[str, Any] = {"stopped": True}
+                stop = True
             else:
-                case = None
-                files = decode_uploads(payload)
-            self.json(200, self.server.run(files, case))
+                if route.startswith("api/demo/"):
+                    case = route.removeprefix("api/demo/")
+                    files = demo_sources(case)
+                else:
+                    case = None
+                    files = decode_uploads(payload)
+                result = self.server.run(files, case)
+        except RequestError as exc:
+            status, result = exc.status, {"error": str(exc)}
         except (InputError, ValueError, UnicodeError, RecursionError) as exc:
             message = str(exc) if isinstance(exc, InputError) else "Invalid JSON request"
-            self.json(400, {"error": message})
+            status, result = 400, {"error": message}
         except TimeoutError:
-            self.json(408, {"error": "Upload timed out. Please try again."})
+            status, result = 408, {"error": "Upload timed out. Please try again."}
         except OSError:
-            self.json(
-                500, {"error": "Cannot save report. Check free space and folder permissions."}
-            )
+            status = 500
+            result = {"error": "Cannot save report. Check free space and folder permissions."}
         except Exception:
-            self.json(
-                500,
-                {
-                    "error": "Internal error. No successful audit is claimed. "
-                    "Please report a minimal, de-identified reproducer."
-                },
-            )
+            status = 500
+            result = {
+                "error": "Internal error. No successful audit is claimed. "
+                "Please report a minimal, de-identified reproducer."
+            }
         finally:
+            # A received completion must mean the next audit can start immediately.
+            # Releasing after sending the response races fast clients on another thread.
             self.server.busy.release()
+        try:
+            self.json(status, result)
+        finally:
+            if stop:
+                threading.Thread(target=self.server.shutdown, daemon=True).start()
 
 
 def serve(port: int = 0, out: Path | None = None, open_browser: bool = True) -> int:

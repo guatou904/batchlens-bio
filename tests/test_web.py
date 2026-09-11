@@ -217,3 +217,25 @@ def test_stop_server_retains_reports(server):
     folder = Path(json.loads(body)["saved_to"])
     assert request(server, "api/quit", {})[0] == 200
     assert (folder / "COMPLETE").is_file()
+
+
+def test_next_audit_can_start_as_soon_as_response_arrives(server, monkeypatch):
+    import batchlens.web as web
+
+    sent = threading.Event()
+    finish = threading.Event()
+    original = web.AuditHandler.json
+
+    def pause_after_reply(handler, status, value):
+        original(handler, status, value)
+        if status == 200 and handler.path.endswith("api/demo/balanced"):
+            sent.set()
+            assert finish.wait(timeout=10)
+
+    monkeypatch.setattr(web.AuditHandler, "json", pause_after_reply)
+    try:
+        assert request(server, "api/demo/balanced", {})[0] == 200
+        assert sent.wait(timeout=5)
+        assert request(server, "api/demo/paired", {})[0] == 200
+    finally:
+        finish.set()

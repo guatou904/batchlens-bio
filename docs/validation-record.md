@@ -2,7 +2,8 @@
 
 ## 0.2.0 browser and desktop validation
 
-- 97 tests pass locally on Python 3.12.14 and Python 3.13.9, including 30 new HTTP/upload/download checks; original scientific and CLI fixtures remain green. Ruff, formatting, mypy, JavaScript syntax and actionlint checks pass. Non-editable installs avoid this Mac's previously documented hidden `.pth` behavior.
+- 98 tests pass locally on Python 3.12.14 and Python 3.13.9, including 31 new HTTP/upload/download checks; original scientific and CLI fixtures remain green. Ruff, formatting, mypy, JavaScript syntax and actionlint checks pass. Non-editable installs avoid this Mac's previously documented hidden `.pth` behavior.
+- A deterministic concurrent-request regression checks that a completed response releases the audit slot before the client can start its next audit. It reproduced the false `409` seen in a frozen Intel Mac smoke run, then passed after fixing the response/lock ordering.
 - Wheel and sdist install into new environments outside the checkout. Both installed artifacts pass CLI checks, seven demos, packaged web-resource checks and live HTTP report/ZIP retrieval. Exact downloadable release artifacts are verified again by the release workflow.
 - Local macOS arm64 build: frozen Python, all seven HTTP demos, report/JSON/ZIP downloads, a native window with a JavaScript-triggered audit, ad-hoc signature verification and DMG verification pass. A manually opened app displays the full report and saves a valid ZIP through the native save dialog; quitting stops the server.
 - Browser QA: initial/disabled state, multiple-file chooser, balanced uploaded audit, confounded example, inline report and a 760-pixel minimum-window layout (no horizontal overflow) verified. Screenshot: [local UI](web-ui.png).
