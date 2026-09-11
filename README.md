@@ -4,34 +4,34 @@
 
 BatchLens checks declared experimental units, target-by-batch coverage and whether a specific contrast is estimable under an additive fixed-effects model. It produces an offline HTML report, JSON findings and auditable tables. It never fits or corrects expression data.
 
-**Status:** [v0.1.0 released on GitHub](https://github.com/guatou904/batchlens-bio/releases/tag/v0.1.0), exploratory alpha. External user validation and independent scientific review are not yet completed. See the [release page](https://github.com/guatou904/batchlens-bio/releases) and [validation record](docs/validation-record.md) for publication and test evidence. PyPI distribution is tracked separately.
+**Status:** [v0.1.0 released on GitHub](https://github.com/guatou904/batchlens-bio/releases/tag/v0.1.0), exploratory alpha. External user validation and independent scientific review are not yet completed. See the [release page](https://github.com/guatou904/batchlens-bio/releases) and [validation record](https://github.com/guatou904/batchlens-bio/blob/main/docs/validation-record.md) for publication and test evidence. [PyPI 0.1.0](https://pypi.org/project/batchlens-bio/0.1.0/) is published and verified.
 
 ## Why another tool?
 
 Keep using scIB/kBET/LISI for integration evaluation. Good embedding mixing cannot recover information absent from an experimental design. If D0 samples were processed only in run A and D7 only in run B, `time + run` cannot distinguish the time effect from run.
 
-BatchQC and ExploreModelMatrix already provide valuable confounding/design diagnostics. BatchLens offers a narrowly scoped Python CLI that connects experimental-unit checks, explicit contrasts, machine-readable findings and offline delivery. It is a workflow tool using established linear algebra, not a new statistical method. See [competitor research](COMPETITOR_ANALYSIS.md).
+BatchQC and ExploreModelMatrix already provide valuable confounding/design diagnostics. BatchLens offers a narrowly scoped Python CLI that connects experimental-unit checks, explicit contrasts, machine-readable findings and offline delivery. It is a workflow tool using established linear algebra, not a new statistical method. See [competitor research](https://github.com/guatou904/batchlens-bio/blob/main/COMPETITOR_ANALYSIS.md).
 
 ## Install and try
 
-Python 3.12 or 3.13; CI passes on Linux and macOS. Windows is not yet tested or supported. Install the published wheel in a new environment:
+Python 3.12 or 3.13; CI passes on Linux and macOS. Windows is not yet tested or supported. Install from PyPI in a new environment:
 
 ```sh
 python -m venv .venv
 # macOS / Linux
 source .venv/bin/activate
-python -m pip install "https://github.com/guatou904/batchlens-bio/releases/download/v0.1.0/batchlens_bio-0.1.0-py3-none-any.whl"
+python -m pip install batchlens-bio==0.1.0
 batchlens demo --case balanced --out demo-balanced
 batchlens demo --case confounded-time --out demo-confounded --fail-on none
 ```
 
-Source installation is also supported: clone this repository, then run `python -m pip install .`. PyPI publishing is pending; the release wheel above is available now.
+Source installation is also supported: clone this repository, then run `python -m pip install .`. The [GitHub Release](https://github.com/guatou904/batchlens-bio/releases/tag/v0.1.0) also provides the same wheel and source archive, plus a demo and SHA256 checksums.
 
 Open `demo-confounded/report.html` in your browser. Every demo is synthetic, runs offline and is included in the wheel. The report shows `NON_ESTIMABLE`; `--fail-on none` allows this intentional demonstration to exit successfully without hiding the finding.
 
-![Actual synthetic confounding report](docs/demo-preview.png)
+![Actual synthetic confounding report](https://raw.githubusercontent.com/guatou904/batchlens-bio/v0.1.0/docs/demo-preview.png)
 
-[Downloadable offline report preview](docs/demo.html) · [Reproduce the public spatial example](docs/public-data.md)
+[Downloadable offline report preview](https://github.com/guatou904/batchlens-bio/blob/main/docs/demo.html) · [Reproduce the public spatial example](https://github.com/guatou904/batchlens-bio/blob/main/docs/public-data.md)
 
 Other cases: `partial-overlap`, `redundant-nuisance`, `paired`, `spatial-replicates`, `mixed-assays`. Each output path must be **new** and have an existing parent. Existing files are never overwritten or deleted.
 
@@ -46,7 +46,7 @@ batchlens audit --samples samples.tsv --design design.yaml \
   --observations cells.tsv --assays assays.tsv --out audit-002
 ```
 
-The [input guide](docs/input-schema.md) specifies columns and includes a complete configuration. Export only metadata from your analysis environment; h5ad, expression matrices and spatial images are not required or read.
+The [input guide](https://github.com/guatou904/batchlens-bio/blob/main/docs/input-schema.md) specifies columns and includes a complete configuration. Export only metadata from your analysis environment; h5ad, expression matrices and spatial images are not required or read.
 
 ## Understand the result
 
@@ -56,7 +56,7 @@ The [input guide](docs/input-schema.md) specifies columns and includes a complet
 | `NON_ESTIMABLE` | The requested contrast cannot be uniquely determined under that model |
 | `NOT_ASSESSED` | Sampling structure is outside the supported independent/paired model; descriptive checks still run |
 
-Rank deficiency does not necessarily invalidate every contrast. Partial target-by-batch overlap is not automatically complete confounding. More cells or technical sections do not create more experimental units. See [methods](docs/methods.md) and [interpretation](docs/interpretation.md).
+Rank deficiency does not necessarily invalidate every contrast. Partial target-by-batch overlap is not automatically complete confounding. More cells or technical sections do not create more experimental units. See [methods](https://github.com/guatou904/batchlens-bio/blob/main/docs/methods.md) and [interpretation](https://github.com/guatou904/batchlens-bio/blob/main/docs/interpretation.md).
 
 ## Output and automation
 
@@ -87,8 +87,8 @@ uv run --no-editable python -m build
 uv run --no-editable twine check dist/*.whl dist/*.tar.gz
 ```
 
-The [validation record](docs/validation-record.md) distinguishes executed tests from pending external evidence. R's `model.matrix`/QR supplies an independent oracle for selected scientific fixtures; see `scripts/verify_r_oracle.R`. The CI and release workflows validate tests, package installation outside the source directory, and demo output. Remote CI success is claimed only with a recorded run URL.
+The [validation record](https://github.com/guatou904/batchlens-bio/blob/main/docs/validation-record.md) distinguishes executed tests from pending external evidence. R's `model.matrix`/QR supplies an independent oracle for selected scientific fixtures; see `scripts/verify_r_oracle.R`. The CI and release workflows validate tests, package installation outside the source directory, and demo output. Remote CI success is claimed only with a recorded run URL.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md), [CITATION.cff](CITATION.cff), [release checklist](RELEASE_CHECKLIST.md) and [CHANGELOG.md](CHANGELOG.md). MIT-licensed code and synthetic examples; public datasets have their own provenance and terms.
+See [CONTRIBUTING.md](https://github.com/guatou904/batchlens-bio/blob/main/CONTRIBUTING.md), [CITATION.cff](https://github.com/guatou904/batchlens-bio/blob/main/CITATION.cff), [release checklist](https://github.com/guatou904/batchlens-bio/blob/main/RELEASE_CHECKLIST.md) and [CHANGELOG.md](https://github.com/guatou904/batchlens-bio/blob/main/CHANGELOG.md). MIT-licensed code and synthetic examples; public datasets have their own provenance and terms.
 
 Maintainer: [guatou904](https://github.com/guatou904). Report reproducible installation/scientific issues via [GitHub Issues](https://github.com/guatou904/batchlens-bio/issues); use synthetic inputs and include the software version. The next iteration prioritizes fixes and actual user feedback.

@@ -1,0 +1,77 @@
+{
+  "project_url": "https://pypi.org/project/batchlens-bio/",
+  "version": "0.1.0",
+  "publishing_run": "https://github.com/guatou904/batchlens-bio/actions/runs/34645331743",
+  "python": "3.12.14",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "index": "https://pypi.org/simple/",
+  "download_info": {
+    "url": "https://files.pythonhosted.org/packages/e5/c1/4252692eb6ccec3e3abdd44975a5e1d178e9db4cf9d681328e5368b9a54e/batchlens_bio-0.1.0-py3-none-any.whl",
+    "archive_info": {
+      "hashes": {
+        "sha256": "657d72af0311743a3b9ea41ded5d3128ca735cc4d134fbb9a34dc976e7716728"
+      },
+      "hash": "sha256=657d72af0311743a3b9ea41ded5d3128ca735cc4d134fbb9a34dc976e7716728"
+    }
+  },
+  "artifacts": [
+    {
+      "name": "batchlens_bio-0.1.0-py3-none-any.whl",
+      "sha256": "657d72af0311743a3b9ea41ded5d3128ca735cc4d134fbb9a34dc976e7716728",
+      "uploaded_at": "2026-09-11T20:39:18.496664Z"
+    },
+    {
+      "name": "batchlens_bio-0.1.0.tar.gz",
+      "sha256": "eefb38ea087ff2b0ba8c0f370da5cced1db7e39cd24b4bcdc0b22f3a783d054a",
+      "uploaded_at": "2026-09-11T20:39:19.634507Z"
+    }
+  ],
+  "github_release_bytes_match": true,
+  "validate": "passed",
+  "audit": "passed",
+  "pip_check": "passed",
+  "demos": [
+    {
+      "case": "balanced",
+      "status": "ESTIMABLE",
+      "exit_code": 0,
+      "result_sha256": "9c09c97788f5943d79bd3d52806cd3c445bb2251fd404594f8b8bcc40452f612"
+    },
+    {
+      "case": "confounded-time",
+      "status": "NON_ESTIMABLE",
+      "exit_code": 3,
+      "result_sha256": "6cf511c8e287e05f500a6c89d434c248455311ed23c9f613df8267090e7951ca"
+    },
+    {
+      "case": "partial-overlap",
+      "status": "ESTIMABLE",
+      "exit_code": 0,
+      "result_sha256": "bce12f5ab092b5f0078c0baf596f92e09f6af5383db018f6156f5b74194fcecb"
+    },
+    {
+      "case": "redundant-nuisance",
+      "status": "ESTIMABLE",
+      "exit_code": 0,
+      "result_sha256": "6ffa1a50e86482aa108d78af207b8fe8ed28c2a9d37f0185139a3d3f33f83fac"
+    },
+    {
+      "case": "paired",
+      "status": "ESTIMABLE",
+      "exit_code": 0,
+      "result_sha256": "34a812b6fca5c750bf11302926d34b780505b90264eca838863315e45db841f4"
+    },
+    {
+      "case": "spatial-replicates",
+      "status": "NOT_ASSESSED",
+      "exit_code": 0,
+      "result_sha256": "4dcfa58272d9ff4b11d6864c8675b666ce13938da64fbe016343f9f89ea7d48f"
+    },
+    {
+      "case": "mixed-assays",
+      "status": "NOT_ASSESSED",
+      "exit_code": 0,
+      "result_sha256": "5a2b9f07f5818468d80fa5be9aa7ffc88a1789126c537798afc0942c60e68e8d"
+    }
+  ]
+}

@@ -25,3 +25,7 @@ The local macOS environment applied a hidden flag to editable-install .pth files
 ## Publication
 
 Candidate repository/package: batchlens-bio, import/CLI: batchlens, display name: BatchLens Bio. MIT for original code/synthetic examples; external data retain original terms. Real GitHub CI, repository creation, GitHub Release and PyPI publication require actual recorded evidence. User authorization is present; authentication and service-side configuration are separate prerequisites, never inferred from a local build.
+
+## 2026-09-12: publication completed
+
+GitHub Release and official PyPI 0.1.0 are published with identical wheel/sdist bytes. Trusted Publisher configuration was completed through the authenticated browser interface. Both remote and local official-index installation passed. See validation-record.md for run URLs, hashes and remaining external evidence tasks. Main now requires the five CI checks; subsequent changes use a branch and pull request.
