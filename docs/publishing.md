@@ -1,6 +1,6 @@
 # Publication runbook
 
-Current state: the public repository has been created and uploaded; GitHub authentication is available. PyPI account/Trusted Publisher configuration has not been established. Do not tag a release or claim remote CI success until actual checks pass.
+Current state: [GitHub v0.1.0](https://github.com/guatou904/batchlens-bio/releases/tag/v0.1.0) is published and its release workflow passed. GitHub environment `pypi` is configured. PyPI account/Trusted Publisher configuration has not been established. For future versions, do not tag or claim CI success until actual checks pass.
 
 ## GitHub
 

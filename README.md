@@ -4,7 +4,7 @@
 
 BatchLens checks declared experimental units, target-by-batch coverage and whether a specific contrast is estimable under an additive fixed-effects model. It produces an offline HTML report, JSON findings and auditable tables. It never fits or corrects expression data.
 
-**Status:** exploratory alpha. External user validation and independent scientific review are not yet completed. See the [release page](https://github.com/guatou904/batchlens-bio/releases) and [validation record](docs/validation-record.md) for publication and test evidence. PyPI distribution is tracked separately.
+**Status:** [v0.1.0 released on GitHub](https://github.com/guatou904/batchlens-bio/releases/tag/v0.1.0), exploratory alpha. External user validation and independent scientific review are not yet completed. See the [release page](https://github.com/guatou904/batchlens-bio/releases) and [validation record](docs/validation-record.md) for publication and test evidence. PyPI distribution is tracked separately.
 
 ## Why another tool?
 
@@ -14,18 +14,18 @@ BatchQC and ExploreModelMatrix already provide valuable confounding/design diagn
 
 ## Install and try
 
-Python 3.12 or 3.13; CI passes on Linux and macOS. Windows is not yet tested or supported. Install from the source repository:
+Python 3.12 or 3.13; CI passes on Linux and macOS. Windows is not yet tested or supported. Install the published wheel in a new environment:
 
 ```sh
-git clone https://github.com/guatou904/batchlens-bio.git
-cd batchlens-bio
 python -m venv .venv
 # macOS / Linux
 source .venv/bin/activate
-python -m pip install .
+python -m pip install "https://github.com/guatou904/batchlens-bio/releases/download/v0.1.0/batchlens_bio-0.1.0-py3-none-any.whl"
 batchlens demo --case balanced --out demo-balanced
 batchlens demo --case confounded-time --out demo-confounded --fail-on none
 ```
+
+Source installation is also supported: clone this repository, then run `python -m pip install .`. PyPI publishing is pending; the release wheel above is available now.
 
 Open `demo-confounded/report.html` in your browser. Every demo is synthetic, runs offline and is included in the wheel. The report shows `NON_ESTIMABLE`; `--fail-on none` allows this intentional demonstration to exit successfully without hiding the finding.
 

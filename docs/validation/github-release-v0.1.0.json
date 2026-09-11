@@ -1,0 +1,55 @@
+{
+  "tag": "v0.1.0",
+  "commit": "0f9ae4560506cdcac7d23444751820792fe9af0a",
+  "release_url": "https://github.com/guatou904/batchlens-bio/releases/tag/v0.1.0",
+  "release_run": "https://github.com/guatou904/batchlens-bio/actions/runs/34640763878",
+  "published_at_utc": "2026-09-11T19:49:59Z",
+  "post_publication_clean_install": [
+    {
+      "artifact": "batchlens_bio-0.1.0-py3-none-any.whl",
+      "sha256": "657d72af0311743a3b9ea41ded5d3128ca735cc4d134fbb9a34dc976e7716728",
+      "python": "3.12.14",
+      "version": "batchlens 0.1.0",
+      "demo_cases": 7,
+      "explicit_validate_audit": "passed",
+      "status": "passed"
+    },
+    {
+      "artifact": "batchlens_bio-0.1.0.tar.gz",
+      "sha256": "eefb38ea087ff2b0ba8c0f370da5cced1db7e39cd24b4bcdc0b22f3a783d054a",
+      "python": "3.12.14",
+      "version": "batchlens 0.1.0",
+      "demo_cases": 7,
+      "explicit_validate_audit": "passed",
+      "status": "passed"
+    }
+  ],
+  "downloaded_assets": [
+    {
+      "name": "INSTALL_VALIDATION.json",
+      "sha256": "51cf36ecd13818d6fb9c6d5d194b4c04767d07cddfbcf545eca4a22a9266edf2",
+      "bytes": 573
+    },
+    {
+      "name": "SHA256SUMS",
+      "sha256": "e635d12a34cfd9a0da8c58bb40bad17bb362ee6be0cbdaed32a78b1e2aa4c68e",
+      "bytes": 372
+    },
+    {
+      "name": "batchlens-demo.html",
+      "sha256": "2267487061c5e8eef42522359f038bc81d871c8172ec3c37f4ea52a56726d676",
+      "bytes": 8130
+    },
+    {
+      "name": "batchlens_bio-0.1.0-py3-none-any.whl",
+      "sha256": "657d72af0311743a3b9ea41ded5d3128ca735cc4d134fbb9a34dc976e7716728",
+      "bytes": 28594
+    },
+    {
+      "name": "batchlens_bio-0.1.0.tar.gz",
+      "sha256": "eefb38ea087ff2b0ba8c0f370da5cced1db7e39cd24b4bcdc0b22f3a783d054a",
+      "bytes": 192955
+    }
+  ],
+  "pypi_status": "not yet published; account setup pending"
+}

@@ -1,12 +1,13 @@
 # BatchLens v0.1.0 — definition of done
 
-更新 2026-09-12。本地与首轮远程 CI 已通过；Release、PyPI 和外部评审仍待完成。证据见 [validation record](docs/validation-record.md)。用户后续授权受限探索性实现，见 [decisions](docs/decisions.md)；未把外部验证冒充完成。 每项必须记录 commit/tag、环境、日志/产物位置或 URL，不能只打勾。
+更新 2026-09-12。本地与最终远程 CI、GitHub Release 已通过；PyPI 和外部评审仍待完成。证据见 [validation record](docs/validation-record.md)。用户后续授权受限探索性实现，见 [decisions](docs/decisions.md)；未把外部验证冒充完成。 每项必须记录 commit/tag、环境、日志/产物位置或 URL，不能只打勾。
 
 ## 产品与科学正确性
 
 - [ ] G0/G1 价值验证记录齐全，主要使用场景有证据。
 - [x] BL-01 至 BL-09 的受限 MVP 已实现；实际契约见 docs/input-schema.md 与 docs/methods.md。
-- [ ] BL-10 完整交付（含实际远程 CI 和 Release）。
+- [x] BL-10 的 GitHub 工程交付完成：实际远程 CI、tag、Release 和下载回验。
+- [ ] BL-10 完整交付门全部通过（包括剩余 PyPI 与外部验收项）。
 - [x] 完全混杂、部分覆盖、无关列冗余、配对与空间重复反例正确。
 - [x] contrast 级结论通过独立 R model.matrix / QR 数值 oracle。
 - [ ] 独立统计专家评审完成且无阻断问题。
@@ -38,18 +39,19 @@
 
 - [x] 已创建并上传公开仓库 guatou904/batchlens-bio；包名 batchlens-bio，对外名称 BatchLens Bio。
 - [ ] PR/push CI 执行 lint/types/tests、build、clean-install/demo；失败阻止合并。
-- [ ] tag Release workflow 验证 package version/tag 一致，重复构建制品并核验内容。
-- [ ] 在**实际远程 release commit** 上 Actions 成功；保存 run URL，不以本地成功代替。
+- [x] tag Release workflow 验证 package version/tag 一致，重复构建制品并核验内容。
+- [x] 在**实际远程 release commit** 上 Actions 成功；保存 run URL，不以本地成功代替。
 - [x] wheel/sdist 通过 `twine check`，附 SHA256；发布权限最小化，发行凭据不进仓库。
 - [ ] 发布身份配置可用；PyPI 分发采用正式支持的发行流程，具体平台配置在发布阶段查证。
 
 ## 真实发行与回验
 
-- [ ] Git tag `v0.1.0` 对应经验证提交；不能只生成版本字符串。
-- [ ] GitHub Release **实际创建**，有 release notes、wheel/sdist、hash、demo 链接和限制说明。
+- [x] Git tag `v0.1.0` 对应经验证提交；不能只生成版本字符串。
+- [x] GitHub Release **实际创建**，有 release notes、wheel/sdist、hash、demo 链接和限制说明。
 - [ ] 正式 PyPI 包 **实际发布**（发行名候选 batchlens-bio）；仅 TestPyPI 不算完成。
 - [ ] 在新环境从正式索引安装指定版本，再跑 demo/audit，保存输出。
-- [ ] 记录 tag、commit SHA、Release URL、PyPI URL、Actions URL、安装日志与 demo hash。
+- [x] 记录 GitHub tag、commit SHA、Release URL、Actions URL、制品安装记录与 demo hash。
+- [ ] 记录正式 PyPI URL 与索引安装日志。
 - [ ] 若发行出错，停止扩展并修复/按平台规则发行补丁；不覆盖已有版本或改写已发布 tag。
 - [x] 维护者 guatou904；GitHub Issues 收集最小复现，优先安装/科学错误与文档修复；根 portfolio 据真实证据更新。
 

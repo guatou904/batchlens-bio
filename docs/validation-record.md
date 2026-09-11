@@ -1,6 +1,6 @@
 # Validation record — 2026-09-12
 
-Status: source uploaded to [GitHub](https://github.com/guatou904/batchlens-bio); release and PyPI publication pending. The [initial CI run](https://github.com/guatou904/batchlens-bio/actions/runs/34640147143) passed all five jobs on commit `af84864b8ec361f5a51e43ef7405ee7b1df4ef2c`: Linux/macOS × Python 3.12/3.13 plus the independent R oracle. This is engineering evidence, not proof of external adoption or an independent scientific review.
+Status: [GitHub Release v0.1.0](https://github.com/guatou904/batchlens-bio/releases/tag/v0.1.0) published at 2026-09-11 19:49:59 UTC (2026-09-12 Asia/Shanghai); PyPI publication pending. The [initial CI run](https://github.com/guatou904/batchlens-bio/actions/runs/34640147143) passed all five jobs on commit `af84864b8ec361f5a51e43ef7405ee7b1df4ef2c`: Linux/macOS × Python 3.12/3.13 plus the independent R oracle. This is engineering evidence, not proof of external adoption or an independent scientific review.
 
 | Check | Executed result | Evidence |
 |---|---|---|
@@ -15,6 +15,15 @@ Status: source uploaded to [GitHub](https://github.com/guatou904/batchlens-bio);
 | Performance | 1,000 samples / 50 columns: core audit 0.0852 s, process peak RSS 90,718,208 bytes | [Measurement](validation/performance.json); includes aliasing, excludes file loading/report rendering/install; one measurement, not a benchmark guarantee |
 
 JUnit hostname attributes are omitted from the shared copy; test outcomes are unchanged. The public example and screenshot contain no private study data. Public metadata are fetched explicitly and not bundled.
+
+## Actual GitHub release
+
+- Tag `v0.1.0` points to commit `0f9ae4560506cdcac7d23444751820792fe9af0a`.
+- [Release workflow](https://github.com/guatou904/batchlens-bio/actions/runs/34640763878) passed all six jobs, including the repeated OS/Python matrix, R oracle, build, clean installation and publication.
+- Each matrix job reports 66 passed and one R test skipped; the required separate R job executes that independent test over five fixtures. Local runs include R and report 67 passed.
+- Downloaded wheel/sdist/demo/installation-record hashes match the published SHA256SUMS. Wheel and sdist also match the remote clean-install record byte for byte.
+- [Post-publication installation evidence](validation/github-release-v0.1.0.json) records the downloaded artifacts and installation results.
+- Five assets exist: wheel, sdist, real HTML demo, INSTALL_VALIDATION.json and SHA256SUMS. Published files and tag are preserved; this document may be updated on main without rewriting the release.
 
 ## Reproduce
 
@@ -35,8 +44,8 @@ Workflow static validation: actionlint 1.7.12 passed for CI, GitHub Release and 
 
 ## Open evidence and release gates
 
-- Initial remote CI is complete; the final release commit and tag workflow must also pass.
-- GitHub repository, immutable release tag, actual Release assets and successful run URLs.
+- Remote CI and the final tag workflow are complete.
+- GitHub repository, version tag and release assets are complete; links above record execution evidence.
 - PyPI Trusted Publisher configuration, actual distribution, then clean install from the official index.
 - External user validation, comparative task trials with BatchQC/ExploreModelMatrix and independent statistical review. Source-level research and base R comparisons do not complete those tasks.
 - Maintainer review of release checklist; BatchLens remains the main active project.
