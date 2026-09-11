@@ -34,7 +34,11 @@ def write_bundle(
     stage = Path(tempfile.mkdtemp(prefix=f".{out.name}-", dir=out.parent))
     try:
         (stage / "result.json").write_text(json_text(result), encoding="utf-8")
-        template = resources.files("batchlens").joinpath("resources/report.html.j2").read_text()
+        template = (
+            resources.files("batchlens")
+            .joinpath("resources/report.html.j2")
+            .read_text(encoding="utf-8")
+        )
         environment = Environment(autoescape=select_autoescape(default=True))
         html = environment.from_string(template).render(result=result, dataset=dataset)
         (stage / "report.html").write_text(html, encoding="utf-8")

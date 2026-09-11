@@ -2,7 +2,7 @@ name: Desktop installers
 on:
   pull_request:
   push:
-    branches: [main, 'codex/**']
+    branches: [main]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -59,11 +59,12 @@ jobs:
           $process = Start-Process (Join-Path $destination 'BatchLens Bio.exe') -ArgumentList '--smoke-test', "`"$evidence`"", '--out', "`"$audits`"" -Wait -PassThru
           if ($process.ExitCode -ne 0 -or !(Test-Path $evidence)) { throw 'Installed app validation failed' }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
         with:
           name: desktop-${{ matrix.os }}
           if-no-files-found: error
           path: |
             artifacts/desktop/*.dmg
             artifacts/desktop/*-Setup.exe
-            artifacts/desktop/*smoke.json
+            artifacts/desktop/*smoke*.json
             artifacts/desktop/webview2-bootstrapper.json

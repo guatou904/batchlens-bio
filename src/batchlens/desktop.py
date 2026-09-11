@@ -144,6 +144,12 @@ def main(argv: list[str] | None = None) -> int:
     except Exception as exc:
         if args.smoke_test or args.smoke_gui:
             # CI uses exit status and the missing completion JSON, never a blocking dialog.
+            evidence = args.smoke_test or args.smoke_gui
+            try:
+                with evidence.with_suffix(".error.json").open("x", encoding="utf-8") as stream:
+                    json.dump({"error_type": type(exc).__name__, "message": str(exc)}, stream)
+            except OSError:
+                pass
             if sys.stderr is not None:
                 print(f"Desktop smoke failed: {type(exc).__name__}: {exc}", file=sys.stderr)
         else:
