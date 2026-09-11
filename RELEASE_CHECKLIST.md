@@ -1,6 +1,6 @@
 # BatchLens v0.1.0 — definition of done
 
-更新 2026-09-12。已完成项仅指本地实证；远程 Actions、Release、PyPI 和外部评审仍待完成。证据见 [validation record](docs/validation-record.md)。用户后续授权受限探索性实现，见 [decisions](docs/decisions.md)；未把外部验证冒充完成。 每项必须记录 commit/tag、环境、日志/产物位置或 URL，不能只打勾。
+更新 2026-09-12。本地与首轮远程 CI 已通过；Release、PyPI 和外部评审仍待完成。证据见 [validation record](docs/validation-record.md)。用户后续授权受限探索性实现，见 [decisions](docs/decisions.md)；未把外部验证冒充完成。 每项必须记录 commit/tag、环境、日志/产物位置或 URL，不能只打勾。
 
 ## 产品与科学正确性
 
@@ -16,7 +16,7 @@
 ## 测试与 clean installation
 
 - [x] pytest 科学/metadata/CLI/E2E 全通过；Ruff/mypy 通过。
-- [ ] Linux + macOS 的 Python 3.12/3.13 支持矩阵通过；支持范围以实测为准。
+- [x] Linux + macOS 的 Python 3.12/3.13 支持矩阵通过；支持范围以实测为准。
 - [x] Windows 若未测试，在 README 写清未承诺；不能展示未经验证的支持徽章。
 - [x] 从 wheel 在全新 venv 安装成功；从 sdist 独立构建并安装成功。
 - [x] 在仓库外目录调用 entrypoint、--help、validate、audit、demo 成功。
@@ -36,7 +36,7 @@
 
 ## GitHub Actions 与打包
 
-- [ ] 远程 owner/repo、候选包名、对外名称确认并复核可用性；尚未创建。
+- [x] 已创建并上传公开仓库 guatou904/batchlens-bio；包名 batchlens-bio，对外名称 BatchLens Bio。
 - [ ] PR/push CI 执行 lint/types/tests、build、clean-install/demo；失败阻止合并。
 - [ ] tag Release workflow 验证 package version/tag 一致，重复构建制品并核验内容。
 - [ ] 在**实际远程 release commit** 上 Actions 成功；保存 run URL，不以本地成功代替。
@@ -51,6 +51,6 @@
 - [ ] 在新环境从正式索引安装指定版本，再跑 demo/audit，保存输出。
 - [ ] 记录 tag、commit SHA、Release URL、PyPI URL、Actions URL、安装日志与 demo hash。
 - [ ] 若发行出错，停止扩展并修复/按平台规则发行补丁；不覆盖已有版本或改写已发布 tag。
-- [ ] 指定维护者、问题分流与下一轮修复范围；根 portfolio 状态据实际证据更新。
+- [x] 维护者 guatou904；GitHub Issues 收集最小复现，优先安装/科学错误与文档修复；根 portfolio 据真实证据更新。
 
 外部验证尚未完成的探索性候选不视为全部验收；只有上述全部完成，BatchLens 才能从主项目转维护，并释放 PathwayBridge 的正式实现席位。Release 是本项目交付的一部分，不以“用户自行运行这些命令”代替已授权的发布工作；具体账户信息/凭据确实缺失时才报告阻碍。

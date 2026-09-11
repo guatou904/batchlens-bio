@@ -1,10 +1,10 @@
 # Publication runbook
 
-Current state: local candidate only. Repository creation/upload is authorized; GitHub CLI authentication is missing. PyPI account/Trusted Publisher configuration has not been established. Do not tag a release or claim remote CI success until actual checks pass.
+Current state: the public repository has been created and uploaded; GitHub authentication is available. PyPI account/Trusted Publisher configuration has not been established. Do not tag a release or claim remote CI success until actual checks pass.
 
 ## GitHub
 
-The intended public repository is `guatou904/batchlens-bio`. Check availability again before creation; no repository is claimed to exist yet. Only the isolated BatchLens repository is uploaded, excluding portfolio siblings, virtual environments, local artifacts and downloaded public metadata.
+Public repository: [guatou904/batchlens-bio](https://github.com/guatou904/batchlens-bio). Only the isolated BatchLens repository is uploaded, excluding portfolio siblings, virtual environments, local artifacts and downloaded public metadata.
 
 1. Authenticate `gh` with the intended owner using its browser flow. Never put tokens in source files or chat.
 2. Create the public repository, push the reviewed commit, then inspect all jobs of the actual `CI` run. Fix failures before tagging.

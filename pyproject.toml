@@ -22,6 +22,12 @@ dependencies = [
   "PyYAML>=6.0.2,<7", "Jinja2>=3.1.5,<4",
 ]
 
+[project.urls]
+Repository = "https://github.com/guatou904/batchlens-bio"
+Issues = "https://github.com/guatou904/batchlens-bio/issues"
+Documentation = "https://github.com/guatou904/batchlens-bio#readme"
+Changelog = "https://github.com/guatou904/batchlens-bio/blob/main/CHANGELOG.md"
+
 [project.scripts]
 batchlens = "batchlens.cli:main"
 

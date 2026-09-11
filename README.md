@@ -4,7 +4,7 @@
 
 BatchLens checks declared experimental units, target-by-batch coverage and whether a specific contrast is estimable under an additive fixed-effects model. It produces an offline HTML report, JSON findings and auditable tables. It never fits or corrects expression data.
 
-**Status:** v0.1.0 release candidate; local validation passed, remote publication pending. External user validation and independent scientific review are not yet completed. Public release links will be added only after publication.
+**Status:** exploratory alpha. External user validation and independent scientific review are not yet completed. See the [release page](https://github.com/guatou904/batchlens-bio/releases) and [validation record](docs/validation-record.md) for publication and test evidence. PyPI distribution is tracked separately.
 
 ## Why another tool?
 
@@ -14,9 +14,11 @@ BatchQC and ExploreModelMatrix already provide valuable confounding/design diagn
 
 ## Install and try
 
-Python 3.12 or 3.13; locally verified on macOS arm64. Linux is a pending CI target; Windows is not yet tested or supported. Until publication, install from a local checkout:
+Python 3.12 or 3.13; CI passes on Linux and macOS. Windows is not yet tested or supported. Install from the source repository:
 
 ```sh
+git clone https://github.com/guatou904/batchlens-bio.git
+cd batchlens-bio
 python -m venv .venv
 # macOS / Linux
 source .venv/bin/activate
@@ -88,3 +90,5 @@ uv run --no-editable twine check dist/*.whl dist/*.tar.gz
 The [validation record](docs/validation-record.md) distinguishes executed tests from pending external evidence. R's `model.matrix`/QR supplies an independent oracle for selected scientific fixtures; see `scripts/verify_r_oracle.R`. The CI and release workflows validate tests, package installation outside the source directory, and demo output. Remote CI success is claimed only with a recorded run URL.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md), [CITATION.cff](CITATION.cff), [release checklist](RELEASE_CHECKLIST.md) and [CHANGELOG.md](CHANGELOG.md). MIT-licensed code and synthetic examples; public datasets have their own provenance and terms.
+
+Maintainer: [guatou904](https://github.com/guatou904). Report reproducible installation/scientific issues via [GitHub Issues](https://github.com/guatou904/batchlens-bio/issues); use synthetic inputs and include the software version. The next iteration prioritizes fixes and actual user feedback.

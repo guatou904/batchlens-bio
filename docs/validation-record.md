@@ -1,6 +1,6 @@
 # Validation record — 2026-09-12
 
-Status: local release candidate, **not yet published**. No GitHub run/release/PyPI URL exists at this checkpoint. This is engineering evidence, not proof of external adoption or an independent scientific review.
+Status: source uploaded to [GitHub](https://github.com/guatou904/batchlens-bio); release and PyPI publication pending. The [initial CI run](https://github.com/guatou904/batchlens-bio/actions/runs/34640147143) passed all five jobs on commit `af84864b8ec361f5a51e43ef7405ee7b1df4ef2c`: Linux/macOS × Python 3.12/3.13 plus the independent R oracle. This is engineering evidence, not proof of external adoption or an independent scientific review.
 
 | Check | Executed result | Evidence |
 |---|---|---|
@@ -35,7 +35,7 @@ Workflow static validation: actionlint 1.7.12 passed for CI, GitHub Release and 
 
 ## Open evidence and release gates
 
-- Real GitHub Actions: Linux/macOS × Python 3.12/3.13 and independent R job. Local macOS success is not a Linux result.
+- Initial remote CI is complete; the final release commit and tag workflow must also pass.
 - GitHub repository, immutable release tag, actual Release assets and successful run URLs.
 - PyPI Trusted Publisher configuration, actual distribution, then clean install from the official index.
 - External user validation, comparative task trials with BatchQC/ExploreModelMatrix and independent statistical review. Source-level research and base R comparisons do not complete those tasks.
