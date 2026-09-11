@@ -42,13 +42,13 @@ jobs:
       - name: Wait for the official index and verify published file hashes
         run: |
           python - <<'PY'
-          import hashlib, json, pathlib, time, urllib.error, urllib.request
+          import hashlib, json, os, pathlib, time, urllib.error, urllib.request
 
+          version = os.environ['RELEASE_TAG'][1:]
           expected = {
-              path.name: hashlib.sha256(path.read_bytes()).hexdigest()
-              for path in pathlib.Path('dist').iterdir()
+              name: hashlib.sha256((pathlib.Path('dist') / name).read_bytes()).hexdigest()
+              for name in (f'batchlens_bio-{version}-py3-none-any.whl', f'batchlens_bio-{version}.tar.gz')
           }
-          assert len(expected) == 2, 'Expected the release wheel and source archive'
           request = urllib.request.Request(
               'https://pypi.org/simple/batchlens-bio/',
               headers={'Accept': 'application/vnd.pypi.simple.v1+json'},
