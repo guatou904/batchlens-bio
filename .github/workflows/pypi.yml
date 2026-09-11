@@ -34,9 +34,41 @@ jobs:
           cp "assets/batchlens_bio-${RELEASE_TAG#v}.tar.gz" dist/
       - name: Publish with configured PyPI Trusted Publisher
         uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
+        with:
+          skip-existing: true
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.12'
+      - name: Wait for the official index and verify published file hashes
+        run: |
+          python - <<'PY'
+          import hashlib, json, pathlib, time, urllib.error, urllib.request
+
+          expected = {
+              path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+              for path in pathlib.Path('dist').iterdir()
+          }
+          assert len(expected) == 2, 'Expected the release wheel and source archive'
+          request = urllib.request.Request(
+              'https://pypi.org/simple/batchlens-bio/',
+              headers={'Accept': 'application/vnd.pypi.simple.v1+json'},
+          )
+          for attempt in range(12):
+              try:
+                  with urllib.request.urlopen(request, timeout=30) as response:
+                      files = {item['filename']: item for item in json.load(response)['files']}
+                  for name in expected.keys() & files.keys():
+                      assert files[name]['hashes']['sha256'] == expected[name], f'PyPI hash mismatch: {name}'
+                  if expected.keys() <= files.keys():
+                      print('Official PyPI index contains both exact release files')
+                      break
+              except urllib.error.URLError as error:
+                  print(f'Index request not ready: {error}', flush=True)
+              if attempt == 11:
+                  raise SystemExit('Official PyPI index did not become ready within the retry window')
+              print('Waiting 15 seconds for PyPI index propagation', flush=True)
+              time.sleep(15)
+          PY
       - name: Verify installation from official PyPI
         run: |
           python -m venv "$RUNNER_TEMP/pypi-check"
