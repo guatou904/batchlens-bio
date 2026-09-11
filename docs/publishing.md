@@ -1,6 +1,6 @@
 # Publication runbook
 
-Current state: [GitHub v0.1.0](https://github.com/guatou904/batchlens-bio/releases/tag/v0.1.0) is published and its release workflow passed. GitHub environment `pypi` is configured. PyPI account/Trusted Publisher configuration has not been established. For future versions, do not tag or claim CI success until actual checks pass.
+Current state: [GitHub v0.1.0](https://github.com/guatou904/batchlens-bio/releases/tag/v0.1.0) is published and its release workflow passed. GitHub environment `pypi` is configured. [PyPI v0.1.0](https://pypi.org/project/batchlens-bio/0.1.0/) is published; Trusted Publisher configuration and official-index installation passed. For future versions, do not tag or claim CI success until actual checks pass.
 
 ## GitHub
 
@@ -17,8 +17,8 @@ Local actionlint checks syntax/action usage; it does not prove the workflow runs
 
 Use the official [Trusted Publisher process](https://docs.pypi.org/trusted-publishers/using-a-publisher/) and, for the first release, [pending publisher setup](https://docs.pypi.org/trusted-publishers/creating-a-project-through-oidc/).
 
-Configure the PyPI publisher with project `batchlens-bio`, owner `guatou904`, repository `batchlens-bio`, workflow `pypi.yml`, environment `pypi`. The account owner must complete this service-side setup; no long-lived PyPI token is required by the prepared workflow. Availability and account configuration must be verified before publishing.
+The configured PyPI publisher uses project `batchlens-bio`, owner `guatou904`, repository `batchlens-bio`, workflow `pypi.yml`, environment `pypi`. PyPI account `guatou` owns the project. The service-side setup is complete; no long-lived PyPI token is required. Recheck publisher configuration before future releases.
 
-Dispatch `pypi.yml` from the reviewed default branch with tag `v0.1.0`. It downloads the existing release files, verifies SHA256SUMS and uploads those exact wheel/sdist bytes. It then installs the exact version from official PyPI in a new environment and runs a demo outside the checkout. Record the successful run and PyPI URL; inspect installation failure or propagation delay before retrying any publication.
+For future versions, dispatch `pypi.yml` from the reviewed default branch with the new release tag. Do not dispatch v0.1.0 again: it is already published. It downloads the existing release files, verifies SHA256SUMS and uploads those exact wheel/sdist bytes. It then installs the exact version from official PyPI in a new environment and runs a demo outside the checkout. Record the successful run and PyPI URL; inspect installation failure or propagation delay before retrying any publication.
 
 No automatic `skip-existing` or release replacement is used. Investigate partial publication rather than assuming a retry is safe. Completed GitHub publication alone does not complete the PyPI gate.

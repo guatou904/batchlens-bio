@@ -9,3 +9,5 @@ Scientific changes need hand-computable counterexamples and independent expected
 Issue reports should include versions, command, exit code and minimal synthetic reproducer, without patient IDs, credentials, private paths or unpublished data. Update schema/CLI migration notes, rule IDs and evidence pointers. Generated `docs/design.schema.json` must match the configuration model.
 
 No recursive cleanup commands. Existing outputs are never overwritten. Before publishing, follow the release checklist and distinguish executed evidence from pending user validation, scientific review, remote CI and PyPI publication.
+
+Main requires all five CI checks, including the independent R oracle. Work on a branch and open a pull request; keep it up to date before merging. Published version tags and artifacts must remain unchanged.

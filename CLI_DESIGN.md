@@ -1,6 +1,6 @@
 # BatchLens — CLI design
 
-> 2026-09-12 状态更新：用户已授权完成首个项目并创建/上传仓库；受限 MVP 已实现，本地验证通过，远程发布待认证。以下保留规划背景；当前行为以 README、docs/input-schema.md、docs/methods.md 和 docs/decisions.md 为准。外部 G0/G1 验证并未完成。
+> 2026-09-12 状态更新：用户已授权完成首个项目并创建/上传仓库；受限 MVP 已实现，GitHub/PyPI v0.1.0 已发布，CI 与正式索引干净安装回验通过。以下保留规划背景；当前行为以 README、docs/input-schema.md、docs/methods.md 和 docs/decisions.md 为准。外部 G0/G1 验证并未完成。
 
 2026-09-12；validate / audit / demo 已实现。命令行输入路径相对调用目录解析；设计 YAML 不包含输入文件路径。
 
