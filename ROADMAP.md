@@ -1,6 +1,6 @@
 # BatchLens — roadmap
 
-更新：2026-09-12。ACTIVE 主项目；当前为本地验证通过的 v0.1.0 候选。仅按实际发布证据释放主项目席位。
+更新：2026-09-12。ACTIVE 主项目；当前为本地和首轮远程 CI 验证通过的 v0.1.0 候选。仅按实际发布证据释放主项目席位。
 
 | 阶段 | 当前状态 | 剩余出口 |
 |---|---|---|
@@ -9,8 +9,8 @@
 | P2 最小纵向流程 | 已实现并测试 | 已有 sample/design → CLI → contrast → JSON |
 | P3 MVP | 本地可用 | 七个 demo、报告、manifest、可选表、支持边界已核验 |
 | P4 外部可用性验证 | 待做，不声称完成 | 真实 metadata、与最近替代品同任务比较、修正误解 |
-| P5 发布工程 | 本地 3.12/3.13 测试和 clean install 通过 | 真实远程 Actions，Linux 验证 |
-| P6 v0.1.0 | 本地制品就绪；尚未发行 | GitHub 登录、仓库上传、CI、tag/Release、PyPI 配置与安装回验 |
+| P5 发布工程 | Linux/macOS × Python 3.12/3.13 及独立 R 任务通过 | tag 发布流程与下载回验 |
+| P6 v0.1.0 | 公开仓库已上传；发布候选验证通过 | tag/Release、PyPI 配置与安装回验 |
 
 证据见 [validation record](docs/validation-record.md)；逐项门见 [RELEASE_CHECKLIST](RELEASE_CHECKLIST.md)。本地构建与版本字符串都不算 release created。
 
