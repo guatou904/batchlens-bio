@@ -1,0 +1,50 @@
+name: Publish existing release to PyPI
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing validated GitHub release tag
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      RELEASE_TAG: ${{ inputs.tag }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Validate requested version
+        run: '[[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]'
+      - name: Download exact GitHub release files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download "$RELEASE_TAG" --dir assets --pattern '*.whl' --pattern '*.tar.gz' --pattern '*.html' --pattern SHA256SUMS
+          cd assets
+          sha256sum --check SHA256SUMS
+          cd ..
+          mkdir dist
+          cp "assets/batchlens_bio-${RELEASE_TAG#v}-py3-none-any.whl" dist/
+          cp "assets/batchlens_bio-${RELEASE_TAG#v}.tar.gz" dist/
+      - name: Publish with configured PyPI Trusted Publisher
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Verify installation from official PyPI
+        run: |
+          python -m venv "$RUNNER_TEMP/pypi-check"
+          "$RUNNER_TEMP/pypi-check/bin/python" -m pip install --index-url https://pypi.org/simple/ "batchlens-bio==${RELEASE_TAG#v}"
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/pypi-check/bin/batchlens" --version
+          "$RUNNER_TEMP/pypi-check/bin/batchlens" demo --case confounded-time --out pypi-demo --fail-on none
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pypi-install-verification
+          path: ${{ runner.temp }}/pypi-demo/

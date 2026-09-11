@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<title>BatchLens · Experimental design audit</title>
+<style>
+:root{color-scheme:light;--ink:#162e36;--muted:#526871;--line:#d6e0de;--teal:#16685b;--paper:#fff}
+*{box-sizing:border-box}body{margin:0;background:#eef2ee;color:var(--ink);font:16px/1.65 system-ui,sans-serif}
+main{max-width:1100px;margin:auto;padding:44px 28px 80px}header{border-top:5px solid var(--teal);padding:28px 0}
+.eyebrow{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);font-weight:750}
+h1{font-size:40px;line-height:1.16;letter-spacing:-.035em;margin:14px 0}h2{font-size:23px;line-height:1.3;margin:0 0 16px}
+h3{font-size:17px;margin:0 0 6px}p{margin:8px 0}.muted,small{color:var(--muted)}
+.intro{max-width:760px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0}
+.stat,.card,section{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:22px}
+.stat strong{display:block;font-size:35px;line-height:1.2}.stat span{font-size:13px;color:var(--muted)}
+section{margin:20px 0}.notice{border-left:4px solid #a96b20;padding:14px 20px;background:#fff8e9;border-radius:4px}
+.cards{display:grid;gap:12px}.card{padding:18px}.critical{border-left:5px solid #b34035}.warning{border-left:5px solid #b47d20}.info{border-left:5px solid #698c86}
+.badge{display:inline-block;font:700 11px/1.6 system-ui;padding:4px 8px;background:#edf1f0;border-radius:4px;letter-spacing:.04em}
+.NON_ESTIMABLE{background:#fce7e1;color:#913426}.ESTIMABLE{background:#e7f0ec;color:#195549}.NOT_ASSESSED{background:#fff0d5;color:#855212}
+.scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px;text-align:left}td,th{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top;overflow-wrap:anywhere}th{background:#f5f7f5;font-size:12px}td.empty{background:#fff1e0;font-weight:700}
+code{font:12px/1.6 ui-monospace,monospace;overflow-wrap:anywhere}pre{white-space:pre-wrap;background:#f6f8f5;padding:16px;overflow:auto;font-size:12px}details{margin-top:12px}summary{cursor:pointer;color:var(--teal)}
+footer{font-size:12px;color:var(--muted);margin-top:28px}a{color:var(--teal)}
+@media(max-width:600px){main{padding:22px 14px}h1{font-size:31px}.stats{gap:7px}.stat{padding:12px}.stat strong{font-size:27px}section{padding:17px}}
+@media print{body{background:white}main{padding:0}section,.card{break-inside:avoid}details{display:block}}
+</style></head>
+<body><main>
+<header><div class="eyebrow">BatchLens Bio / Design audit / {{ result.tool_version }}</div>
+<h1>Can this design support<br>your comparison?</h1>
+<p class="intro muted">A metadata-only check of experimental units, batch coverage and contrast estimability. No expression data are fitted or corrected.</p>
+{% if dataset %}<p><span class="badge">{{ dataset.kind }}</span> {{ dataset.title }}</p>{% if dataset.limitation %}<p class="notice">{{ dataset.limitation }}</p>{% endif %}{% endif %}
+<div class="stats">
+<div class="stat"><strong>{{ result.counts.experimental_units }}</strong><span>Declared experimental units</span></div>
+<div class="stat"><strong>{{ result.counts.samples }}</strong><span>Samples</span></div>
+<div class="stat"><strong>{{ result.counts.observations }}</strong><span>Linked cells / spots</span></div>
+</div><div class="notice">{{ result.limitations }}</div></header>
+<section><h2>Your requested comparisons</h2><div class="cards">
+{% for contrast in result.contrasts %}<div class="card"><span class="badge {{ contrast.status }}">{{ contrast.status }}</span>
+<h3>{{ contrast.id }}</h3><p>{{ result.declared_design.target }}: {{ contrast.numerator }} − {{ contrast.denominator }}</p>
+{% if contrast.status == 'ESTIMABLE' %}<p class="muted">Algebraically estimable under the declared model. This is not a biological validity or power pass.</p>
+{% elif contrast.status == 'NON_ESTIMABLE' %}<p>The requested effect cannot be uniquely separated from the other declared terms. Inspect the matrix dependencies below.</p>
+{% else %}<p>The sampling structure is outside the supported model. Descriptive checks are available; no contrast conclusion was made.</p>{% endif %}
+</div>{% endfor %}</div></section>
+<section><h2>Findings <span class="badge">{{ result.findings|length }}</span></h2>
+{% if not result.findings %}<p>No rule triggered. This does not establish the absence of batch effects.</p>{% endif %}
+<div class="cards">{% for f in result.findings %}<div class="card {{ f.severity }}">
+<span class="badge">{{ f.severity|upper }}</span> <code>{{ f.rule_id }}</code><h3>{{ f.message }}</h3><p>{{ f.suggested_next_step }}</p>
+<details><summary>Evidence references</summary><p>JSON pointers in result.json:</p>{% for ref in f.evidence_refs %}<code>{{ ref }}</code><br>{% endfor %}</details>
+</div>{% endfor %}</div></section>
+<section><h2>Target × batch coverage</h2><p class="muted">Counts use samples and distinct declared units. Empty combinations need review; they do not alone prove non-estimability.</p>
+<div class="scroll"><table><thead><tr><th>Batch variable</th><th>Batch</th><th>Target</th><th>Samples</th><th>Units</th></tr></thead><tbody>
+{% for row in result.coverage %}<tr><td>{{ row.batch_variable }}</td><td>{{ row.batch_level }}</td><td>{{ row.target_level }}</td><td class="{% if row.samples == 0 %}empty{% endif %}">{{ row.samples }}</td><td>{{ row.units }}</td></tr>{% endfor %}
+</tbody></table></div></section>
+<section><h2>Experimental-unit structure</h2><p class="muted">Repeated samples and extra cells do not create additional experimental units.</p><div class="scroll"><table><tr><th>Unit alias</th><th>Samples</th><th>Target levels</th></tr>
+{% for unit in result.units %}<tr><td>{{ unit.unit_alias }}</td><td>{{ unit.samples }}</td><td>{{ unit.target_levels|join(', ') }}</td></tr>{% endfor %}</table></div></section>
+{% if result.observation_coverage %}<section><h2>Cell type / region coverage</h2><div class="scroll"><table><tr><th>Annotation</th><th>Label</th><th>Target</th><th>Cells/spots</th><th>Samples</th><th>Units</th></tr>
+{% for r in result.observation_coverage %}<tr><td>{{ r.annotation }}</td><td>{{ r.label }}</td><td>{{ r.target_level }}</td><td>{{ r.observations }}</td><td>{{ r.samples }}</td><td>{{ r.units }}</td></tr>{% endfor %}</table></div><p class="muted">Descriptive only; no subgroup model was fitted.</p></section>{% endif %}
+<section><h2>Declared model &amp; numerical evidence</h2>
+<p><code>Intercept + {{ result.declared_design.target }}{% for term in result.declared_design.adjust_for %} + {{ term }}{% endfor %}{% if result.declared_design.design_mode == 'paired' %} + experimental-unit block{% endif %}</code></p>
+{% set m = result.matrix_diagnostics %}{% if m %}<p>Rank <strong>{{ m.rank }}</strong> of {{ m.n_columns }} columns · {{ m.n_rows }} design rows · residual row degrees of freedom {{ m.row_residual_df }}</p>
+<details><summary>Encoding and column-dependency evidence</summary><div class="scroll"><table><tr><th>Column index</th><th>Variable</th><th>Level / kind</th></tr>
+{% for col in m.columns %}<tr><td>{{ loop.index0 }}</td><td>{{ col.name }}</td><td>{{ col.level|default(col.kind) }}</td></tr>{% endfor %}</table></div>
+<p>Each dependency vector below follows that column order and satisfies Xv ≈ 0. Individual contrasts are checked against the row space.</p><pre>{{ m.dependencies }}</pre><p>Rank tolerance: <code>{{ m.rank_tolerance }}</code></p>
+{% for c in result.contrasts %}<p>{{ c.id }} residual: <code>{{ c.row_space_residual }}</code> / tolerance <code>{{ c.tolerance }}</code></p>{% endfor %}</details>
+{% else %}<p>No design matrix conclusion was produced:</p><ul>{% for reason in result.not_assessed %}<li>{{ reason }}</li>{% endfor %}</ul>{% endif %}
+<details><summary>Complete declared configuration</summary><pre>{{ result.declared_design|tojson(indent=2) }}</pre></details></section>
+<footer>{{ result.sharing_notice }}<br>Bundle: result.json · tables/*.tsv · manifest.json · COMPLETE. A completed run is not a scientific pass.</footer>
+</main></body></html>

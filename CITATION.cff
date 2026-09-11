@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "Cite the software version and the statistical methods relevant to your analysis."
+title: "BatchLens Bio: experimental-design and batch-confounding audits"
+type: software
+authors:
+  - name: "BatchLens contributors"
+version: 0.1.0
+license: MIT
+abstract: "Metadata-only audits of experimental units, batch coverage and additive-model contrast estimability."

@@ -1,0 +1,42 @@
+name: GitHub release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+jobs:
+  validate:
+    uses: ./.github/workflows/ci.yml
+  release:
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+        with:
+          version: '0.12.5'
+      - run: uv sync --locked --no-editable --python 3.12
+      - name: Verify tag and package version
+        run: |
+          uv run --no-editable python - <<'PY'
+          import os, tomllib, batchlens
+          with open('pyproject.toml', 'rb') as f:
+              version = tomllib.load(f)['project']['version']
+          assert version == batchlens.__version__
+          assert os.environ['GITHUB_REF_NAME'] == 'v' + version
+          PY
+      - run: uv run --no-editable python -m build
+      - run: uv run --no-editable twine check dist/*.whl dist/*.tar.gz
+      - run: uv run --no-editable python scripts/package_smoke.py --dist dist --out "$RUNNER_TEMP/release-smoke"
+      - run: uv run --no-editable batchlens demo --case confounded-time --out release-demo --fail-on none
+      - name: Attach demo and checksums
+        run: |
+          cp release-demo/report.html dist/batchlens-demo.html
+          cd dist
+          sha256sum *.whl *.tar.gz *.html > SHA256SUMS
+      - name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --verify-tag --title "BatchLens Bio $GITHUB_REF_NAME" --notes-file docs/release-notes.md

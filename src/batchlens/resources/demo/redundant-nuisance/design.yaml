@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "design_mode": "independent",
+  "sample_id": "sample_id",
+  "unit_id": "unit_id",
+  "variables": {
+    "time": {
+      "role": "target",
+      "type": "categorical",
+      "levels": [
+        "D0",
+        "D7"
+      ],
+      "reference": "D0"
+    },
+    "run": {
+      "role": "batch",
+      "type": "categorical",
+      "levels": [
+        "A",
+        "B"
+      ],
+      "reference": "A"
+    },
+    "machine": {
+      "role": "covariate",
+      "type": "categorical",
+      "levels": [
+        "A",
+        "B"
+      ],
+      "reference": "A"
+    }
+  },
+  "target": "time",
+  "adjust_for": [
+    "run",
+    "machine"
+  ],
+  "contrasts": [
+    {
+      "id": "D7_vs_D0",
+      "numerator": "D7",
+      "denominator": "D0"
+    }
+  ]
+}

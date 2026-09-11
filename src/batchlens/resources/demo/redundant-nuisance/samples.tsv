@@ -1,0 +1,9 @@
+sample_id	unit_id	time	run	machine
+s1	u1	D0	A	A
+s2	u2	D7	A	A
+s3	u3	D0	B	B
+s4	u4	D7	B	B
+s5	u5	D0	A	A
+s6	u6	D7	A	A
+s7	u7	D0	B	B
+s8	u8	D7	B	B

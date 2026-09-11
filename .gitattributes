@@ -1,0 +1,2 @@
+# Preserve exact demo bytes and recognize CSV-style CRLF line endings.
+*.tsv -text whitespace=cr-at-eol

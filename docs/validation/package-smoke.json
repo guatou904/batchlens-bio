@@ -1,0 +1,16 @@
+[
+  {
+    "artifact": "batchlens_bio-0.1.0-py3-none-any.whl",
+    "python": "3.12.14",
+    "version": "batchlens 0.1.0",
+    "demo_cases": 7,
+    "status": "passed"
+  },
+  {
+    "artifact": "batchlens_bio-0.1.0.tar.gz",
+    "python": "3.12.14",
+    "version": "batchlens 0.1.0",
+    "demo_cases": 7,
+    "status": "passed"
+  }
+]

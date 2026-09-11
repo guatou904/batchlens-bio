@@ -1,0 +1,148 @@
+{
+  "$defs": {
+    "Contrast": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "numerator": {
+          "title": "Numerator",
+          "type": "string"
+        },
+        "denominator": {
+          "title": "Denominator",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "numerator",
+        "denominator"
+      ],
+      "title": "Contrast",
+      "type": "object"
+    },
+    "Variable": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "enum": [
+            "target",
+            "batch",
+            "covariate"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "categorical",
+            "numeric"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "levels": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Levels"
+        },
+        "reference": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reference"
+        }
+      },
+      "required": [
+        "role",
+        "type"
+      ],
+      "title": "Variable",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "design_mode": {
+      "enum": [
+        "independent",
+        "paired"
+      ],
+      "title": "Design Mode",
+      "type": "string"
+    },
+    "sample_id": {
+      "title": "Sample Id",
+      "type": "string"
+    },
+    "unit_id": {
+      "title": "Unit Id",
+      "type": "string"
+    },
+    "variables": {
+      "additionalProperties": {
+        "$ref": "#/$defs/Variable"
+      },
+      "title": "Variables",
+      "type": "object"
+    },
+    "target": {
+      "title": "Target",
+      "type": "string"
+    },
+    "adjust_for": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Adjust For",
+      "type": "array"
+    },
+    "contrasts": {
+      "items": {
+        "$ref": "#/$defs/Contrast"
+      },
+      "maxItems": 100,
+      "minItems": 1,
+      "title": "Contrasts",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "design_mode",
+    "sample_id",
+    "unit_id",
+    "variables",
+    "target",
+    "adjust_for",
+    "contrasts"
+  ],
+  "title": "StudySpec",
+  "type": "object"
+}

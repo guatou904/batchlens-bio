@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<title>BatchLens · Experimental design audit</title>
+<style>
+:root{color-scheme:light;--ink:#162e36;--muted:#526871;--line:#d6e0de;--teal:#16685b;--paper:#fff}
+*{box-sizing:border-box}body{margin:0;background:#eef2ee;color:var(--ink);font:16px/1.65 system-ui,sans-serif}
+main{max-width:1100px;margin:auto;padding:44px 28px 80px}header{border-top:5px solid var(--teal);padding:28px 0}
+.eyebrow{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);font-weight:750}
+h1{font-size:40px;line-height:1.16;letter-spacing:-.035em;margin:14px 0}h2{font-size:23px;line-height:1.3;margin:0 0 16px}
+h3{font-size:17px;margin:0 0 6px}p{margin:8px 0}.muted,small{color:var(--muted)}
+.intro{max-width:760px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0}
+.stat,.card,section{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:22px}
+.stat strong{display:block;font-size:35px;line-height:1.2}.stat span{font-size:13px;color:var(--muted)}
+section{margin:20px 0}.notice{border-left:4px solid #a96b20;padding:14px 20px;background:#fff8e9;border-radius:4px}
+.cards{display:grid;gap:12px}.card{padding:18px}.critical{border-left:5px solid #b34035}.warning{border-left:5px solid #b47d20}.info{border-left:5px solid #698c86}
+.badge{display:inline-block;font:700 11px/1.6 system-ui;padding:4px 8px;background:#edf1f0;border-radius:4px;letter-spacing:.04em}
+.NON_ESTIMABLE{background:#fce7e1;color:#913426}.ESTIMABLE{background:#e7f0ec;color:#195549}.NOT_ASSESSED{background:#fff0d5;color:#855212}
+.scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px;text-align:left}td,th{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top;overflow-wrap:anywhere}th{background:#f5f7f5;font-size:12px}td.empty{background:#fff1e0;font-weight:700}
+code{font:12px/1.6 ui-monospace,monospace;overflow-wrap:anywhere}pre{white-space:pre-wrap;background:#f6f8f5;padding:16px;overflow:auto;font-size:12px}details{margin-top:12px}summary{cursor:pointer;color:var(--teal)}
+footer{font-size:12px;color:var(--muted);margin-top:28px}a{color:var(--teal)}
+@media(max-width:600px){main{padding:22px 14px}h1{font-size:31px}.stats{gap:7px}.stat{padding:12px}.stat strong{font-size:27px}section{padding:17px}}
+@media print{body{background:white}main{padding:0}section,.card{break-inside:avoid}details{display:block}}
+</style></head>
+<body><main>
+<header><div class="eyebrow">BatchLens Bio / Design audit / 0.1.0</div>
+<h1>Can this design support<br>your comparison?</h1>
+<p class="intro muted">A metadata-only check of experimental units, batch coverage and contrast estimability. No expression data are fitted or corrected.</p>
+<p><span class="badge">SYNTHETIC</span> confounded-time</p>
+<div class="stats">
+<div class="stat"><strong>6</strong><span>Declared experimental units</span></div>
+<div class="stat"><strong>6</strong><span>Samples</span></div>
+<div class="stat"><strong>0</strong><span>Linked cells / spots</span></div>
+</div><div class="notice">Metadata and the declared additive model only. This audit does not establish power, independence, randomization, absence of unmeasured confounding, or causality.</div></header>
+<section><h2>Your requested comparisons</h2><div class="cards">
+<div class="card"><span class="badge NON_ESTIMABLE">NON_ESTIMABLE</span>
+<h3>D7_vs_D0</h3><p>time: D7 − D0</p>
+<p>The requested effect cannot be uniquely separated from the other declared terms. Inspect the matrix dependencies below.</p>
+
+</div></div></section>
+<section><h2>Findings <span class="badge">3</span></h2>
+
+<div class="cards"><div class="card critical">
+<span class="badge">CRITICAL</span> <code>BL-CONTRAST-001</code><h3>D7_vs_D0: the requested contrast is not estimable in this model.</h3><p>Discuss crossed sampling or a revised scientific question; correction cannot supply missing design information.</p>
+<details><summary>Evidence references</summary><p>JSON pointers in result.json:</p><code>/contrasts/0</code><br><code>/matrix_diagnostics/dependencies</code><br></details>
+</div><div class="card warning">
+<span class="badge">WARNING</span> <code>BL-COVER-001</code><h3>Some target-by-batch combinations have no samples.</h3><p>Review coverage. An empty combination alone is not non-estimability.</p>
+<details><summary>Evidence references</summary><p>JSON pointers in result.json:</p><code>/coverage</code><br></details>
+</div><div class="card warning">
+<span class="badge">WARNING</span> <code>BL-DESIGN-001</code><h3>The declared design matrix is rank deficient.</h3><p>Inspect the dependencies and each contrast separately; do not drop batch blindly.</p>
+<details><summary>Evidence references</summary><p>JSON pointers in result.json:</p><code>/matrix_diagnostics/dependencies</code><br></details>
+</div></div></section>
+<section><h2>Target × batch coverage</h2><p class="muted">Counts use samples and distinct declared units. Empty combinations need review; they do not alone prove non-estimability.</p>
+<div class="scroll"><table><thead><tr><th>Batch variable</th><th>Batch</th><th>Target</th><th>Samples</th><th>Units</th></tr></thead><tbody>
+<tr><td>run</td><td>A</td><td>D0</td><td class="">3</td><td>3</td></tr><tr><td>run</td><td>B</td><td>D0</td><td class="empty">0</td><td>0</td></tr><tr><td>run</td><td>A</td><td>D7</td><td class="empty">0</td><td>0</td></tr><tr><td>run</td><td>B</td><td>D7</td><td class="">3</td><td>3</td></tr>
+</tbody></table></div></section>
+<section><h2>Experimental-unit structure</h2><p class="muted">Repeated samples and extra cells do not create additional experimental units.</p><div class="scroll"><table><tr><th>Unit alias</th><th>Samples</th><th>Target levels</th></tr>
+<tr><td>unit-0001</td><td>1</td><td>D0</td></tr><tr><td>unit-0002</td><td>1</td><td>D0</td></tr><tr><td>unit-0003</td><td>1</td><td>D0</td></tr><tr><td>unit-0004</td><td>1</td><td>D7</td></tr><tr><td>unit-0005</td><td>1</td><td>D7</td></tr><tr><td>unit-0006</td><td>1</td><td>D7</td></tr></table></div></section>
+
+<section><h2>Declared model &amp; numerical evidence</h2>
+<p><code>Intercept + time + run</code></p>
+<p>Rank <strong>2</strong> of 3 columns · 6 design rows · residual row degrees of freedom 4</p>
+<details><summary>Encoding and column-dependency evidence</summary><div class="scroll"><table><tr><th>Column index</th><th>Variable</th><th>Level / kind</th></tr>
+<tr><td>0</td><td>Intercept</td><td>intercept</td></tr><tr><td>1</td><td>time</td><td>D7</td></tr><tr><td>2</td><td>run</td><td>B</td></tr></table></div>
+<p>Each dependency vector below follows that column order and satisfies Xv ≈ 0. Individual contrasts are checked against the row space.</p><pre>[[-0.0, 1.0, -1.0]]</pre><p>Rank tolerance: <code>4.2638060825584685e-15</code></p>
+<p>D7_vs_D0 residual: <code>0.7071067811865475</code> / tolerance <code>1e-10</code></p></details>
+
+<details><summary>Complete declared configuration</summary><pre>{
+  "adjust_for": [
+    "run"
+  ],
+  "contrasts": [
+    {
+      "denominator": "D0",
+      "id": "D7_vs_D0",
+      "numerator": "D7"
+    }
+  ],
+  "design_mode": "independent",
+  "sample_id": "sample_id",
+  "schema_version": "1.0",
+  "target": "time",
+  "unit_id": "unit_id",
+  "variables": {
+    "run": {
+      "levels": [
+        "A",
+        "B"
+      ],
+      "reference": "A",
+      "role": "batch",
+      "type": "categorical"
+    },
+    "time": {
+      "levels": [
+        "D0",
+        "D7"
+      ],
+      "reference": "D0",
+      "role": "target",
+      "type": "categorical"
+    }
+  }
+}</pre></details></section>
+<footer>IDs use aliases. Labels and design values may still identify people; review every output before sharing. No observation-level data are exported.<br>Bundle: result.json · tables/*.tsv · manifest.json · COMPLETE. A completed run is not a scientific pass.</footer>
+</main></body></html>
