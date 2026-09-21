@@ -39,6 +39,26 @@ jobs:
           path: |
             artifacts/tests.xml
             ${{ runner.temp }}/batchlens-smoke/smoke-results.json
+  workbench-browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+        with:
+          version: '0.12.5'
+      - run: uv sync --locked --no-editable --group browser --python 3.12
+      - run: uv run --no-editable playwright install --with-deps chromium
+      - run: uv run --no-editable python -m build
+      - run: uv pip install --reinstall --no-deps dist/*.whl
+      - name: Exercise the installed workbench
+        run: .venv/bin/python scripts/workbench_qa.py --out artifacts/workbench-browser
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: workbench-browser
+          path: |
+            artifacts/workbench-browser/*.png
+            artifacts/workbench-browser/browser-qa.json
   scientific-oracle:
     runs-on: ubuntu-latest
     steps:

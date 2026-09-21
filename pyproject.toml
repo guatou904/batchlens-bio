@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "batchlens-bio"
-version = "0.2.0"
+version = "0.3.0"
 description = "Experimental-design and batch-confounding audits for single-cell and spatial metadata"
 readme = "README.md"
 requires-python = ">=3.12,<3.14"
@@ -44,6 +44,8 @@ dev = [
   "build>=1.2,<2", "twine>=6,<7",
 ]
 desktop-build = ["pyinstaller>=6.16,<7", "pillow>=11,<13"]
+
+browser = ["playwright>=1.50,<2", "pillow>=11,<13"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/batchlens"]

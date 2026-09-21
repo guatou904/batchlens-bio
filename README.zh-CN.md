@@ -10,6 +10,8 @@ BatchLens 帮助科研人员在分析数据、解释结果之前，检查一个�
 
 [GitHub Releases](https://github.com/guatou904/batchlens-bio/releases) · [PyPI](https://pypi.org/project/batchlens-bio/) · [网页和桌面版指南](docs/desktop.md)
 
+**0.3.0 统一工作台：** 已将 scDesign Audit 的快速导入、中英文界面和细胞类型供体覆盖检查整合到 BatchLens。两个入口共用同一套计算规则。[迁移与检查范围](docs/quick-check.md) · [实际验证记录](docs/validation-record.md)。
+
 ## 为什么需要 BatchLens？
 
 假设 D0 样本全部在批次 A 处理，D7 样本全部在批次 B 处理，那么时间与批次就发生了完全混杂。在 `time + run` 模型下，无法区分时间效应与批次效应。即使获得更多细胞，或者整合后的嵌入图看起来混合良好，也无法补回实验设计中缺失的信息。
@@ -27,47 +29,42 @@ BatchQC、ExploreModelMatrix 已经提供有价值的混杂与设计诊断。Bat
 
 实验单位由分析者声明；软件无法仅凭元数据确认其真实独立性。
 
-## 桌面版：下载后直接使用
+## 打开统一工作台
 
-从 [GitHub Releases](https://github.com/guatou904/batchlens-bio/releases) 下载对应的安装包：
-
-| 系统 | 下载与使用 |
-|---|---|
-| Mac（Apple Silicon） | 下载 `macOS-arm64.dmg`，把 **BatchLens Bio.app** 拖入 Applications 后打开 |
-| Mac（Intel） | 下载 `macOS-x86_64.dmg`，按相同步骤安装 |
-| Windows x64 | 下载 `Windows-x64-Setup.exe`，运行安装程序，从开始菜单打开 |
-
-**无需安装 Python、pip 或虚拟环境。** 打开应用后，拖入 `samples.csv`（或 TSV）和 `design.yaml`，点击 **Run Audit**，直接查看报告。可选的 observations、assays 文件也能添加。
-
-0.2.0 为桌面 alpha 版本：Mac 应用经过 ad-hoc 签名，但尚未取得 Apple Developer ID 签名和公证；Windows 安装包尚未取得 Authenticode 签名，系统可能提示未知发布者。Windows 如缺少 WebView2，安装程序会自动安装，此时首次安装需要联网；后续审计可离线运行。具体平台证据和安装说明见[桌面版指南](docs/desktop.md)。
-
-## 轻量方案：本地网页
-
-已有 Python 3.12 或 3.13 的用户，可安装 0.2.0 或从此仓库源码安装，然后运行：
+准备 Python 3.12 或 3.13，安装发行版本：
 
 ```sh
-python -m pip install batchlens-bio==0.2.0
+python -m pip install "batchlens-bio==0.3.0"
 batchlens serve
 ```
 
-浏览器自动打开 `http://localhost:<可用端口>/<本次会话密钥>/`。拖入样本表和设计文件，点击 **Run Audit**，完整报告即显示在网页内。也可以先点击 **Run example** 体验七种内置合成数据，下载模板后按研究实际修改。
+源码或开发分支可改用 `python -m pip install .` 安装。
 
-网页和桌面版都在本机完成分析，不上传到云端。原始输入只在内存中处理；完整报告自动保存到用户主目录下的 **BatchLens Audits**。可点击 **Save HTML** 保存单页报告，或 **Download report bundle** 下载包含 JSON、表格和哈希的 ZIP。关闭界面后，已保存报告仍然保留。
+先点 **打开示例报告** 即可体验，无需真实实验数据。界面默认中文，右上角 **EN** 切换英文；已有结果切换语言时不会重新计算。
 
-上传文件合计上限为 32 MiB，设计文件上限 1 MB。更多设置见[界面使用指南](docs/desktop.md)。原有命令行仍可使用：
+| 入口 | 准备什么 | 需要确认什么 |
+|---|---|---|
+| 快速检查 | 每行一个细胞的 CSV/TSV | 样本、供体、条件、批次、细胞类型；比较方向与采样方式 |
+| 高级设计 | 样本表 + YAML 设计声明 | 明确比较、分类/数值协变量、独立或配对设计；可添加观测和实验测定关联表 |
+
+快速检查会预览字段，时间点默认不纳入模型。可以设置细胞类型内的供体数、每供体细胞数与单供体占比复核阈值；这些阈值不是功效或有效样本量证明。**转为高级输入** 可生成并下载标准表格和设计文件，不会额外运行审计。[完整输入说明](docs/quick-check.md)。
+
+全程本机处理，无需账户。原始上传文件只在内存中使用，完成的报告包保存在 `~/BatchLens Audits`。可下载中英文 HTML、JSON 或完整 ZIP；关闭应用不会清除已保存报告。
+
+![BatchLens 统一工作台](https://raw.githubusercontent.com/guatou904/batchlens-bio/v0.3.0/docs/workbench-home.png)
+
+快速模式提供三个原创合成示例，高级模式保留七个原有示例。[中文报告示例](docs/quick-demo.zh.html) · [英文报告示例](docs/quick-demo.en.html)。
+
+**桌面版：** 从 [GitHub Releases](https://github.com/guatou904/batchlens-bio/releases) 选择 Apple Silicon Mac、Intel Mac 或 Windows x64 安装包，内含 Python 与依赖。0.3.0 使用统一工作台，0.2.0 保留旧高级界面。安装方式、平台证据和 alpha 签名状态见[桌面指南](docs/desktop.md)。
+
+**命令行仍可使用：**
 
 ```sh
 batchlens demo --case balanced --out demo-balanced
-batchlens demo --case confounded-time --out demo-confounded --fail-on none
+batchlens demo --case confounded-time --out demo-confounded --language zh --fail-on none
 ```
 
-第二个示例故意演示完全混杂，报告显示 `NON_ESTIMABLE`；`--fail-on none` 只改变退出策略，不隐藏发现。其他示例包括 `partial-overlap`、`redundant-nuisance`、`paired`、`spatial-replicates` 和 `mixed-assays`。每次 CLI 输出路径必须是尚不存在的新目录，且父目录已存在。
-
-源码安装：克隆仓库后运行 `python -m pip install .`。
-
-![BatchLens 本地审计界面](https://raw.githubusercontent.com/guatou904/batchlens-bio/v0.2.0/docs/web-ui.png)
-
-[离线报告示例](docs/demo.html) · [公开空间组学元数据示例](docs/public-data.md)
+第二个示例故意展示完全混杂。`--fail-on none` 只改变退出策略，不隐藏发现。输出目录必须尚不存在、且父目录已存在。
 
 ## 检查自己的数据
 
@@ -82,7 +79,7 @@ batchlens audit --samples samples.tsv --design design.yaml \
 
 [输入格式指南](https://github.com/guatou904/batchlens-bio/blob/main/docs/input-schema.md) 提供字段说明和完整配置示例。`--observations` 可补充细胞或空间点位的元数据，用于描述性汇总；`--assays` 可补充样本与实验测定的关联。程序不读取 h5ad、表达矩阵或空间图像。
 
-当前应用界面、CLI 和报告使用英文；本页提供中文使用说明。
+界面与 HTML 报告支持中文和英文；CLI 支持 `--language zh`，JSON 字段、规则 ID 和标准记录保持英文。
 
 ## 如何理解结果？
 
@@ -96,8 +93,8 @@ batchlens audit --samples samples.tsv --design design.yaml \
 
 ## 输出与自动化
 
-- `report.html`：自包含的离线报告，无需网络或 JavaScript。
-- `result.json`：带格式版本的设计声明、检查发现、比较结果和数值证据。
+- `report.html`：所选语言的离线报告；同时附带 `report.en.html` 和 `report.zh.html`。
+- `result.json`：输出格式与规则集 1.1；新增供体覆盖和快速导入来源信息。设计 YAML 格式仍为 1.0。
 - `tables/*.tsv`：样本及实验单位覆盖表，以及可选的注释汇总。
 - `manifest.json`：输入与输出文件的 SHA256 哈希、运行环境和依赖版本。
 - `COMPLETE`：最后写入的完成标记；缺失表示输出包尚未完整生成。
@@ -131,7 +128,7 @@ uv run --no-editable twine check dist/*.whl dist/*.tar.gz
 
 ## 项目状态与反馈
 
-BatchLens 当前源码为 v0.2.0，是探索阶段的早期版本，已完成自动化测试和全新环境安装验证，仍需更多真实研究场景的检验。外部用户验证与独立科学评审尚未完成；具体证据与待办事项见[验证记录](https://github.com/guatou904/batchlens-bio/blob/main/docs/validation-record.md)。
+BatchLens 当前源码为 v0.3.0，是探索阶段的早期版本，已完成自动化测试和全新环境安装验证，仍需更多真实研究场景的检验。外部用户验证与独立科学评审尚未完成；具体证据与待办事项见[验证记录](https://github.com/guatou904/batchlens-bio/blob/main/docs/validation-record.md)。
 
 欢迎通过 [GitHub Issues](https://github.com/guatou904/batchlens-bio/issues) 提交使用反馈、最小复现案例和统计方法建议。报告安装或科学计算问题时，请注明软件版本，并使用合成数据构造复现案例。后续迭代优先处理问题修复和真实用户反馈。
 

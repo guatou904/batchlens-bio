@@ -8,6 +8,7 @@ import plistlib
 import shutil
 import subprocess
 import sys
+import tempfile
 from importlib import metadata
 from pathlib import Path
 
@@ -16,6 +17,19 @@ from PIL import Image, ImageDraw
 from batchlens import __version__
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def stage_macos_bundle(bundle):
+    """Copy a new build to local scratch before signing; preserve the source build.
+
+    Finder/sync services can immediately reattach forbidden signing metadata in
+    Documents. Sign and assemble the DMG outside that directory instead of racing
+    those services. This scratch folder is retained, never recursively deleted.
+    """
+    scratch = Path(tempfile.mkdtemp(prefix="batchlens-sign-"))
+    app = scratch / bundle.name
+    subprocess.run(["ditto", "--norsrc", "--noextattr", str(bundle), str(app)], check=True)
+    return app
 
 
 def icon_file(out):
@@ -98,7 +112,7 @@ def main():
     command.append(str(ROOT / "packaging/desktop_entry.py"))
     subprocess.run(command, cwd=ROOT, check=True)
     if sys.platform == "darwin":
-        app = out / "frozen/BatchLens Bio.app"
+        app = stage_macos_bundle(out / "frozen/BatchLens Bio.app")
         executable = app / "Contents/MacOS/BatchLens Bio"
         plist = app / "Contents/Info.plist"
         info = plistlib.loads(plist.read_bytes())
@@ -132,7 +146,7 @@ def main():
         )
         assert json.loads(gui_smoke.read_text())["javascript_audit"] == "passed"
     if sys.platform == "darwin":
-        stage = out / "dmg-content"
+        stage = app.parent / "dmg-content"
         stage.mkdir()
         (stage / "Applications").symlink_to("/Applications")
         subprocess.run(["ditto", str(app), str(stage / app.name)], check=True)

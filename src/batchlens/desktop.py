@@ -33,7 +33,27 @@ def smoke_test(server: AuditServer, destination: Path) -> None:
             ) as response:
                 assert response.status == 200 and response.read()
         checks.append({"case": case, "status": result["contrasts"][0]["status"]})
-    for name in ["", "app.js", "app.css", "api/info"]:
+    quick_checks = []
+    for case, status in [
+        ("balanced", "ESTIMABLE"),
+        ("confounded", "NON_ESTIMABLE"),
+        ("paired", "ESTIMABLE"),
+    ]:
+        request = urllib.request.Request(
+            base_url + f"api/quick/demo/{case}",
+            data=b'{"language":"zh"}',
+            headers={"Content-Type": "application/json"},
+        )
+        with urllib.request.urlopen(request, timeout=90) as response:
+            result = json.load(response)
+        assert result["contrasts"][0]["status"] == status
+        for language in ("en", "zh"):
+            with urllib.request.urlopen(
+                base_url + f"reports/{result['id']}/report.{language}.html", timeout=30
+            ) as response:
+                assert f'lang="{language}"'.encode() in response.read()
+        quick_checks.append({"case": case, "status": status})
+    for name in ["", "app.js", "copy.js", "app.css", "api/info", "quick-examples/balanced.csv"]:
         with urllib.request.urlopen(base_url + name, timeout=10) as response:
             assert response.status == 200 and response.read()
     expected = [
@@ -52,6 +72,7 @@ def smoke_test(server: AuditServer, destination: Path) -> None:
                 "version": __version__,
                 "frozen": bool(getattr(sys, "frozen", False)),
                 "checks": checks,
+                "quick_checks": quick_checks,
                 "http_and_downloads": "passed",
             },
             stream,

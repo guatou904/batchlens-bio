@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<title>BatchLens · Experimental design audit</title><style>
+:root{color-scheme:light;--ink:#162e36;--muted:#526871;--line:#d6e0de;--teal:#16685b;--paper:#fff}
+*{box-sizing:border-box}body{margin:0;background:#eef2ee;color:var(--ink);font:16px/1.65 system-ui,sans-serif}
+main{max-width:1100px;margin:auto;padding:44px 28px 80px}header{border-top:5px solid var(--teal);padding:28px 0}
+.eyebrow{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);font-weight:750}
+h1{font-size:40px;line-height:1.16;letter-spacing:-.035em;margin:14px 0}h2{font-size:23px;line-height:1.3;margin:0 0 16px}
+h3{font-size:17px;margin:0 0 6px}p{margin:8px 0}.muted,small{color:var(--muted)}
+.intro{max-width:760px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0}
+.stat,.card,section{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:22px}
+.stat strong{display:block;font-size:35px;line-height:1.2}.stat span{font-size:13px;color:var(--muted)}
+section{margin:20px 0}.notice{border-left:4px solid #a96b20;padding:14px 20px;background:#fff8e9;border-radius:4px}
+.cards{display:grid;gap:12px}.card{padding:18px}.critical{border-left:5px solid #b34035}.warning{border-left:5px solid #b47d20}.info{border-left:5px solid #698c86}
+.badge{display:inline-block;font:700 11px/1.6 system-ui;padding:4px 8px;background:#edf1f0;border-radius:4px;letter-spacing:.04em}
+.NON_ESTIMABLE{background:#fce7e1;color:#913426}.ESTIMABLE{background:#e7f0ec;color:#195549}.NOT_ASSESSED{background:#fff0d5;color:#855212}
+.scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px;text-align:left}td,th{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top;overflow-wrap:anywhere}th{background:#f5f7f5;font-size:12px}td.empty{background:#fff1e0;font-weight:700}
+code{font:12px/1.6 ui-monospace,monospace;overflow-wrap:anywhere}pre{white-space:pre-wrap;background:#f6f8f5;padding:16px;overflow:auto;font-size:12px}details{margin-top:12px}summary{cursor:pointer;color:var(--teal)}
+footer{font-size:12px;color:var(--muted);margin-top:28px}a{color:var(--teal)}
+@media(max-width:600px){main{padding:22px 14px}h1{font-size:31px}.stats{gap:7px}.stat{padding:12px}.stat strong{font-size:27px}section{padding:17px}}
+@media print{body{background:white}main{padding:0}section,.card{break-inside:avoid}details{display:block}}
+
+.stat,section,.card{min-width:0}.scroll{max-width:100%}table{min-width:600px}nav{display:flex;gap:14px;flex-wrap:wrap;margin:20px 0}nav a{font-size:13px}details pre{max-height:480px}.thresholds{display:flex;gap:18px;flex-wrap:wrap}.notice{overflow-wrap:anywhere}summary:focus-visible,a:focus-visible{outline:3px solid #77ad98;outline-offset:3px}section{scroll-margin-top:20px}
+@media print{details>*{display:block!important}details pre{max-height:none}.scroll{overflow:visible}table{min-width:0}}
+</style></head><body><main><header><div class="eyebrow">BatchLens Bio · 0.3.0 · Study design review</div>
+<h1>Before the next biological claim.</h1>
+<p class="intro muted">Experimental units, batch allocation and your explicit comparison. No expression data are fitted or corrected.</p>
+<p><span class="badge">SYNTHETIC</span> Confounded allocation; original synthetic cell metadata</p>
+<div class="stats"><div class="stat"><strong>6</strong><span>Declared experimental units</span></div><div class="stat"><strong>6</strong><span>Samples</span></div><div class="stat"><strong>920</strong><span>Linked cells / spots</span></div></div>
+<div class="notice">Metadata and the declared additive model only. This audit does not establish power, independence, randomization, absence of unmeasured confounding, or causality.</div>
+<nav aria-label="Report sections"><a href="#comparisons">Comparisons</a><a href="#findings">Findings</a><a href="#allocation">Batch allocation</a><a href="#cell-support">Donor support</a><a href="#model">Model &amp; scope</a></nav></header>
+<section id="comparisons"><h2>Your requested comparisons</h2><div class="cards">
+<div class="card"><span class="badge NON_ESTIMABLE">NON_ESTIMABLE</span> <code>NON_ESTIMABLE</code><h3>selected-comparison</h3><p>condition: regeneration − control</p>
+<p>The requested effect cannot be uniquely separated from the other declared terms.</p></div></div></section>
+<section id="findings"><h2>Findings <span class="badge">7</span></h2>
+<div class="cards"><article class="card critical"><span class="badge">CRITICAL</span> <code>BL-CONTRAST-001</code><h3>selected-comparison: the requested contrast is not estimable in this model.</h3><p>Discuss crossed sampling or a revised scientific question; correction cannot supply missing design information.</p><details><summary>Inspect the evidence</summary><pre>[
+  {
+    "denominator": "control",
+    "id": "selected-comparison",
+    "numerator": "regeneration",
+    "row_space_residual": 0.7071067811865474,
+    "status": "NON_ESTIMABLE",
+    "tolerance": 1e-10,
+    "vector": [
+      0.0,
+      1.0,
+      0.0
+    ]
+  },
+  [
+    [
+      -0.0,
+      1.0,
+      -1.0
+    ]
+  ]
+]</pre><p>JSON pointers in result.json:</p><code>/contrasts/0</code><br><code>/matrix_diagnostics/dependencies</code><br></details></article><article class="card warning"><span class="badge">WARNING</span> <code>BL-CELL-001</code><h3>Hepatocyte / control: few units reach the configured cell-count threshold.</h3><p>Inspect unit-level coverage. Thresholds are review heuristics, not power tests; samples are pooled within each unit and target level.</p><details><summary>Inspect the evidence</summary><pre>[
+  {
+    "cell_type": "Hepatocyte",
+    "cells": 220,
+    "dominance_threshold": 0.6,
+    "eligible_units": 3,
+    "largest_unit_share": 0.9090909090909091,
+    "min_cells": 20,
+    "min_units": 3,
+    "observed_units": 3,
+    "supported_units": 1,
+    "target_level": "control"
+  }
+]</pre><p>JSON pointers in result.json:</p><code>/cell_support/2</code><br></details></article><article class="card warning"><span class="badge">WARNING</span> <code>BL-CELL-001</code><h3>Hepatocyte / regeneration: few units reach the configured cell-count threshold.</h3><p>Inspect unit-level coverage. Thresholds are review heuristics, not power tests; samples are pooled within each unit and target level.</p><details><summary>Inspect the evidence</summary><pre>[
+  {
+    "cell_type": "Hepatocyte",
+    "cells": 220,
+    "dominance_threshold": 0.6,
+    "eligible_units": 3,
+    "largest_unit_share": 0.9090909090909091,
+    "min_cells": 20,
+    "min_units": 3,
+    "observed_units": 3,
+    "supported_units": 1,
+    "target_level": "regeneration"
+  }
+]</pre><p>JSON pointers in result.json:</p><code>/cell_support/3</code><br></details></article><article class="card warning"><span class="badge">WARNING</span> <code>BL-CELL-002</code><h3>Hepatocyte / control: one unit dominates the cell count.</h3><p>Check sampling and unit contributions; do not automatically remove that unit.</p><details><summary>Inspect the evidence</summary><pre>[
+  {
+    "cell_type": "Hepatocyte",
+    "cells": 220,
+    "dominance_threshold": 0.6,
+    "eligible_units": 3,
+    "largest_unit_share": 0.9090909090909091,
+    "min_cells": 20,
+    "min_units": 3,
+    "observed_units": 3,
+    "supported_units": 1,
+    "target_level": "control"
+  }
+]</pre><p>JSON pointers in result.json:</p><code>/cell_support/2</code><br></details></article><article class="card warning"><span class="badge">WARNING</span> <code>BL-CELL-002</code><h3>Hepatocyte / regeneration: one unit dominates the cell count.</h3><p>Check sampling and unit contributions; do not automatically remove that unit.</p><details><summary>Inspect the evidence</summary><pre>[
+  {
+    "cell_type": "Hepatocyte",
+    "cells": 220,
+    "dominance_threshold": 0.6,
+    "eligible_units": 3,
+    "largest_unit_share": 0.9090909090909091,
+    "min_cells": 20,
+    "min_units": 3,
+    "observed_units": 3,
+    "supported_units": 1,
+    "target_level": "regeneration"
+  }
+]</pre><p>JSON pointers in result.json:</p><code>/cell_support/3</code><br></details></article><article class="card warning"><span class="badge">WARNING</span> <code>BL-COVER-001</code><h3>Some target-by-batch combinations have no samples.</h3><p>Review coverage. An empty combination alone is not non-estimability.</p><details><summary>Inspect the evidence</summary><pre>[
+  [
+    {
+      "batch_level": "B1",
+      "batch_variable": "batch",
+      "samples": 3,
+      "target_level": "control",
+      "units": 3
+    },
+    {
+      "batch_level": "B2",
+      "batch_variable": "batch",
+      "samples": 0,
+      "target_level": "control",
+      "units": 0
+    },
+    {
+      "batch_level": "B1",
+      "batch_variable": "batch",
+      "samples": 0,
+      "target_level": "regeneration",
+      "units": 0
+    },
+    {
+      "batch_level": "B2",
+      "batch_variable": "batch",
+      "samples": 3,
+      "target_level": "regeneration",
+      "units": 3
+    }
+  ]
+]</pre><p>JSON pointers in result.json:</p><code>/coverage</code><br></details></article><article class="card warning"><span class="badge">WARNING</span> <code>BL-DESIGN-001</code><h3>The declared design matrix is rank deficient.</h3><p>Inspect the dependencies and each contrast separately; do not drop batch blindly.</p><details><summary>Inspect the evidence</summary><pre>[
+  [
+    [
+      -0.0,
+      1.0,
+      -1.0
+    ]
+  ]
+]</pre><p>JSON pointers in result.json:</p><code>/matrix_diagnostics/dependencies</code><br></details></article></div></section>
+<section id="allocation"><h2>Target × batch coverage</h2><p class="muted">Counts use samples and distinct declared units. Empty combinations alone do not prove non-estimability.</p><div class="scroll" tabindex="0"><table><thead><tr><th>Batch variable</th><th>Batch</th><th>Target</th><th>Samples</th><th>Units</th></tr></thead><tbody><tr><td>batch</td><td>B1</td><td>control</td><td class="">3</td><td>3</td></tr><tr><td>batch</td><td>B2</td><td>control</td><td class="empty">0</td><td>0</td></tr><tr><td>batch</td><td>B1</td><td>regeneration</td><td class="empty">0</td><td>0</td></tr><tr><td>batch</td><td>B2</td><td>regeneration</td><td class="">3</td><td>3</td></tr></tbody></table></div></section>
+<section id="cell-support"><h2>Cell-type donor support</h2><p class="muted">Cell counts are pooled within each unit, target and cell type. Thresholds prompt review; no power test or subgroup model is fitted.</p><p class="thresholds"><span>Minimum units: 3</span><span>Cells per unit: 20</span><span>Dominance threshold: 60%</span></p>
+<div class="scroll" tabindex="0"><table><thead><tr><th>Cell type</th><th>Target</th><th>Cells</th><th>Eligible units</th><th>Observed units</th><th>Units at threshold</th><th>Largest share</th></tr></thead><tbody><tr><td>Endothelial</td><td>control</td><td>120</td><td>3</td><td>3</td><td>3</td><td>33.3%</td></tr><tr><td>Endothelial</td><td>regeneration</td><td>120</td><td>3</td><td>3</td><td>3</td><td>33.3%</td></tr><tr><td>Hepatocyte</td><td>control</td><td>220</td><td>3</td><td>3</td><td>1</td><td>90.9%</td></tr><tr><td>Hepatocyte</td><td>regeneration</td><td>220</td><td>3</td><td>3</td><td>1</td><td>90.9%</td></tr><tr><td>Kupffer</td><td>control</td><td>120</td><td>3</td><td>3</td><td>3</td><td>33.3%</td></tr><tr><td>Kupffer</td><td>regeneration</td><td>120</td><td>3</td><td>3</td><td>3</td><td>33.3%</td></tr></tbody></table></div></section>
+<section><h2>Experimental-unit structure</h2><p>Repeated samples and extra cells do not create additional experimental units.</p><div class="scroll" tabindex="0"><table><tr><th>Unit alias</th><th>Samples</th><th>Target levels</th></tr><tr><td>unit-0001</td><td>1</td><td>control</td></tr><tr><td>unit-0002</td><td>1</td><td>control</td></tr><tr><td>unit-0003</td><td>1</td><td>control</td></tr><tr><td>unit-0004</td><td>1</td><td>regeneration</td></tr><tr><td>unit-0005</td><td>1</td><td>regeneration</td></tr><tr><td>unit-0006</td><td>1</td><td>regeneration</td></tr></table></div></section>
+<section><h2>Cell type / region summary</h2><div class="scroll" tabindex="0"><table><tr><th>Annotation</th><th>Label</th><th>Target</th><th>Cells/spots</th><th>Samples</th><th>Units</th></tr><tr><td>cell_type</td><td>Endothelial</td><td>control</td><td>120</td><td>3</td><td>3</td></tr><tr><td>cell_type</td><td>Endothelial</td><td>regeneration</td><td>120</td><td>3</td><td>3</td></tr><tr><td>cell_type</td><td>Hepatocyte</td><td>control</td><td>220</td><td>3</td><td>3</td></tr><tr><td>cell_type</td><td>Hepatocyte</td><td>regeneration</td><td>220</td><td>3</td><td>3</td></tr><tr><td>cell_type</td><td>Kupffer</td><td>control</td><td>120</td><td>3</td><td>3</td></tr><tr><td>cell_type</td><td>Kupffer</td><td>regeneration</td><td>120</td><td>3</td><td>3</td></tr></table></div></section>
+<section id="model"><h2>Declared model &amp; numerical evidence</h2><p><code>Intercept + condition + batch</code></p>
+<p>Rank <strong>2</strong> / 3 columns · 6 design rows · residual row degrees of freedom 4</p><details><summary>Encoding and column dependencies</summary><div class="scroll" tabindex="0"><table><tr><th>Index</th><th>Variable</th><th>Level / kind</th></tr><tr><td>0</td><td>Intercept</td><td>intercept</td></tr><tr><td>1</td><td>condition</td><td>regeneration</td></tr><tr><td>2</td><td>batch</td><td>B2</td></tr></table></div><p>Each dependency follows the column order above and satisfies Xv ≈ 0. Contrasts are checked against the row space.</p><pre>[[-0.0, 1.0, -1.0]]</pre><p>Rank tolerance: <code>4.2638060825584685e-15</code></p><p>selected-comparison: residual 0.7071067811865474 / tolerance 1e-10</p></details>
+<p class="notice">Quick check uses the same BatchLens contrast engine. Only declared columns were adapted. </p><details><summary>Input mapping and source fingerprint</summary><pre>{
+  "cell_id_uniqueness": "checked",
+  "column_mapping": {
+    "batch": "batch",
+    "cell_id": "cell_id",
+    "cell_type": "cell_type",
+    "sample": "sample",
+    "target": "condition",
+    "timepoint": null,
+    "unit": "donor"
+  },
+  "mode": "quick",
+  "rows": 920,
+  "source_sha256": "24dd5c13d4c8688c847206e9fda8e0840def886a359452a6e33033a51ae9ba6a"
+}</pre></details>
+<details><summary>Complete declared configuration</summary><pre>{
+  "adjust_for": [
+    "batch"
+  ],
+  "cell_coverage": {
+    "dominance": 0.6,
+    "min_cells": 20,
+    "min_units": 3
+  },
+  "contrasts": [
+    {
+      "denominator": "control",
+      "id": "selected-comparison",
+      "numerator": "regeneration"
+    }
+  ],
+  "design_mode": "independent",
+  "sample_id": "sample_id",
+  "schema_version": "1.0",
+  "target": "condition",
+  "unit_id": "unit_id",
+  "variables": {
+    "batch": {
+      "levels": [
+        "B1",
+        "B2"
+      ],
+      "reference": "B1",
+      "role": "batch",
+      "type": "categorical"
+    },
+    "condition": {
+      "levels": [
+        "control",
+        "regeneration"
+      ],
+      "reference": "control",
+      "role": "target",
+      "type": "categorical"
+    }
+  }
+}</pre></details></section>
+<footer>IDs use aliases. Labels and design values may still identify people; review every output before sharing. No observation-level data are exported.<br>A completed run is not a scientific pass. · result.json · tables/*.tsv · manifest.json · COMPLETE</footer></main></body></html>

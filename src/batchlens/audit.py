@@ -4,6 +4,7 @@ from typing import Any
 
 from batchlens import __version__
 from batchlens.config import StudySpec
+from batchlens.coverage import cell_support
 from batchlens.design import analyse_design
 from batchlens.metadata import Inputs, deidentify
 
@@ -193,6 +194,38 @@ def audit(inputs: Inputs, spec: StudySpec) -> dict[str, Any]:
                     "supply missing design information.",
                 )
 
+    support = cell_support(inputs, spec)
+    for index, row in enumerate(support):
+        reference = [f"/cell_support/{index}"]
+        label = f"{row['cell_type']} / {row['target_level']}"
+        if row["cells"] == 0:
+            finding(
+                "BL-CELL-003",
+                "warning",
+                f"{label}: no cells observed.",
+                reference,
+                "Review biological absence, filtering, annotation and export completeness.",
+            )
+        elif row["supported_units"] < row["min_units"]:
+            finding(
+                "BL-CELL-001",
+                "warning",
+                f"{label}: few units reach the configured cell-count threshold.",
+                reference,
+                "Inspect unit-level coverage. Thresholds are review heuristics, not power tests; "
+                "samples are pooled within each unit and target level.",
+            )
+        if row["largest_unit_share"] is not None and (
+            row["largest_unit_share"] > row["dominance_threshold"]
+        ):
+            finding(
+                "BL-CELL-002",
+                "warning",
+                f"{label}: one unit dominates the cell count.",
+                reference,
+                "Check sampling and unit contributions; do not automatically remove that unit.",
+            )
+
     findings.sort(
         key=lambda f: (
             {"critical": 0, "warning": 1, "info": 2}[f["severity"]],
@@ -201,9 +234,9 @@ def audit(inputs: Inputs, spec: StudySpec) -> dict[str, Any]:
         )
     )
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "tool_version": __version__,
-        "ruleset_version": "1.0",
+        "ruleset_version": "1.1",
         "run_status": "completed",
         "declared_design": spec.model_dump(),
         "counts": {
@@ -215,6 +248,7 @@ def audit(inputs: Inputs, spec: StudySpec) -> dict[str, Any]:
         "target_counts": target_counts,
         "coverage": coverage,
         "observation_coverage": observation_coverage,
+        "cell_support": support,
         "assay_summary": assay_summary,
         "matrix_diagnostics": matrix,
         "contrasts": comparisons,

@@ -1,6 +1,6 @@
 # BatchLens — roadmap
 
-更新：2026-09-12。ACTIVE 主项目；v0.1.0 已发行。按用户要求，v0.2.0 增加本地 Web UI 和 Mac/Windows 桌面安装包；科学模型范围不变。发布与平台验证状态以验证记录为准。
+更新：2026-09-21。ACTIVE 主项目；v0.1.0 已发行。按用户要求，v0.2.0 增加本地 Web UI 和 Mac/Windows 桌面安装包；科学模型范围不变。发布与平台验证状态以验证记录为准。
 
 | 阶段 | 当前状态 | 剩余出口 |
 |---|---|---|
@@ -14,6 +14,10 @@
 | P7 v0.2.0 易用性 | Web UI、桌面窗口与三平台构建/安装验证流程已实现 | 完成发行验证；Developer ID/notarization、Windows 代码签名与真实用户试用仍需补充 |
 
 证据见 [validation record](docs/validation-record.md)；逐项门见 [RELEASE_CHECKLIST](RELEASE_CHECKLIST.md)。本地构建与版本字符串都不算 release created。
+
+## v0.3.0 统一产品
+
+按用户确认，将 scDesign Audit 的快速导入、中英双语和细胞类型供体覆盖整合入 BatchLens；保留样本/YAML 高级入口，复用同一科学引擎。当前为候选版，本地和远程证据分别记录。后续只维护一个产品，不为原型另发同质化包。完成本轮后优先收集真实用户导入、配对声明和结论理解方面的反馈；不自动启动第二个 Top 5。
 
 ## 发布后
 

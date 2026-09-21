@@ -42,6 +42,14 @@ class Contrast(StrictModel):
     denominator: str
 
 
+class CellCoverage(StrictModel):
+    """Opt-in descriptive thresholds, never a sample-size or power calculation."""
+
+    min_units: int = Field(default=3, ge=2, le=100_000)
+    min_cells: int = Field(default=20, ge=1, le=1_000_000)
+    dominance: float = Field(default=0.6, ge=0.5, le=1.0, allow_inf_nan=False)
+
+
 class StudySpec(StrictModel):
     schema_version: Literal["1.0"]
     design_mode: Literal["independent", "paired"]
@@ -51,6 +59,7 @@ class StudySpec(StrictModel):
     target: str
     adjust_for: list[str]
     contrasts: list[Contrast] = Field(min_length=1, max_length=100)
+    cell_coverage: CellCoverage | None = None
 
     @model_validator(mode="after")
     def validate_model(self) -> Self:

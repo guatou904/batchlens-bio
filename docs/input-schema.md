@@ -55,3 +55,16 @@ Quote numeric-looking levels (`["1", "2"]`) and YAML boolean-like values. Unobse
 Multi-batch sample relations remain visible and produce NOT_ASSESSED; no majority batch is selected. Optional `slide_id`/`section_id` support counts. More complex split/pool models are not inferred. Configured sample/unit ID column names cannot reuse `observation_id`, `assay_id`, `slide_id`, `section_id`, `cell_type` or `region`. Model variables cannot reuse `observation_id`/`assay_id`; other annotation fields may be explicitly declared as model variables.
 
 Design guard: 100,000 samples / 256 encoded columns. This is not a performance guarantee; observation tables are read in memory. Export metadata only, not HDF5 objects or expression matrices.
+
+## Optional cell-type donor thresholds (0.3.0)
+
+```yaml
+cell_coverage:
+  min_units: 3
+  min_cells: 20
+  dominance: 0.6
+```
+
+This requires observations with `cell_type`. Units are pooled within target level and cell type, preserving the sample manifest's denominator when cells are missing. Minimum-unit and minimum-cell thresholds are inclusive; dominance is flagged strictly above its threshold. Integers are required: units 2–100,000, cells 1–1,000,000. Share must be finite in [0.5, 1]. Booleans are not numbers here. At most 10,000 cell-type × declared-target combinations are allowed.
+
+Omit the section to retain the prior checks. Coverage does not change contrast status. Cell-level quick import adapts to this same contract; see [quick check](quick-check.md).

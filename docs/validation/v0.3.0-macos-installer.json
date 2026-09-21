@@ -1,0 +1,19 @@
+{
+  "version": "0.3.0",
+  "platform": "macOS-27.0-arm64-arm-64bit",
+  "installer": "BatchLens-Bio-0.3.0-macOS-arm64.dmg",
+  "sha256": "3b843b7fa9fcbcba09ffb31f399da6c6f09ee367daaf8ad10f7d9b3279ac4b20",
+  "size_bytes": 41773728,
+  "source_wheel_sha256": "b57eb222da2690b26f782e256f03ab7041193ce03d8595e095130e522b3368f6",
+  "signing": "ad_hoc_not_Developer_ID_or_notarized",
+  "signature_verification": "passed",
+  "disk_image_verification": "passed",
+  "native_window": "loaded",
+  "javascript_audit": "passed",
+  "frozen_advanced_demos": 7,
+  "frozen_quick_demos": 3,
+  "finder_metadata_recovery": "Frozen app copied to local scratch, signed and tested; fixed builder staging function separately verified.",
+  "remote_platform_validation": "not_run_for_0.3.0",
+  "mounted_installer_signature": "passed",
+  "mounted_installer_frozen_smoke": "passed"
+}

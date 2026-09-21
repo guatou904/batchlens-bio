@@ -1,0 +1,26 @@
+{
+  "version": "0.3.0",
+  "browser": "153.0.8010.50",
+  "checks": [
+    "quick demo confounded: NON_ESTIMABLE",
+    "quick demo balanced: ESTIMABLE",
+    "quick demo paired: ESTIMABLE",
+    "advanced demo balanced: ESTIMABLE",
+    "advanced demo confounded-time: NON_ESTIMABLE",
+    "advanced demo partial-overlap: ESTIMABLE",
+    "advanced demo redundant-nuisance: ESTIMABLE",
+    "advanced demo paired: ESTIMABLE",
+    "advanced demo spatial-replicates: NOT_ASSESSED",
+    "advanced demo mixed-assays: NOT_ASSESSED",
+    "Keyboard navigation and all seven original scenarios",
+    "Advanced group and individual-slot drag/drop and audit",
+    "Real CSV import, explicit comparison, mapping focus and threshold validation",
+    "Language switch preserves results; actual HTML/ZIP downloads and hashes",
+    "Quick-to-advanced handoff preserves every scientific JSON field",
+    "390px mobile layouts and embedded reports in both languages",
+    "Malformed inputs show focused errors; filename markup stays inert"
+  ],
+  "javascript_errors": [],
+  "external_requests": [],
+  "synthetic_only": true
+}

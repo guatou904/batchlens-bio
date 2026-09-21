@@ -40,6 +40,7 @@ def parser() -> argparse.ArgumentParser:
             command.add_argument("--observations", type=Path, help="Optional cells/spots metadata")
             command.add_argument("--assays", type=Path, help="Optional sample-to-assay links")
         if name != "validate":
+            command.add_argument("--language", choices=["en", "zh"], default="en")
             command.add_argument(
                 "--out", required=True, type=Path, help="New directory; parent must exist"
             )
@@ -72,7 +73,13 @@ def main(argv: list[str] | None = None) -> int:
             print("Metadata valid. Model support and contrast estimability have not been assessed.")
             return 0
         result = run_audit(
-            args.samples, args.design, args.out, args.observations, args.assays, dataset
+            args.samples,
+            args.design,
+            args.out,
+            args.observations,
+            args.assays,
+            dataset,
+            language=args.language,
         )
         print(
             f"BatchLens audit completed: {result['counts']['experimental_units']} "

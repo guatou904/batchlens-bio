@@ -1,5 +1,18 @@
 # Implementation decisions
 
+## 2026-09-21: v0.3.0 publication authorized
+
+After reviewing the completed local candidate, the owner explicitly approved pushing a PR, running the full cross-platform checks, merging after success, then publishing GitHub Release and PyPI v0.3.0. Follow existing branch protection. Preserve prior releases and require exact artifact hashes; external scientific/user review remains open.
+
+## 2026-09-21: consolidate scDesign Audit into BatchLens
+
+The owner approved one BatchLens product with quick cell-table and advanced design entry points after reviewing overlap with scDesign Audit. Keep the existing BatchLens engine, CLI, packaging and release history; bring the prototype’s role mapping, bilingual workbench/report and configurable donor coverage into that core. Maintain one scientific implementation. The original prototype and its reports remain intact; no second public package is planned.
+
+Do not promise equivalence to the prototype’s rank-only warnings: BatchLens requires an explicit pairwise contrast and declared sampling model. Quick mode is a strict adapter to standard inputs. Paired designs add the existing unit block. Coverage thresholds are descriptive and opt-in for old advanced inputs. This preserves older scientific behavior while making the input path accessible.
+
+Retain CSV/TSV as the unified import boundary; defer h5ad dependency expansion. Deliver a local 0.3.0 candidate with installed-package, browser and native-arm64 evidence. Public release, other-platform execution, external usability and scientific review remain separately evidenced steps.
+
+
 ## 2026-09-12: browser and native desktop interfaces
 
 The owner requested both `batchlens serve` and downloadable Mac/Windows applications. Version 0.2.0 adds these interfaces without extending the scientific model. A shared service handles CLI and uploaded metadata. An in-memory source adapter avoids writing raw browser uploads to temporary directories. Completed reports remain in unique directories, following the existing completion-marker contract.

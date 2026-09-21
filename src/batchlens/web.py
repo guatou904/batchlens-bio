@@ -16,6 +16,8 @@ from typing import Any
 
 from batchlens import __version__
 from batchlens.config import InputError
+from batchlens.localization import finding_copy
+from batchlens.quick import decode_cell_file, prepare, preview
 from batchlens.service import CASES, demo_sources, run_audit
 from batchlens.sources import Upload
 
@@ -87,7 +89,13 @@ class AuditServer(ThreadingHTTPServer):
         self.origin = f"http://localhost:{self.server_port}"
         self.url = f"{self.origin}/{self.token}/"
 
-    def run(self, files: dict[str, Upload], case: str | None = None) -> dict[str, Any]:
+    def run(
+        self,
+        files: dict[str, Upload],
+        case: str | None = None,
+        context: dict[str, Any] | None = None,
+        language: str = "en",
+    ) -> dict[str, Any]:
         run_id = datetime.now().strftime("audit-%Y%m%d-%H%M%S-") + secrets.token_hex(6)
         out = self.out / run_id
         result = run_audit(
@@ -97,6 +105,8 @@ class AuditServer(ThreadingHTTPServer):
             files.get("observations"),
             files.get("assays"),
             {"kind": "SYNTHETIC", "title": case} if case else None,
+            context=context,
+            language=language,
         )
         self.bundles[run_id] = out
         return {
@@ -104,6 +114,10 @@ class AuditServer(ThreadingHTTPServer):
             "counts": result["counts"],
             "contrasts": result["contrasts"],
             "findings": result["findings"],
+            "display_findings": {
+                lang: [finding_copy(f, result, lang) for f in result["findings"]]
+                for lang in ("en", "zh")
+            },
             "saved_to": str(out),
             "synthetic": case,
         }
@@ -169,12 +183,13 @@ class AuditHandler(BaseHTTPRequestHandler):
         route = self.route()
         if route is None:
             return
-        if route in {"", "app.css", "app.js"}:
+        if route in {"", "app.css", "app.js", "copy.js"}:
             name = route or "index.html"
             mime = {
                 "index.html": "text/html; charset=utf-8",
                 "app.css": "text/css",
                 "app.js": "text/javascript",
+                "copy.js": "text/javascript",
             }[name]
             self.respond(
                 200, resources.files("batchlens").joinpath("resources/web", name).read_bytes(), mime
@@ -189,6 +204,13 @@ class AuditHandler(BaseHTTPRequestHandler):
                     "max_upload_bytes": MAX_UPLOAD_BYTES,
                 },
             )
+        elif route.startswith("quick-examples/"):
+            name = route.removeprefix("quick-examples/")
+            if name not in {"balanced.csv", "confounded.csv", "paired.csv"}:
+                self.json(404, {"error": "Unknown example"})
+                return
+            data = resources.files("batchlens").joinpath("resources/quick-demo", name).read_bytes()
+            self.respond(200, data, "text/csv; charset=utf-8", name)
         elif route.startswith("examples/"):
             parts = route.split("/")
             if len(parts) != 3 or parts[1] not in CASES:
@@ -222,10 +244,18 @@ class AuditHandler(BaseHTTPRequestHandler):
                                 path, f"{folder.name}/{path.relative_to(folder).as_posix()}"
                             )
                 self.respond(200, buffer.getvalue(), "application/zip", f"{folder.name}.zip")
-            elif name in {"report.html", "download.html", "result.json"}:
-                actual = "report.html" if name == "download.html" else name
+            elif name in {
+                "report.html",
+                "download.html",
+                "result.json",
+                "report.en.html",
+                "report.zh.html",
+                "download.en.html",
+                "download.zh.html",
+            }:
+                actual = name.replace("download", "report", 1)
                 mime = "application/json" if actual.endswith("json") else "text/html; charset=utf-8"
-                download = actual if name != "report.html" else None
+                download = actual if name.startswith("download") or name == "result.json" else None
                 self.respond(200, (folder / actual).read_bytes(), mime, download)
             else:
                 self.json(404, {"error": "Unknown report file"})
@@ -250,7 +280,13 @@ class AuditHandler(BaseHTTPRequestHandler):
         route = self.route()
         if route is None:
             return
-        if route != "api/audit" and route != "api/quit" and not route.startswith("api/demo/"):
+        if route not in {
+            "api/audit",
+            "api/quit",
+            "api/quick/preview",
+            "api/quick/audit",
+            "api/quick/prepare",
+        } and not route.startswith(("api/demo/", "api/quick/demo/")):
             self.json(404, {"error": "Not found"})
             return
         if not self.server.busy.acquire(blocking=False):
@@ -260,9 +296,58 @@ class AuditHandler(BaseHTTPRequestHandler):
         stop = False
         try:
             payload = self.read_payload()
+            if not isinstance(payload, dict):
+                raise InputError("Request must be an object")
+            payload = dict(payload)
+            language = payload.pop("language", "en")
+            if not isinstance(language, str) or language not in {"en", "zh"}:
+                raise InputError("Language must be en or zh")
             if route == "api/quit":
                 result: dict[str, Any] = {"stopped": True}
                 stop = True
+            elif route.startswith("api/quick/"):
+                context = None
+                case = None
+                if route.startswith("api/quick/demo/"):
+                    case = route.removeprefix("api/quick/demo/")
+                    if case not in {"balanced", "confounded", "paired"}:
+                        raise InputError("Unknown quick-check example")
+                    source = Upload(
+                        case + ".csv",
+                        resources.files("batchlens")
+                        .joinpath("resources/quick-demo", case + ".csv")
+                        .read_bytes(),
+                    )
+                    payload = {
+                        "mapping": {
+                            "sample": "sample",
+                            "unit": "donor",
+                            "target": "condition",
+                            "batch": "batch",
+                            "cell_type": "cell_type",
+                            "cell_id": "cell_id",
+                            "timepoint": None,
+                        },
+                        "numerator": "regeneration",
+                        "denominator": "control",
+                        "design_mode": "paired" if case == "paired" else "independent",
+                    }
+                else:
+                    source = decode_cell_file(payload.get("file"))
+                if route == "api/quick/preview":
+                    result = preview(source, payload.get("mapping"))
+                else:
+                    files, context = prepare(source, payload)
+                    if route == "api/quick/prepare":
+                        result = {
+                            "files": {
+                                role: {"name": f.name, "data": base64.b64encode(f.data).decode()}
+                                for role, f in files.items()
+                            },
+                            "context": context,
+                        }
+                    else:
+                        result = self.server.run(files, case, context, language)
             else:
                 if route.startswith("api/demo/"):
                     case = route.removeprefix("api/demo/")
@@ -270,7 +355,7 @@ class AuditHandler(BaseHTTPRequestHandler):
                 else:
                     case = None
                     files = decode_uploads(payload)
-                result = self.server.run(files, case)
+                result = self.server.run(files, case, language=language)
         except RequestError as exc:
             status, result = exc.status, {"error": str(exc)}
         except (InputError, ValueError, UnicodeError, RecursionError) as exc:

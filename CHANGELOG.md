@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0 — unified workbench, 2026-09-21
+
+- One BatchLens workbench combines quick cell-table import and advanced samples/YAML, using the same scientific core.
+- Explicit role mapping, contrast direction, independent/paired declaration, optional timepoint and standard-input conversion.
+- Configurable donor representation and dominance checks within cell types/conditions; technical libraries never inflate unit counts.
+- Chinese/English UI and offline reports, evidence disclosures, mobile layouts and keyboard navigation.
+- Retains advanced file drag/drop, all seven original demos, CLI and native packaging; adds three synthetic quick scenarios.
+- Input YAML remains 1.0 with optional `cell_coverage`; output schema/ruleset 1.1 add `cell_support` and quick adapter provenance. JSON remains canonical English.
+- Real-browser automation is added to CI; frozen smoke checks cover both entries and both report languages.
+- scDesign Audit is retained as the original prototype rather than published as a second product. h5ad import is not part of this consolidation.
+
+
 ## 0.2.0 — 2026-09-12
 
 - `batchlens serve` opens a local browser UI with multi-file selection, drag/drop, optional tables, seven examples, inline reports and HTML/ZIP downloads.

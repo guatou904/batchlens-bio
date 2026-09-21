@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<title>BatchLens · 实验设计审计</title><style>
+:root{color-scheme:light;--ink:#162e36;--muted:#526871;--line:#d6e0de;--teal:#16685b;--paper:#fff}
+*{box-sizing:border-box}body{margin:0;background:#eef2ee;color:var(--ink);font:16px/1.65 system-ui,sans-serif}
+main{max-width:1100px;margin:auto;padding:44px 28px 80px}header{border-top:5px solid var(--teal);padding:28px 0}
+.eyebrow{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);font-weight:750}
+h1{font-size:40px;line-height:1.16;letter-spacing:-.035em;margin:14px 0}h2{font-size:23px;line-height:1.3;margin:0 0 16px}
+h3{font-size:17px;margin:0 0 6px}p{margin:8px 0}.muted,small{color:var(--muted)}
+.intro{max-width:760px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0}
+.stat,.card,section{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:22px}
+.stat strong{display:block;font-size:35px;line-height:1.2}.stat span{font-size:13px;color:var(--muted)}
+section{margin:20px 0}.notice{border-left:4px solid #a96b20;padding:14px 20px;background:#fff8e9;border-radius:4px}
+.cards{display:grid;gap:12px}.card{padding:18px}.critical{border-left:5px solid #b34035}.warning{border-left:5px solid #b47d20}.info{border-left:5px solid #698c86}
+.badge{display:inline-block;font:700 11px/1.6 system-ui;padding:4px 8px;background:#edf1f0;border-radius:4px;letter-spacing:.04em}
+.NON_ESTIMABLE{background:#fce7e1;color:#913426}.ESTIMABLE{background:#e7f0ec;color:#195549}.NOT_ASSESSED{background:#fff0d5;color:#855212}
+.scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px;text-align:left}td,th{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top;overflow-wrap:anywhere}th{background:#f5f7f5;font-size:12px}td.empty{background:#fff1e0;font-weight:700}
+code{font:12px/1.6 ui-monospace,monospace;overflow-wrap:anywhere}pre{white-space:pre-wrap;background:#f6f8f5;padding:16px;overflow:auto;font-size:12px}details{margin-top:12px}summary{cursor:pointer;color:var(--teal)}
+footer{font-size:12px;color:var(--muted);margin-top:28px}a{color:var(--teal)}
+@media(max-width:600px){main{padding:22px 14px}h1{font-size:31px}.stats{gap:7px}.stat{padding:12px}.stat strong{font-size:27px}section{padding:17px}}
+@media print{body{background:white}main{padding:0}section,.card{break-inside:avoid}details{display:block}}
+
+.stat,section,.card{min-width:0}.scroll{max-width:100%}table{min-width:600px}nav{display:flex;gap:14px;flex-wrap:wrap;margin:20px 0}nav a{font-size:13px}details pre{max-height:480px}.thresholds{display:flex;gap:18px;flex-wrap:wrap}.notice{overflow-wrap:anywhere}summary:focus-visible,a:focus-visible{outline:3px solid #77ad98;outline-offset:3px}section{scroll-margin-top:20px}
+@media print{details>*{display:block!important}details pre{max-height:none}.scroll{overflow:visible}table{min-width:0}}
+</style></head><body><main><header><div class="eyebrow">BatchLens Bio · 0.3.0 · 研究设计复核</div>
+<h1>先看清设计，再解释差异。</h1>
+<p class="intro muted">核对实验单位、批次分配及你明确指定的比较。不拟合或校正表达数据。</p>
+<p><span class="badge">合成示例</span> Confounded allocation; original synthetic cell metadata</p>
+<div class="stats"><div class="stat"><strong>6</strong><span>声明的生物学单位</span></div><div class="stat"><strong>6</strong><span>样本</span></div><div class="stat"><strong>920</strong><span>关联细胞 / 空间点位</span></div></div>
+<div class="notice">仅依据元数据和声明的加性模型。不能证明统计功效、独立性、随机化、无未测量混杂或因果关系。</div>
+<nav aria-label="报告章节"><a href="#comparisons">指定比较</a><a href="#findings">复核提示</a><a href="#allocation">批次分配</a><a href="#cell-support">供体覆盖</a><a href="#model">模型与边界</a></nav></header>
+<section id="comparisons"><h2>你指定的比较</h2><div class="cards">
+<div class="card"><span class="badge NON_ESTIMABLE">不可估计</span> <code>NON_ESTIMABLE</code><h3>selected-comparison</h3><p>condition: regeneration − control</p>
+<p>该效应无法与模型中其他项的影响唯一分开。</p></div></div></section>
+<section id="findings"><h2>复核提示 <span class="badge">7</span></h2>
+<div class="cards"><article class="card critical"><span class="badge">优先复核</span> <code>BL-CONTRAST-001</code><h3>指定比较在当前模型下不可估计 · selected-comparison</h3><p>考虑补充交叉分配的样本，或调整科学问题。批次校正无法补回设计中不存在的信息。</p><details><summary>查看具体证据</summary><pre>[
+  {
+    "denominator": "control",
+    "id": "selected-comparison",
+    "numerator": "regeneration",
+    "row_space_residual": 0.7071067811865474,
+    "status": "NON_ESTIMABLE",
+    "tolerance": 1e-10,
+    "vector": [
+      0.0,
+      1.0,
+      0.0
+    ]
+  },
+  [
+    [
+      -0.0,
+      1.0,
+      -1.0
+    ]
+  ]
+]</pre><p>result.json 中的证据位置：</p><code>/contrasts/0</code><br><code>/matrix_diagnostics/dependencies</code><br></details></article><article class="card warning"><span class="badge">需要关注</span> <code>BL-CELL-001</code><h3>达到细胞数阈值的供体不足 · Hepatocyte / control</h3><p>复核供体覆盖。此计数在每个条件及细胞类型内合并同一供体的样本；阈值是复核提示，不是功效检验。</p><details><summary>查看具体证据</summary><pre>[
+  {
+    "cell_type": "Hepatocyte",
+    "cells": 220,
+    "dominance_threshold": 0.6,
+    "eligible_units": 3,
+    "largest_unit_share": 0.9090909090909091,
+    "min_cells": 20,
+    "min_units": 3,
+    "observed_units": 3,
+    "supported_units": 1,
+    "target_level": "control"
+  }
+]</pre><p>result.json 中的证据位置：</p><code>/cell_support/2</code><br></details></article><article class="card warning"><span class="badge">需要关注</span> <code>BL-CELL-001</code><h3>达到细胞数阈值的供体不足 · Hepatocyte / regeneration</h3><p>复核供体覆盖。此计数在每个条件及细胞类型内合并同一供体的样本；阈值是复核提示，不是功效检验。</p><details><summary>查看具体证据</summary><pre>[
+  {
+    "cell_type": "Hepatocyte",
+    "cells": 220,
+    "dominance_threshold": 0.6,
+    "eligible_units": 3,
+    "largest_unit_share": 0.9090909090909091,
+    "min_cells": 20,
+    "min_units": 3,
+    "observed_units": 3,
+    "supported_units": 1,
+    "target_level": "regeneration"
+  }
+]</pre><p>result.json 中的证据位置：</p><code>/cell_support/3</code><br></details></article><article class="card warning"><span class="badge">需要关注</span> <code>BL-CELL-002</code><h3>单个供体占据了较高比例的细胞 · Hepatocyte / control</h3><p>检查采样和供体贡献，不要据此自动删除供体。</p><details><summary>查看具体证据</summary><pre>[
+  {
+    "cell_type": "Hepatocyte",
+    "cells": 220,
+    "dominance_threshold": 0.6,
+    "eligible_units": 3,
+    "largest_unit_share": 0.9090909090909091,
+    "min_cells": 20,
+    "min_units": 3,
+    "observed_units": 3,
+    "supported_units": 1,
+    "target_level": "control"
+  }
+]</pre><p>result.json 中的证据位置：</p><code>/cell_support/2</code><br></details></article><article class="card warning"><span class="badge">需要关注</span> <code>BL-CELL-002</code><h3>单个供体占据了较高比例的细胞 · Hepatocyte / regeneration</h3><p>检查采样和供体贡献，不要据此自动删除供体。</p><details><summary>查看具体证据</summary><pre>[
+  {
+    "cell_type": "Hepatocyte",
+    "cells": 220,
+    "dominance_threshold": 0.6,
+    "eligible_units": 3,
+    "largest_unit_share": 0.9090909090909091,
+    "min_cells": 20,
+    "min_units": 3,
+    "observed_units": 3,
+    "supported_units": 1,
+    "target_level": "regeneration"
+  }
+]</pre><p>result.json 中的证据位置：</p><code>/cell_support/3</code><br></details></article><article class="card warning"><span class="badge">需要关注</span> <code>BL-COVER-001</code><h3>部分条件与批次组合没有样本</h3><p>检查分配覆盖；空组合本身不等于指定比较不可估计。</p><details><summary>查看具体证据</summary><pre>[
+  [
+    {
+      "batch_level": "B1",
+      "batch_variable": "batch",
+      "samples": 3,
+      "target_level": "control",
+      "units": 3
+    },
+    {
+      "batch_level": "B2",
+      "batch_variable": "batch",
+      "samples": 0,
+      "target_level": "control",
+      "units": 0
+    },
+    {
+      "batch_level": "B1",
+      "batch_variable": "batch",
+      "samples": 0,
+      "target_level": "regeneration",
+      "units": 0
+    },
+    {
+      "batch_level": "B2",
+      "batch_variable": "batch",
+      "samples": 3,
+      "target_level": "regeneration",
+      "units": 3
+    }
+  ]
+]</pre><p>result.json 中的证据位置：</p><code>/coverage</code><br></details></article><article class="card warning"><span class="badge">需要关注</span> <code>BL-DESIGN-001</code><h3>设计矩阵存在冗余列</h3><p>检查依赖关系及每个具体比较。矩阵秩亏不等于所有比较不可估计，不要直接删除批次变量。</p><details><summary>查看具体证据</summary><pre>[
+  [
+    [
+      -0.0,
+      1.0,
+      -1.0
+    ]
+  ]
+]</pre><p>result.json 中的证据位置：</p><code>/matrix_diagnostics/dependencies</code><br></details></article></div></section>
+<section id="allocation"><h2>条件 × 批次分配</h2><p class="muted">分别统计样本数与独立声明单位数。空组合本身不等于指定比较不可估计。</p><div class="scroll" tabindex="0"><table><thead><tr><th>批次变量</th><th>批次</th><th>条件</th><th>样本</th><th>单位</th></tr></thead><tbody><tr><td>batch</td><td>B1</td><td>control</td><td class="">3</td><td>3</td></tr><tr><td>batch</td><td>B2</td><td>control</td><td class="empty">0</td><td>0</td></tr><tr><td>batch</td><td>B1</td><td>regeneration</td><td class="empty">0</td><td>0</td></tr><tr><td>batch</td><td>B2</td><td>regeneration</td><td class="">3</td><td>3</td></tr></tbody></table></div></section>
+<section id="cell-support"><h2>细胞类型内的供体覆盖</h2><p class="muted">在每个条件、细胞类型内合并同一供体的样本计数。阈值用于提示复核，不是功效检验；没有拟合亚组模型。</p><p class="thresholds"><span>最少供体数: 3</span><span>每供体最少细胞数: 20</span><span>占比阈值: 60%</span></p>
+<div class="scroll" tabindex="0"><table><thead><tr><th>细胞类型</th><th>条件</th><th>细胞数</th><th>样本表中的供体</th><th>观测供体</th><th>达到阈值的供体</th><th>最高供体占比</th></tr></thead><tbody><tr><td>Endothelial</td><td>control</td><td>120</td><td>3</td><td>3</td><td>3</td><td>33.3%</td></tr><tr><td>Endothelial</td><td>regeneration</td><td>120</td><td>3</td><td>3</td><td>3</td><td>33.3%</td></tr><tr><td>Hepatocyte</td><td>control</td><td>220</td><td>3</td><td>3</td><td>1</td><td>90.9%</td></tr><tr><td>Hepatocyte</td><td>regeneration</td><td>220</td><td>3</td><td>3</td><td>1</td><td>90.9%</td></tr><tr><td>Kupffer</td><td>control</td><td>120</td><td>3</td><td>3</td><td>3</td><td>33.3%</td></tr><tr><td>Kupffer</td><td>regeneration</td><td>120</td><td>3</td><td>3</td><td>3</td><td>33.3%</td></tr></tbody></table></div></section>
+<section><h2>实验单位与重复结构</h2><p>重复样本和更多细胞不会增加独立实验单位。</p><div class="scroll" tabindex="0"><table><tr><th>单位别名</th><th>样本数</th><th>条件</th></tr><tr><td>unit-0001</td><td>1</td><td>control</td></tr><tr><td>unit-0002</td><td>1</td><td>control</td></tr><tr><td>unit-0003</td><td>1</td><td>control</td></tr><tr><td>unit-0004</td><td>1</td><td>regeneration</td></tr><tr><td>unit-0005</td><td>1</td><td>regeneration</td></tr><tr><td>unit-0006</td><td>1</td><td>regeneration</td></tr></table></div></section>
+<section><h2>细胞类型 / 区域汇总</h2><div class="scroll" tabindex="0"><table><tr><th>注释类别</th><th>标签</th><th>条件</th><th>细胞 / 点位</th><th>样本</th><th>单位</th></tr><tr><td>cell_type</td><td>Endothelial</td><td>control</td><td>120</td><td>3</td><td>3</td></tr><tr><td>cell_type</td><td>Endothelial</td><td>regeneration</td><td>120</td><td>3</td><td>3</td></tr><tr><td>cell_type</td><td>Hepatocyte</td><td>control</td><td>220</td><td>3</td><td>3</td></tr><tr><td>cell_type</td><td>Hepatocyte</td><td>regeneration</td><td>220</td><td>3</td><td>3</td></tr><tr><td>cell_type</td><td>Kupffer</td><td>control</td><td>120</td><td>3</td><td>3</td></tr><tr><td>cell_type</td><td>Kupffer</td><td>regeneration</td><td>120</td><td>3</td><td>3</td></tr></table></div></section>
+<section id="model"><h2>声明模型与数值证据</h2><p><code>Intercept + condition + batch</code></p>
+<p>秩 <strong>2</strong> / 3 列 · 6 设计行 · 剩余行自由度 4</p><details><summary>变量编码与列依赖</summary><div class="scroll" tabindex="0"><table><tr><th>序号</th><th>变量</th><th>水平 / 类型</th></tr><tr><td>0</td><td>Intercept</td><td>intercept</td></tr><tr><td>1</td><td>condition</td><td>regeneration</td></tr><tr><td>2</td><td>batch</td><td>B2</td></tr></table></div><p>每个依赖向量对应上述列顺序，并满足 Xv ≈ 0。对每个比较分别检查其是否位于行空间。</p><pre>[[-0.0, 1.0, -1.0]]</pre><p>秩容差: <code>4.2638060825584685e-15</code></p><p>selected-comparison: 残差 0.7071067811865474 / 容差 1e-10</p></details>
+<p class="notice">快速检查与高级模式使用同一个比较检查引擎，仅转换已确认的列。 </p><details><summary>输入映射与来源指纹</summary><pre>{
+  "cell_id_uniqueness": "checked",
+  "column_mapping": {
+    "batch": "batch",
+    "cell_id": "cell_id",
+    "cell_type": "cell_type",
+    "sample": "sample",
+    "target": "condition",
+    "timepoint": null,
+    "unit": "donor"
+  },
+  "mode": "quick",
+  "rows": 920,
+  "source_sha256": "24dd5c13d4c8688c847206e9fda8e0840def886a359452a6e33033a51ae9ba6a"
+}</pre></details>
+<details><summary>完整设计配置</summary><pre>{
+  "adjust_for": [
+    "batch"
+  ],
+  "cell_coverage": {
+    "dominance": 0.6,
+    "min_cells": 20,
+    "min_units": 3
+  },
+  "contrasts": [
+    {
+      "denominator": "control",
+      "id": "selected-comparison",
+      "numerator": "regeneration"
+    }
+  ],
+  "design_mode": "independent",
+  "sample_id": "sample_id",
+  "schema_version": "1.0",
+  "target": "condition",
+  "unit_id": "unit_id",
+  "variables": {
+    "batch": {
+      "levels": [
+        "B1",
+        "B2"
+      ],
+      "reference": "B1",
+      "role": "batch",
+      "type": "categorical"
+    },
+    "condition": {
+      "levels": [
+        "control",
+        "regeneration"
+      ],
+      "reference": "control",
+      "role": "target",
+      "type": "categorical"
+    }
+  }
+}</pre></details></section>
+<footer>ID 已替换为局部别名，但标签和设计取值仍可能包含可识别信息。分享前检查所有输出；报告不导出逐细胞数据。<br>运行完成不等于科学结论通过。 · result.json · tables/*.tsv · manifest.json · COMPLETE</footer></main></body></html>

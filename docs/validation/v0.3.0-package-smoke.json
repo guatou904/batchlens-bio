@@ -1,0 +1,26 @@
+[
+  {
+    "artifact": "batchlens_bio-0.3.0-py3-none-any.whl",
+    "sha256": "b57eb222da2690b26f782e256f03ab7041193ce03d8595e095130e522b3368f6",
+    "python": "3.12.14",
+    "version": "batchlens 0.3.0",
+    "demo_cases": 7,
+    "explicit_validate_audit": "passed",
+    "installed_web_ui": "passed",
+    "quick_demos": 3,
+    "bilingual_reports": "passed",
+    "status": "passed"
+  },
+  {
+    "artifact": "batchlens_bio-0.3.0.tar.gz",
+    "sha256": "abc0a68fcc45379f3fdf23e74d36dfd3ada24ef227f638bb3a59b5ff908b164e",
+    "python": "3.12.14",
+    "version": "batchlens 0.3.0",
+    "demo_cases": 7,
+    "explicit_validate_audit": "passed",
+    "installed_web_ui": "passed",
+    "quick_demos": 3,
+    "bilingual_reports": "passed",
+    "status": "passed"
+  }
+]
