@@ -65,7 +65,9 @@ def main():
             ],
             work,
         )
-        assert json.loads((work / "web-smoke.json").read_text())["http_and_downloads"] == "passed"
+        web_checks = json.loads((work / "web-smoke.json").read_text())
+        assert web_checks["http_and_downloads"] == "passed"
+        assert len(web_checks["quick_checks"]) == 3
         resource_root = run(
             [
                 str(python),
@@ -108,6 +110,8 @@ def main():
                 "demo_cases": len(cases),
                 "explicit_validate_audit": "passed",
                 "installed_web_ui": "passed",
+                "quick_demos": len(web_checks["quick_checks"]),
+                "bilingual_reports": "passed",
                 "status": "passed",
             }
         )

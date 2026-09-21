@@ -6,6 +6,8 @@
 
 BatchLens checks declared experimental units, target-by-batch coverage and whether a specific contrast is estimable under an additive fixed-effects model. It produces an offline HTML report, JSON findings and auditable tables. It never fits or corrects expression data.
 
+**0.3.0 unified workbench:** start with a cell metadata table or an explicit samples/YAML design. Both paths use the same audit engine, with Chinese/English interfaces and offline reports. [Migration and scope](docs/quick-check.md).
+
 [GitHub Releases](https://github.com/guatou904/batchlens-bio/releases) · [PyPI](https://pypi.org/project/batchlens-bio/) · [Browser / desktop guide](docs/desktop.md)
 
 ## Why another tool?
@@ -14,35 +16,43 @@ Keep using scIB/kBET/LISI for integration evaluation. Good embedding mixing cann
 
 BatchQC and ExploreModelMatrix already provide valuable confounding/design diagnostics. BatchLens offers a narrowly scoped CLI, local browser UI and desktop app that connects experimental-unit checks, explicit contrasts, machine-readable findings and offline delivery. It is a workflow tool using established linear algebra, not a new statistical method. See [competitor research](https://github.com/guatou904/batchlens-bio/blob/main/COMPETITOR_ANALYSIS.md).
 
-## Open the app or local browser
+## Open the unified workbench
 
-**Desktop:** download the Mac `.dmg` or Windows `Setup.exe` from [GitHub Releases](https://github.com/guatou904/batchlens-bio/releases). Open **BatchLens Bio**, add your sample table and design file, then click **Run Audit**. Python, pip and a virtual environment are included in the app; users do not install them. See [desktop installation and signing status](docs/desktop.md). The 0.2.0 alpha installers are not Apple-notarized or Windows Authenticode signed.
-
-**Local browser:** with Python 3.12 or 3.13, install version 0.2.0 or this checkout, then run:
+With Python 3.12 or 3.13, install the release:
 
 ```sh
-python -m pip install batchlens-bio==0.2.0
+python -m pip install "batchlens-bio==0.3.0"
 batchlens serve
 ```
 
-Your browser opens `http://localhost:<free-port>/<session-key>/`. Drag in `samples.csv` / `samples.tsv` and `design.yaml`, click **Run Audit**, and read the report directly in the page. Optional observations and assays are supported. **Save HTML** exports the offline report; **Download report bundle** includes JSON, tables and provenance. Completed bundles are also saved under `~/BatchLens Audits`.
+For a source checkout or development branch, use `python -m pip install .` instead.
 
-The UI runs on your computer with no cloud upload. Raw inputs are held in memory; reports remain on disk after closing. Files may total up to 32 MiB. `--no-browser`, `--port` and `--out` customize the local server. [Full interface guide](docs/desktop.md).
+Choose a synthetic example to see a report immediately, with no private data.
+The interface starts in Chinese; **EN** switches to English without rerunning the audit.
 
-**Try a synthetic study:** click **Run example** in either interface, or use the original CLI:
+| Entry | Start with | Confirm |
+|---|---|---|
+| Quick check | One cell-level CSV/TSV | Five column roles, comparison direction, sampling structure and coverage thresholds |
+| Advanced design | Samples CSV/TSV + design YAML | Explicit contrasts, categorical/numeric covariates, independent or paired model; optional observations/assays |
+
+Quick mode previews metadata and can convert it into standard advanced inputs. Both paths call the same contrast engine. Quick mode includes three original synthetic cell tables; advanced mode keeps all seven existing scenarios. [Quick workflow and boundaries](docs/quick-check.md).
+
+Files stay on your computer. Raw uploads remain in memory; completed reports are saved under `~/BatchLens Audits`. Download either language's HTML, the canonical JSON or a ZIP containing both reports, tables and hashes. No account, cloud upload or expression matrix is needed.
+
+![BatchLens unified workbench](https://raw.githubusercontent.com/guatou904/batchlens-bio/v0.3.0/docs/workbench-home.png)
+
+**Desktop:** choose the Mac Apple Silicon, Intel Mac or Windows x64 installer from [GitHub Releases](https://github.com/guatou904/batchlens-bio/releases). Python and dependencies are included. Version 0.3.0 uses this unified interface; v0.2.0 installers retain the earlier advanced interface. See [platform evidence and alpha signing status](docs/desktop.md).
+
+**CLI remains available:**
 
 ```sh
 batchlens demo --case balanced --out demo-balanced
-batchlens demo --case confounded-time --out demo-confounded --fail-on none
+batchlens demo --case confounded-time --out demo-confounded --language zh --fail-on none
 ```
 
-Seven offline demos ship with every installation: `balanced`, `confounded-time`, `partial-overlap`, `redundant-nuisance`, `paired`, `spatial-replicates`, `mixed-assays`. The intentional confounding example shows `NON_ESTIMABLE`; `--fail-on none` changes the CLI exit policy without hiding findings. Each CLI output path must be new and have an existing parent.
+The second example deliberately shows `NON_ESTIMABLE`; exit-policy selection does not hide findings. Each output path must be new and have an existing parent. Other advanced examples: `partial-overlap`, `redundant-nuisance`, `paired`, `spatial-replicates`, `mixed-assays`.
 
-For source installation, clone this repository and run `python -m pip install .`.
-
-![BatchLens local audit interface](https://raw.githubusercontent.com/guatou904/batchlens-bio/v0.2.0/docs/web-ui.png)
-
-[Offline report preview](docs/demo.html) · [Public spatial example](docs/public-data.md)
+[New Chinese quick report](docs/quick-demo.zh.html) · [English report](docs/quick-demo.en.html) · [Public spatial example](docs/public-data.md)
 
 ## Your metadata
 
@@ -69,9 +79,9 @@ Rank deficiency does not necessarily invalidate every contrast. Partial target-b
 
 ## Output and automation
 
-- `report.html`: self-contained, no network or JavaScript required.
-- `result.json`: versioned design, findings, contrast results and numerical evidence.
-- `tables/*.tsv`: sample/unit coverage and optional annotation summaries.
+- `report.html`: selected language, self-contained; `report.en.html` and `report.zh.html` are always included. No network or JavaScript required.
+- `result.json`: canonical English keys/rule IDs/text, output schema and ruleset 1.1; design YAML remains schema 1.0. Adds `cell_support` and optional quick `input_adapter`.
+- `tables/*.tsv`: sample/unit coverage, annotation summaries and optional `cell_support.tsv`.
 - `manifest.json`: input/output SHA256 hashes, environment and dependency versions.
 - `COMPLETE`: written last; its absence indicates an incomplete bundle.
 

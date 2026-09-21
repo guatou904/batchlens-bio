@@ -1,4 +1,20 @@
-# BatchLens v0.1.0 — definition of done
+# BatchLens release checklist
+
+## v0.3.0 unified workbench — current release gates
+
+The owner authorized PR, complete cross-platform checks, merge, GitHub Release and PyPI publication on 2026-09-21. Record actual evidence before completing each gate. The historical checklists below do not establish v0.3.0 results.
+
+- [x] Local Python 3.12/3.13: 158 tests each; 17 browser groups; installed wheel/sdist and macOS arm64 DMG checks.
+- [x] Shared contrast engine, explicit pairing/timepoint, donor-coverage counterexamples, bilingual reports and metadata-only scope reviewed.
+- [ ] Exact PR head passes all six OS/Python jobs, independent R oracle, browser job and three native desktop jobs (including actual Windows installation).
+- [ ] Merge follows branch protection and tag points to the validated release commit.
+- [ ] Tag workflow repeats full verification; release assets/checksums are published and downloaded hashes verified.
+- [ ] PyPI receives the exact release wheel/sdist; official-index hashes and fresh installation pass.
+- [ ] Release, workflow, tag/commit and distribution evidence is recorded.
+
+External user validation, independent statistical review, Apple Developer ID/notarization and Windows Authenticode signing remain separate open items; they are not claimed for this exploratory alpha release.
+
+## Historical v0.1.0 / v0.2.0 records
 
 ## v0.2.0 interface release gates
 

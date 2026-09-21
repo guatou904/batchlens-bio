@@ -1,5 +1,34 @@
 {
   "$defs": {
+    "CellCoverage": {
+      "additionalProperties": false,
+      "description": "Opt-in descriptive thresholds, never a sample-size or power calculation.",
+      "properties": {
+        "min_units": {
+          "default": 3,
+          "maximum": 100000,
+          "minimum": 2,
+          "title": "Min Units",
+          "type": "integer"
+        },
+        "min_cells": {
+          "default": 20,
+          "maximum": 1000000,
+          "minimum": 1,
+          "title": "Min Cells",
+          "type": "integer"
+        },
+        "dominance": {
+          "default": 0.6,
+          "maximum": 1.0,
+          "minimum": 0.5,
+          "title": "Dominance",
+          "type": "number"
+        }
+      },
+      "title": "CellCoverage",
+      "type": "object"
+    },
     "Contrast": {
       "additionalProperties": false,
       "properties": {
@@ -131,6 +160,17 @@
       "minItems": 1,
       "title": "Contrasts",
       "type": "array"
+    },
+    "cell_coverage": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CellCoverage"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     }
   },
   "required": [

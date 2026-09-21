@@ -14,6 +14,7 @@ from typing import Any
 from jinja2 import Environment, select_autoescape
 
 from batchlens.config import InputError
+from batchlens.localization import finding_copy, resolve_evidence
 
 
 def json_text(value: Any) -> str:
@@ -25,7 +26,10 @@ def write_bundle(
     provenance: dict[str, Any],
     out: Path,
     dataset: dict[str, Any] | None = None,
+    language: str = "en",
 ) -> None:
+    if language not in {"en", "zh"}:
+        raise InputError("Report language must be en or zh")
     # Requiring a new directory also avoids replacing an empty directory raced by another writer.
     if out.exists() or out.is_symlink():
         raise InputError("Output already exists; choose a new directory. Nothing was overwritten.")
@@ -40,11 +44,22 @@ def write_bundle(
             .read_text(encoding="utf-8")
         )
         environment = Environment(autoescape=select_autoescape(default=True))
-        html = environment.from_string(template).render(result=result, dataset=dataset)
-        (stage / "report.html").write_text(html, encoding="utf-8")
+        compiled = environment.from_string(template)
+        for locale in ("en", "zh"):
+            html = compiled.render(
+                result=result,
+                dataset=dataset,
+                language=locale,
+                t=lambda en, zh, selected=locale: zh if selected == "zh" else en,
+                finding_copy=lambda f, selected=locale: finding_copy(f, result, selected),
+                evidence=lambda f: resolve_evidence(f, result),
+            )
+            (stage / f"report.{locale}.html").write_text(html, encoding="utf-8")
+            if locale == language:
+                (stage / "report.html").write_text(html, encoding="utf-8")
         tables = stage / "tables"
         tables.mkdir()
-        for name in ["coverage", "target_counts", "observation_coverage", "units"]:
+        for name in ["coverage", "target_counts", "observation_coverage", "units", "cell_support"]:
             rows = result[name]
             if rows:
                 with (tables / f"{name}.tsv").open("w", encoding="utf-8", newline="") as stream:

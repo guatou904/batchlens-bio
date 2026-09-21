@@ -1,4 +1,20 @@
-# Validation record — 2026-09-12
+# Validation record — updated 2026-09-21
+
+## 0.3.0 unified workbench candidate — local evidence
+
+The owner approved consolidating the scDesign Audit prototype into BatchLens. This section describes the 0.3.0 candidate; historical remote runs below establish earlier versions only. The candidate is not yet a published GitHub/PyPI release.
+
+- Python 3.12.14 and 3.13.9 on macOS arm64: **158 tests passed on each**, including the independent R oracle. [3.12 JUnit](validation/v0.3.0-tests-py312.xml), [3.13 JUnit](validation/v0.3.0-tests-py313.xml). The 3.13 run uses a new locked environment and a non-editable installed package. Hostnames are removed from shared JUnit copies.
+- Python suite statement coverage: **88% overall** (native GUI paths are exercised separately); new quick adapter 96%, donor support 96%, localization 100%. Coverage is engineering evidence, not a scientific-validity score.
+- Scientific regressions verify exact quick/advanced output parity, explicit paired-unit blocking, no increase in units after cell multiplication or library splitting, missing cell-type groups, within-condition dominance, inclusive count thresholds, strict share thresholds and optional-timepoint confounding.
+- Browser source QA: **17 grouped checks passed** in Chrome, including 3 quick + 7 advanced demos, actual uploads, keyboard mapping focus, explicit comparison, thresholds, handoff, localized HTML/ZIP downloads and matching hashes, 390px layouts, malformed inputs and inert filename markup. No JavaScript errors or external requests. The same 17 groups also pass against the built, installed wheel, including individual-slot drag/drop and expanded finding evidence. [Installed browser record](validation/v0.3.0-browser-qa.json).
+- Static checks: Ruff lint/format, mypy, JavaScript syntax and Prettier pass. CI adds an installed-wheel browser job; configuring a job is not evidence of remote execution.
+
+Wheel and sdist each install into a separate fresh environment **outside the source checkout**. Both pass explicit CLI validation/audit, all seven advanced demos, all three quick demos, packaged browser resources, both HTML languages, HTTP/ZIP downloads and `pip check`. [Exact artifact hashes and clean-install record](validation/v0.3.0-package-smoke.json). Twine metadata checks pass. The final source archive includes the macOS staging fix and is reinstalled/tested again; the runtime wheel is byte-identical to the one used for browser/native validation. For a specific downloaded artifact, use its adjacent INSTALL_VALIDATION.json and SHA256SUMS; validation files embedded in source archives are earlier build snapshots.
+
+Local macOS arm64: frozen runtime passes all seven advanced and three quick scenarios, both localized reports and downloads. The native window loads and triggers an audit through JavaScript. Ad-hoc signing and DMG verification pass. The delivered DMG was mounted read-only; its bundled app independently passes signature verification and all ten frozen scenarios. [Mounted-installer checks](validation/v0.3.0-installed-dmg-smoke.json). [Frozen checks](validation/v0.3.0-desktop-smoke.json), [native window](validation/v0.3.0-desktop-gui-smoke.json), [installer hash/signing scope](validation/v0.3.0-macos-installer.json).
+
+The first build encountered Finder metadata reattached under Documents. Recovery copied the generated app to local scratch before signing; this preserved its contents and all old builds. The builder now stages signing and DMG assembly outside the synchronized directory. That staging function was tested against the failed bundle and produced a successfully signed/verified copy. No clean-user-machine or Gatekeeper acceptance claim is made. Other-platform 0.3.0 execution, external user trials and independent statistical review remain open. Source code, original prototype and all prior report/build folders are retained.
 
 ## 0.2.0 browser and desktop validation
 

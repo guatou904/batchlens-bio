@@ -1,5 +1,7 @@
 # BatchLens — PRODUCT_SPEC
 
+> 2026-09-21：用户批准将 scDesign Audit 原型整合为 BatchLens v0.3.0。新增快速细胞表入口、双语工作台/报告和可配置供体覆盖；保留高级设计入口与已有科学计算。当前候选版状态、兼容性及验证以 README 和 docs/validation-record.md 为准，以下 v0.1 规划为历史背景。
+
 > 2026-09-12 状态更新：用户已授权完成首个项目并创建/上传仓库；受限 MVP 已实现，GitHub/PyPI v0.1.0 已发布，CI 与正式索引干净安装回验通过。以下保留规划背景；当前行为以 README、docs/input-schema.md、docs/methods.md 和 docs/decisions.md 为准。外部 G0/G1 验证并未完成。
 
 状态：ACTIVE（主项目）/ 已发行 v0.1.0，外部使用验证阶段；2026-09-12。用户确认定位：**单细胞/空间组学“实验设计与批次混杂体检工具”**。

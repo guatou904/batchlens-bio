@@ -239,3 +239,78 @@ def test_next_audit_can_start_as_soon_as_response_arrives(server, monkeypatch):
         assert request(server, "api/demo/paired", {})[0] == 200
     finally:
         finish.set()
+
+
+def quick_payload(case="balanced"):
+    from test_quick import options, source
+
+    value = source(case)
+    return {
+        "file": {"name": value.name, "data": base64.b64encode(value.data).decode()},
+        **options(case),
+    }
+
+
+@pytest.mark.parametrize(
+    "case,expected",
+    [("balanced", "ESTIMABLE"), ("confounded", "NON_ESTIMABLE"), ("paired", "ESTIMABLE")],
+)
+def test_quick_http_and_advanced_handoff_equivalence(server, case, expected):
+    payload = quick_payload(case)
+    status, _, body = request(server, "api/quick/preview", payload)
+    assert status == 200
+    assert json.loads(body)["study"]["units"] in (3, 6)
+    assert not server.bundles
+    status, _, body = request(server, "api/quick/prepare", payload)
+    assert status == 200 and not server.bundles
+    converted = json.loads(body)
+    status, _, body = request(server, "api/quick/audit", {**payload, "language": "zh"})
+    assert status == 200, body
+    quick = json.loads(body)
+    assert quick["contrasts"][0]["status"] == expected
+    assert set(quick["display_findings"]) == {"en", "zh"}
+    prefix = f"reports/{quick['id']}/"
+    quick_json = json.loads(request(server, prefix + "result.json")[2])
+    assert quick_json.pop("input_adapter") == converted["context"]
+    for language in ("en", "zh"):
+        code, headers, html = request(server, prefix + f"download.{language}.html")
+        assert code == 200 and f'lang="{language}"'.encode() in html
+        assert "attachment" in headers["Content-Disposition"]
+    code, _, body = request(server, "api/audit", {"files": converted["files"]})
+    assert code == 200
+    advanced = json.loads(body)
+    standard_json = json.loads(request(server, f"reports/{advanced['id']}/result.json")[2])
+    assert standard_json == quick_json
+    assert request(server, "api/quick/demo/" + case, {"language": "zh"})[0] == 200
+    assert request(server, "quick-examples/" + case + ".csv")[0] == 200
+
+
+@pytest.mark.parametrize(
+    "changes",
+    [
+        {"language": []},
+        {"language": "other"},
+        {"mapping": []},
+        {"file": {}},
+        {"design_mode": []},
+        {"numerator": "absent"},
+        {"cell_coverage": {"dominance": True}},
+    ],
+)
+def test_quick_http_bad_inputs_write_no_bundle(server, changes):
+    payload = quick_payload()
+    payload.update(changes)
+    assert request(server, "api/quick/audit", payload)[0] == 400
+    assert not server.bundles and not list(server.out.iterdir())
+
+
+@pytest.mark.parametrize("route", ["api/quick/preview", "api/quick/audit", "api/quick/prepare"])
+def test_quick_uses_existing_session_origin_and_busy_guards(server, route):
+    assert (
+        request(server, route, quick_payload(), headers={"Origin": "https://elsewhere.test"})[0]
+        == 403
+    )
+    assert request(server, "/" + route, quick_payload(), prefix=False)[0] == 404
+    with server.busy:
+        assert request(server, route, quick_payload())[0] == 409
+    assert not server.bundles

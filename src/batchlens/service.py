@@ -41,15 +41,20 @@ def run_audit(
     observations: Source | None = None,
     assays: Source | None = None,
     dataset: dict[str, Any] | None = None,
+    context: dict[str, Any] | None = None,
+    language: str = "en",
 ) -> dict[str, Any]:
     spec = read_spec(design)
     inputs = load_inputs(samples, spec, observations, assays)
     result = audit(inputs, spec)
+    if context is not None:
+        result["input_adapter"] = context
+        inputs.provenance["cell_table_adapter"] = context
     inputs.provenance["design"] = {
         "sha256": hashlib.sha256(design.read_bytes()).hexdigest(),
         "canonical_sha256": hashlib.sha256(
             json.dumps(spec.model_dump(), sort_keys=True, ensure_ascii=False).encode()
         ).hexdigest(),
     }
-    write_bundle(result, inputs.provenance, out, dataset)
+    write_bundle(result, inputs.provenance, out, dataset, language=language)
     return result

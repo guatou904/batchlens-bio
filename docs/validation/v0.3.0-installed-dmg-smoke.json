@@ -1,0 +1,49 @@
+{
+  "version": "0.3.0",
+  "frozen": true,
+  "checks": [
+    {
+      "case": "balanced",
+      "status": "ESTIMABLE"
+    },
+    {
+      "case": "confounded-time",
+      "status": "NON_ESTIMABLE"
+    },
+    {
+      "case": "partial-overlap",
+      "status": "ESTIMABLE"
+    },
+    {
+      "case": "redundant-nuisance",
+      "status": "ESTIMABLE"
+    },
+    {
+      "case": "paired",
+      "status": "ESTIMABLE"
+    },
+    {
+      "case": "spatial-replicates",
+      "status": "NOT_ASSESSED"
+    },
+    {
+      "case": "mixed-assays",
+      "status": "NOT_ASSESSED"
+    }
+  ],
+  "quick_checks": [
+    {
+      "case": "balanced",
+      "status": "ESTIMABLE"
+    },
+    {
+      "case": "confounded",
+      "status": "NON_ESTIMABLE"
+    },
+    {
+      "case": "paired",
+      "status": "ESTIMABLE"
+    }
+  ],
+  "http_and_downloads": "passed"
+}
