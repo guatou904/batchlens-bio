@@ -22,12 +22,12 @@ def test_demo_end_to_end(tmp_path, case_name, code):
     out = tmp_path / "audit"
     assert main(["demo", "--case", case_name, "--out", str(out)]) == code
     assert (out / "COMPLETE").is_file()
-    manifest = json.loads((out / "manifest.json").read_text())
+    manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["dataset"]["kind"] == "SYNTHETIC"
     for path, digest in manifest["outputs"].items():
         assert hashlib.sha256((out / path).read_bytes()).hexdigest() == digest
-    assert str(tmp_path) not in (out / "manifest.json").read_text()
-    assert "http://" not in (out / "report.html").read_text()
+    assert str(tmp_path) not in (out / "manifest.json").read_text(encoding="utf-8")
+    assert "http://" not in (out / "report.html").read_text(encoding="utf-8")
     before = (out / "result.json").read_bytes()
     assert main(["demo", "--out", str(out)]) == 2
     assert (out / "result.json").read_bytes() == before
@@ -77,11 +77,11 @@ def test_privacy_and_html_escaping(tmp_path):
     write_bundle(result, {}, out)
     for path in out.rglob("*"):
         if path.is_file():
-            text = path.read_text()
+            text = path.read_text(encoding="utf-8")
             assert "SECRET_PATIENT" not in text
             assert "SECRET_UNIT" not in text
             assert "DO_NOT_EXPORT" not in text
-    html = (out / "report.html").read_text()
+    html = (out / "report.html").read_text(encoding="utf-8")
     assert "<script>" not in html
     assert "&lt;script&gt;" in html
 

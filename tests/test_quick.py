@@ -75,10 +75,10 @@ def test_quick_and_advanced_share_exact_scientific_result(tmp_path, case, status
     assert b'lang="zh"' in (tmp_path / "advanced/report.zh.html").read_bytes()
     for folder in ("quick", "advanced"):
         root = tmp_path / folder
-        manifest = json.loads((root / "manifest.json").read_text())
+        manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
         for name, digest in manifest["outputs"].items():
             assert hashlib.sha256((root / name).read_bytes()).hexdigest() == digest
-        text = (root / "result.json").read_text()
+        text = (root / "result.json").read_text(encoding="utf-8")
         assert "synthetic_00001" not in text and '"D01"' not in text and '"S01"' not in text
         assert str(tmp_path) not in text
 
@@ -321,10 +321,10 @@ def test_chinese_report_escapes_metadata_and_keeps_canonical_json(tmp_path):
     uploads, context = prepare(Upload("study.csv", malicious), options())
     result = run_audit(**uploads, out=tmp_path / "output", context=context, language="zh")
     for language in ("en", "zh"):
-        text = (tmp_path / f"output/report.{language}.html").read_text()
+        text = (tmp_path / f"output/report.{language}.html").read_text(encoding="utf-8")
         assert "<script>" not in text and "&lt;script&gt;" in text
     assert result["schema_version"] == "1.1"
-    assert json.loads((tmp_path / "output/result.json").read_text()) == result
+    assert json.loads((tmp_path / "output/result.json").read_text(encoding="utf-8")) == result
 
 
 def test_encoded_file_roundtrip():
