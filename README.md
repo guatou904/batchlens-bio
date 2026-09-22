@@ -8,7 +8,9 @@ BatchLens checks declared experimental units, target-by-batch coverage and wheth
 
 **0.3.0 unified workbench:** start with a cell metadata table or an explicit samples/YAML design. Both paths use the same audit engine, with Chinese/English interfaces and offline reports. [Migration and scope](docs/quick-check.md).
 
-[GitHub Releases](https://github.com/guatou904/batchlens-bio/releases) · [PyPI](https://pypi.org/project/batchlens-bio/) · [Browser / desktop guide](docs/desktop.md)
+[GitHub Releases](https://github.com/guatou904/batchlens-bio/releases/tag/v0.3.0) · [PyPI](https://pypi.org/project/batchlens-bio/0.3.0/) · [Browser / desktop guide](docs/desktop.md)
+
+Version 0.3.0 is published. The [validation record](docs/validation-record.md) links the release-commit checks, installer/package download hashes and fresh installation from the official PyPI index.
 
 ## Why another tool?
 
@@ -41,7 +43,7 @@ Files stay on your computer. Raw uploads remain in memory; completed reports are
 
 ![BatchLens unified workbench](https://raw.githubusercontent.com/guatou904/batchlens-bio/v0.3.0/docs/workbench-home.png)
 
-**Desktop:** choose the Mac Apple Silicon, Intel Mac or Windows x64 installer from [GitHub Releases](https://github.com/guatou904/batchlens-bio/releases). Python and dependencies are included. Version 0.3.0 uses this unified interface; v0.2.0 installers retain the earlier advanced interface. See [platform evidence and alpha signing status](docs/desktop.md).
+**Desktop:** choose the Mac Apple Silicon, Intel Mac or Windows x64 installer from [GitHub Releases](https://github.com/guatou904/batchlens-bio/releases/tag/v0.3.0). Python and dependencies are included. Version 0.3.0 uses this unified interface; v0.2.0 installers retain the earlier advanced interface. See [platform evidence and alpha signing status](docs/desktop.md).
 
 **CLI remains available:**
 

@@ -1,0 +1,62 @@
+{
+  "version": "0.3.0",
+  "scope": "official_pypi_publication",
+  "status": "passed",
+  "recorded_at_utc": "2026-09-21T11:02:38.042191+00:00",
+  "tag": "v0.3.0",
+  "release_commit_sha": "7f4555aa97de3a045f7b4451f7d5b5681956b06c",
+  "source_release_url": "https://github.com/guatou904/batchlens-bio/releases/tag/v0.3.0",
+  "workflow": {
+    "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35591383316",
+    "head_sha": "7f4555aa97de3a045f7b4451f7d5b5681956b06c",
+    "attempt": 1,
+    "conclusion": "success",
+    "updated_at": "2026-09-21T10:57:08Z",
+    "jobs": [
+      {
+        "name": "publish",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35591383316/job/106306322620",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "pypi_version_url": "https://pypi.org/project/batchlens-bio/0.3.0/",
+  "independently_fetched_index": "https://pypi.org/simple/batchlens-bio/",
+  "files": [
+    {
+      "filename": "batchlens_bio-0.3.0-py3-none-any.whl",
+      "github_release_sha256": "b128b19d4b6d593281befe0cd88b5786ecfc8f5132ef33c386f99a293af97c0a",
+      "official_pypi_sha256": "b128b19d4b6d593281befe0cd88b5786ecfc8f5132ef33c386f99a293af97c0a",
+      "pypi_download_url": "https://files.pythonhosted.org/packages/47/ab/a9b5215d3f6d86b50c3023d9acf0adfea35e8715e082f18bf087b96a8eda/batchlens_bio-0.3.0-py3-none-any.whl",
+      "match": true
+    },
+    {
+      "filename": "batchlens_bio-0.3.0.tar.gz",
+      "github_release_sha256": "7faa6e79bbdc78b024347e1a90618655ee7d6fe1473cee4e60428b91fe941d31",
+      "official_pypi_sha256": "7faa6e79bbdc78b024347e1a90618655ee7d6fe1473cee4e60428b91fe941d31",
+      "pypi_download_url": "https://files.pythonhosted.org/packages/89/5d/c073383d9664a0911b1f13d22b3f86ac2151bb2d102888e1c551e6de3ae2/batchlens_bio-0.3.0.tar.gz",
+      "match": true
+    }
+  ],
+  "clean_install": {
+    "status": "passed",
+    "index_url": "https://pypi.org/simple/",
+    "requested_distribution": "batchlens-bio==0.3.0",
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "python_version": "3.12.14",
+    "outside_checkout": true,
+    "reported_version": "batchlens 0.3.0",
+    "demo_case": "confounded-time",
+    "demo_exit_code": 0,
+    "fail_on": "none",
+    "observed_contrast_status": "NON_ESTIMABLE",
+    "schema_version": "1.1",
+    "ruleset_version": "1.1",
+    "artifact_name": "pypi-install-verification",
+    "run_url": "https://github.com/guatou904/batchlens-bio/actions/runs/35591383316",
+    "result_json_sha256": "011d7d51de168fea719e0b92b4f63c922b9eec510ffab8e94565612ab09db069",
+    "manifest_json_sha256": "1bd9d1e1f4a0a80177bf92640b21ff3db9417f0cbc76c909844beb4821fbc1af",
+    "all_output_hashes_match": true,
+    "verified_output_count": 7
+  }
+}
