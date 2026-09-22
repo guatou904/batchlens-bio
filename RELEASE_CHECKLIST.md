@@ -6,13 +6,14 @@ The owner authorized PR, complete cross-platform checks, merge, GitHub Release a
 
 - [x] Local Python 3.12/3.13: 158 tests each; 17 browser groups; installed wheel/sdist and macOS arm64 DMG checks.
 - [x] Shared contrast engine, explicit pairing/timepoint, donor-coverage counterexamples, bilingual reports and metadata-only scope reviewed.
-- [ ] Exact PR head passes all six OS/Python jobs, independent R oracle, browser job and three native desktop jobs (including actual Windows installation).
-- [ ] Merge follows branch protection and tag points to the validated release commit.
-- [ ] Tag workflow repeats full verification; release assets/checksums are published and downloaded hashes verified.
-- [ ] PyPI receives the exact release wheel/sdist; official-index hashes and fresh installation pass.
-- [ ] Release, workflow, tag/commit and distribution evidence is recorded.
+- [x] Exact PR head passes all six OS/Python jobs, independent R oracle, browser job and three native desktop jobs (including actual Windows installation). [PR #5 checks](https://github.com/guatou904/batchlens-bio/pull/5/checks).
+- [x] Merge follows branch protection and tag points to the validated release commit. [Merged PR #5](https://github.com/guatou904/batchlens-bio/pull/5); [tag commit](https://github.com/guatou904/batchlens-bio/commit/7f4555aa97de3a045f7b4451f7d5b5681956b06c).
+- [x] Tag workflow repeats full verification; release assets/checksums are published and downloaded hashes verified. [Release run](https://github.com/guatou904/batchlens-bio/actions/runs/35586633314); [asset and download evidence](docs/validation/v0.3.0-release.json).
+- [x] PyPI receives the exact release wheel/sdist; official-index hashes and fresh installation pass. [PyPI publish/install run](https://github.com/guatou904/batchlens-bio/actions/runs/35591383316); [independent hash and report checks](docs/validation/v0.3.0-pypi.json).
+- [x] Release, workflow, tag/commit and distribution evidence is recorded. [Published validation record](docs/validation-record.md).
 
 External user validation, independent statistical review, Apple Developer ID/notarization and Windows Authenticode signing remain separate open items; they are not claimed for this exploratory alpha release.
+
 
 ## Historical v0.1.0 / v0.2.0 records
 

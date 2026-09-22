@@ -1,0 +1,408 @@
+{
+  "version": "0.3.0",
+  "scope": "published_release",
+  "status": "passed",
+  "recorded_at_utc": "2026-09-21T11:02:38.042191+00:00",
+  "pull_request": {
+    "url": "https://github.com/guatou904/batchlens-bio/pull/5",
+    "head_sha": "081f61c98af29df88be429a05727574f0307f986",
+    "base_sha": "86cd0d8caf800937481b1db331b860624c1a1d30",
+    "merge_commit_sha": "7f4555aa97de3a045f7b4451f7d5b5681956b06c",
+    "merge_state_before_merge": "CLEAN",
+    "checks": [
+      {
+        "name": "ubuntu-latest / Python 3.12",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585168418/job/106286699532",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "ubuntu-latest / Python 3.12",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585164456/job/106286685485",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "Desktop / macos-14",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585168409/job/106286699304",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "ubuntu-latest / Python 3.13",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585168418/job/106286699547",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "ubuntu-latest / Python 3.13",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585164456/job/106286685478",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "Desktop / macos-15-intel",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585168409/job/106286699541",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "macos-latest / Python 3.12",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585168418/job/106286699485",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "macos-latest / Python 3.12",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585164456/job/106286685416",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "Desktop / windows-latest",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585168409/job/106286699542",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "macos-latest / Python 3.13",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585168418/job/106286699520",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "macos-latest / Python 3.13",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585164456/job/106286685472",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "windows-latest / Python 3.12",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585168418/job/106286699504",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "windows-latest / Python 3.12",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585164456/job/106286685534",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "windows-latest / Python 3.13",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585168418/job/106286699745",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "windows-latest / Python 3.13",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585164456/job/106286685494",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "workbench-browser",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585168418/job/106286699536",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "workbench-browser",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585164456/job/106286685117",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "scientific-oracle",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585168418/job/106286699297",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "scientific-oracle",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35585164456/job/106286685399",
+        "conclusion": "SUCCESS"
+      }
+    ]
+  },
+  "tag": "v0.3.0",
+  "tag_commit_sha": "7f4555aa97de3a045f7b4451f7d5b5681956b06c",
+  "source_tree_sha": "650c5c720ac8f410912f9d238789f8fd96670be9",
+  "release_url": "https://github.com/guatou904/batchlens-bio/releases/tag/v0.3.0",
+  "published_at_utc": "2026-09-21T10:09:55Z",
+  "release_workflow": {
+    "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35586633314",
+    "head_sha": "7f4555aa97de3a045f7b4451f7d5b5681956b06c",
+    "attempt": 1,
+    "conclusion": "success",
+    "updated_at": "2026-09-21T10:10:00Z",
+    "jobs": [
+      {
+        "name": "validate / workbench-browser",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35586633314/job/106291382274",
+        "conclusion": "success"
+      },
+      {
+        "name": "validate / scientific-oracle",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35586633314/job/106291382445",
+        "conclusion": "success"
+      },
+      {
+        "name": "validate / windows-latest / Python 3.12",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35586633314/job/106291382465",
+        "conclusion": "success"
+      },
+      {
+        "name": "desktop / Desktop / windows-latest",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35586633314/job/106291382487",
+        "conclusion": "success"
+      },
+      {
+        "name": "validate / windows-latest / Python 3.13",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35586633314/job/106291382515",
+        "conclusion": "success"
+      },
+      {
+        "name": "validate / ubuntu-latest / Python 3.12",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35586633314/job/106291382525",
+        "conclusion": "success"
+      },
+      {
+        "name": "validate / macos-latest / Python 3.13",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35586633314/job/106291382537",
+        "conclusion": "success"
+      },
+      {
+        "name": "desktop / Desktop / macos-15-intel",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35586633314/job/106291382547",
+        "conclusion": "success"
+      },
+      {
+        "name": "validate / macos-latest / Python 3.12",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35586633314/job/106291382583",
+        "conclusion": "success"
+      },
+      {
+        "name": "validate / ubuntu-latest / Python 3.13",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35586633314/job/106291382657",
+        "conclusion": "success"
+      },
+      {
+        "name": "desktop / Desktop / macos-14",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35586633314/job/106291382675",
+        "conclusion": "success"
+      },
+      {
+        "name": "release",
+        "url": "https://github.com/guatou904/batchlens-bio/actions/runs/35586633314/job/106293014309",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "download_verification": {
+    "status": "passed",
+    "all_15_listed_files_downloaded_and_hashed": true,
+    "environment": "GitHub Actions ubuntu-latest, PyPI publish job before upload",
+    "run_url": "https://github.com/guatou904/batchlens-bio/actions/runs/35591383316",
+    "job_url": "https://github.com/guatou904/batchlens-bio/actions/runs/35591383316/job/106306322620",
+    "locally_completed_files": 13,
+    "local_large_installer_downloads": "Interrupted after partial transfer; these partial files are not local verification evidence. Full installer download/hash verification is established by the linked publish job and independently compared GitHub asset digests."
+  },
+  "assets": [
+    {
+      "filename": "BatchLens-Bio-0.3.0-Windows-x64-Setup.exe",
+      "download_url": "https://github.com/guatou904/batchlens-bio/releases/download/v0.3.0/BatchLens-Bio-0.3.0-Windows-x64-Setup.exe",
+      "size_bytes": 37740499,
+      "sha256": "747d36039c82cd80b1f7b77f99affbc3f1fead584dccf672b77a932fc40e9a12",
+      "github_api_digest_matches": true,
+      "release_download_checksum_in_pypi_job": "passed",
+      "local_complete_download_sha256": null
+    },
+    {
+      "filename": "BatchLens-Bio-0.3.0-macOS-arm64.dmg",
+      "download_url": "https://github.com/guatou904/batchlens-bio/releases/download/v0.3.0/BatchLens-Bio-0.3.0-macOS-arm64.dmg",
+      "size_bytes": 42419462,
+      "sha256": "ae3c255a0674caf90804a2f37ad52a09708b148e8571bafc8a301a57cdecf7ef",
+      "github_api_digest_matches": true,
+      "release_download_checksum_in_pypi_job": "passed",
+      "local_complete_download_sha256": null
+    },
+    {
+      "filename": "BatchLens-Bio-0.3.0-macOS-x86_64.dmg",
+      "download_url": "https://github.com/guatou904/batchlens-bio/releases/download/v0.3.0/BatchLens-Bio-0.3.0-macOS-x86_64.dmg",
+      "size_bytes": 45874383,
+      "sha256": "4a761a9a4a0d0520c997349cb19b77167625371ddb9e5dacff4ad8dc3f620a40",
+      "github_api_digest_matches": true,
+      "release_download_checksum_in_pypi_job": "passed",
+      "local_complete_download_sha256": null
+    },
+    {
+      "filename": "INSTALL_VALIDATION.json",
+      "download_url": "https://github.com/guatou904/batchlens-bio/releases/download/v0.3.0/INSTALL_VALIDATION.json",
+      "size_bytes": 755,
+      "sha256": "6bf738805a941cff715e5772c19f992c1ce6c86a316266d67ca0220f8f03288f",
+      "github_api_digest_matches": true,
+      "release_download_checksum_in_pypi_job": "passed",
+      "local_complete_download_sha256": "6bf738805a941cff715e5772c19f992c1ce6c86a316266d67ca0220f8f03288f"
+    },
+    {
+      "filename": "SHA256SUMS",
+      "download_url": "https://github.com/guatou904/batchlens-bio/releases/download/v0.3.0/SHA256SUMS",
+      "size_bytes": 1559,
+      "sha256": "43f9d037d0c1399b5f358b41090177476eeaacd068c769439089b200cc57702b",
+      "github_api_digest_matches": true,
+      "release_download_checksum_in_pypi_job": "checksum_file",
+      "local_complete_download_sha256": "43f9d037d0c1399b5f358b41090177476eeaacd068c769439089b200cc57702b"
+    },
+    {
+      "filename": "batchlens-demo.html",
+      "download_url": "https://github.com/guatou904/batchlens-bio/releases/download/v0.3.0/batchlens-demo.html",
+      "size_bytes": 9738,
+      "sha256": "84d2831b494e070b8a358c6d758da52351efa6592dd407d077cf5973c4b1201a",
+      "github_api_digest_matches": true,
+      "release_download_checksum_in_pypi_job": "passed",
+      "local_complete_download_sha256": "84d2831b494e070b8a358c6d758da52351efa6592dd407d077cf5973c4b1201a"
+    },
+    {
+      "filename": "batchlens_bio-0.3.0-py3-none-any.whl",
+      "download_url": "https://github.com/guatou904/batchlens-bio/releases/download/v0.3.0/batchlens_bio-0.3.0-py3-none-any.whl",
+      "size_bytes": 81813,
+      "sha256": "b128b19d4b6d593281befe0cd88b5786ecfc8f5132ef33c386f99a293af97c0a",
+      "github_api_digest_matches": true,
+      "release_download_checksum_in_pypi_job": "passed",
+      "local_complete_download_sha256": "b128b19d4b6d593281befe0cd88b5786ecfc8f5132ef33c386f99a293af97c0a"
+    },
+    {
+      "filename": "batchlens_bio-0.3.0.tar.gz",
+      "download_url": "https://github.com/guatou904/batchlens-bio/releases/download/v0.3.0/batchlens_bio-0.3.0.tar.gz",
+      "size_bytes": 511319,
+      "sha256": "7faa6e79bbdc78b024347e1a90618655ee7d6fe1473cee4e60428b91fe941d31",
+      "github_api_digest_matches": true,
+      "release_download_checksum_in_pypi_job": "passed",
+      "local_complete_download_sha256": "7faa6e79bbdc78b024347e1a90618655ee7d6fe1473cee4e60428b91fe941d31"
+    },
+    {
+      "filename": "desktop-macos-14-desktop-gui-smoke.json",
+      "download_url": "https://github.com/guatou904/batchlens-bio/releases/download/v0.3.0/desktop-macos-14-desktop-gui-smoke.json",
+      "size_bytes": 77,
+      "sha256": "68dbdb106692dded42008f998fa98d7a18fd7cc8903e3ab48708da458b352544",
+      "github_api_digest_matches": true,
+      "release_download_checksum_in_pypi_job": "passed",
+      "local_complete_download_sha256": "68dbdb106692dded42008f998fa98d7a18fd7cc8903e3ab48708da458b352544"
+    },
+    {
+      "filename": "desktop-macos-14-desktop-smoke.json",
+      "download_url": "https://github.com/guatou904/batchlens-bio/releases/download/v0.3.0/desktop-macos-14-desktop-smoke.json",
+      "size_bytes": 838,
+      "sha256": "2f199f0b3eacc35f52c983e19499f52f69337d6cb9ef3d853a8eb9fcd6752cf8",
+      "github_api_digest_matches": true,
+      "release_download_checksum_in_pypi_job": "passed",
+      "local_complete_download_sha256": "2f199f0b3eacc35f52c983e19499f52f69337d6cb9ef3d853a8eb9fcd6752cf8"
+    },
+    {
+      "filename": "desktop-macos-15-intel-desktop-gui-smoke.json",
+      "download_url": "https://github.com/guatou904/batchlens-bio/releases/download/v0.3.0/desktop-macos-15-intel-desktop-gui-smoke.json",
+      "size_bytes": 77,
+      "sha256": "68dbdb106692dded42008f998fa98d7a18fd7cc8903e3ab48708da458b352544",
+      "github_api_digest_matches": true,
+      "release_download_checksum_in_pypi_job": "passed",
+      "local_complete_download_sha256": "68dbdb106692dded42008f998fa98d7a18fd7cc8903e3ab48708da458b352544"
+    },
+    {
+      "filename": "desktop-macos-15-intel-desktop-smoke.json",
+      "download_url": "https://github.com/guatou904/batchlens-bio/releases/download/v0.3.0/desktop-macos-15-intel-desktop-smoke.json",
+      "size_bytes": 838,
+      "sha256": "2f199f0b3eacc35f52c983e19499f52f69337d6cb9ef3d853a8eb9fcd6752cf8",
+      "github_api_digest_matches": true,
+      "release_download_checksum_in_pypi_job": "passed",
+      "local_complete_download_sha256": "2f199f0b3eacc35f52c983e19499f52f69337d6cb9ef3d853a8eb9fcd6752cf8"
+    },
+    {
+      "filename": "desktop-windows-latest-desktop-gui-smoke.json",
+      "download_url": "https://github.com/guatou904/batchlens-bio/releases/download/v0.3.0/desktop-windows-latest-desktop-gui-smoke.json",
+      "size_bytes": 77,
+      "sha256": "68dbdb106692dded42008f998fa98d7a18fd7cc8903e3ab48708da458b352544",
+      "github_api_digest_matches": true,
+      "release_download_checksum_in_pypi_job": "passed",
+      "local_complete_download_sha256": "68dbdb106692dded42008f998fa98d7a18fd7cc8903e3ab48708da458b352544"
+    },
+    {
+      "filename": "desktop-windows-latest-desktop-smoke.json",
+      "download_url": "https://github.com/guatou904/batchlens-bio/releases/download/v0.3.0/desktop-windows-latest-desktop-smoke.json",
+      "size_bytes": 886,
+      "sha256": "d1c87c6353b1075408f660cb229322b2a75dc4cd154284c1c54230bd38a6509e",
+      "github_api_digest_matches": true,
+      "release_download_checksum_in_pypi_job": "passed",
+      "local_complete_download_sha256": "d1c87c6353b1075408f660cb229322b2a75dc4cd154284c1c54230bd38a6509e"
+    },
+    {
+      "filename": "desktop-windows-latest-installed-smoke.json",
+      "download_url": "https://github.com/guatou904/batchlens-bio/releases/download/v0.3.0/desktop-windows-latest-installed-smoke.json",
+      "size_bytes": 886,
+      "sha256": "d1c87c6353b1075408f660cb229322b2a75dc4cd154284c1c54230bd38a6509e",
+      "github_api_digest_matches": true,
+      "release_download_checksum_in_pypi_job": "passed",
+      "local_complete_download_sha256": "d1c87c6353b1075408f660cb229322b2a75dc4cd154284c1c54230bd38a6509e"
+    },
+    {
+      "filename": "desktop-windows-latest-webview2-bootstrapper.json",
+      "download_url": "https://github.com/guatou904/batchlens-bio/releases/download/v0.3.0/desktop-windows-latest-webview2-bootstrapper.json",
+      "size_bytes": 186,
+      "sha256": "65043eaece23adcfc0a0b4b25d17845ba5c240fa094ce423cb013ffffbcb2605",
+      "github_api_digest_matches": true,
+      "release_download_checksum_in_pypi_job": "passed",
+      "local_complete_download_sha256": "65043eaece23adcfc0a0b4b25d17845ba5c240fa094ce423cb013ffffbcb2605"
+    }
+  ],
+  "validation_records": {
+    "installation_records": {
+      "packages": [
+        {
+          "artifact": "batchlens_bio-0.3.0-py3-none-any.whl",
+          "sha256": "b128b19d4b6d593281befe0cd88b5786ecfc8f5132ef33c386f99a293af97c0a",
+          "python": "3.12.3"
+        },
+        {
+          "artifact": "batchlens_bio-0.3.0.tar.gz",
+          "sha256": "7faa6e79bbdc78b024347e1a90618655ee7d6fe1473cee4e60428b91fe941d31",
+          "python": "3.12.3"
+        }
+      ]
+    },
+    "wheel_contents": {
+      "version": "0.3.0",
+      "nonempty_feature_resources": 12,
+      "languages": [
+        "en",
+        "zh"
+      ]
+    },
+    "webview2_record": {
+      "sha256": "81c01751c8cc385a5991abb104205d42ac70094350ee8fb9e8ea580b51bb9554",
+      "publisher": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
+    },
+    "macos-14": {
+      "frozen_runtime": {
+        "advanced_cases": 7,
+        "quick_cases": 3
+      },
+      "native_window": {
+        "native_window": "loaded",
+        "javascript_audit": "passed"
+      }
+    },
+    "macos-15-intel": {
+      "frozen_runtime": {
+        "advanced_cases": 7,
+        "quick_cases": 3
+      },
+      "native_window": {
+        "native_window": "loaded",
+        "javascript_audit": "passed"
+      }
+    },
+    "windows-latest": {
+      "frozen_runtime": {
+        "advanced_cases": 7,
+        "quick_cases": 3
+      },
+      "native_window": {
+        "native_window": "loaded",
+        "javascript_audit": "passed"
+      }
+    },
+    "installed_windows": {
+      "advanced_cases": 7,
+      "quick_cases": 3
+    }
+  },
+  "open_items": [
+    "external_user_validation",
+    "independent_statistical_expert_review",
+    "apple_developer_id_and_notarization",
+    "windows_authenticode_signing",
+    "clean_end_user_OS_trials"
+  ]
+}

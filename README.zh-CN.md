@@ -8,9 +8,11 @@ BatchLens 帮助科研人员在分析数据、解释结果之前，检查一个�
 
 它根据样本元数据和明确的设计声明，检查实验单位、目标条件与批次的覆盖关系，以及指定比较在加性固定效应模型下是否可估计，生成离线 HTML 报告、JSON 结果和可追溯表格。无需读取表达矩阵或空间图像。
 
-[GitHub Releases](https://github.com/guatou904/batchlens-bio/releases) · [PyPI](https://pypi.org/project/batchlens-bio/) · [网页和桌面版指南](docs/desktop.md)
+[GitHub Releases](https://github.com/guatou904/batchlens-bio/releases/tag/v0.3.0) · [PyPI](https://pypi.org/project/batchlens-bio/0.3.0/) · [网页和桌面版指南](docs/desktop.md)
 
 **0.3.0 统一工作台：** 已将 scDesign Audit 的快速导入、中英文界面和细胞类型供体覆盖检查整合到 BatchLens。两个入口共用同一套计算规则。[迁移与检查范围](docs/quick-check.md) · [实际验证记录](docs/validation-record.md)。
+
+v0.3.0 已公开发布。[验证记录](docs/validation-record.md)包含发行提交的跨平台检查、安装包下载校验和，以及正式 PyPI 索引的全新安装回验。
 
 ## 为什么需要 BatchLens？
 
@@ -55,7 +57,7 @@ batchlens serve
 
 快速模式提供三个原创合成示例，高级模式保留七个原有示例。[中文报告示例](docs/quick-demo.zh.html) · [英文报告示例](docs/quick-demo.en.html)。
 
-**桌面版：** 从 [GitHub Releases](https://github.com/guatou904/batchlens-bio/releases) 选择 Apple Silicon Mac、Intel Mac 或 Windows x64 安装包，内含 Python 与依赖。0.3.0 使用统一工作台，0.2.0 保留旧高级界面。安装方式、平台证据和 alpha 签名状态见[桌面指南](docs/desktop.md)。
+**桌面版：** 从 [GitHub Releases](https://github.com/guatou904/batchlens-bio/releases/tag/v0.3.0) 选择 Apple Silicon Mac、Intel Mac 或 Windows x64 安装包，内含 Python 与依赖。0.3.0 使用统一工作台，0.2.0 保留旧高级界面。安装方式、平台证据和 alpha 签名状态见[桌面指南](docs/desktop.md)。
 
 **命令行仍可使用：**
 
